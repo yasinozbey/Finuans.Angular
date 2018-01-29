@@ -1,0 +1,22 @@
+/* You can add global styles to this file, and also import other style files */
+.dx-datagrid-headers.dx-datagrid-nowrap{
+    background: linear-gradient(to right, #4d2ac2,#554be0) !important;
+    color: white !important;
+    box-shadow: 0 7px 12px -5px #00000040 !important;
+}
+
+.dx-datagrid .dx-column-lines > td {
+    border-left: 1px solid #3a3a3a !important;
+    border-right: 1px solid #3e3e3e2e !important;
+}
+
+.dx-datagrid{
+    overflow: hidden !important;
+    border-radius: 4px !important;
+
+    
+}
+
+.m-body.m-body__content {
+    padding: 10px 15px !important;
+}
