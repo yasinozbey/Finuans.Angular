@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LayoutModule } from '../../../layouts/layout.module';
 import { DefaultComponent } from '../default.component';
 import { KasaListesiComponent } from './kasalistesi.component';
-import { DxDataGridModule, DxDateBoxModule, DxTextBoxModule } from 'devextreme-angular';
+import { DxDataGridModule, DxDateBoxModule, DxTextBoxModule, DxSelectBoxModule } from 'devextreme-angular';
 import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
@@ -21,7 +21,7 @@ const routes: Routes = [
 ];
 @NgModule({
     imports: [
-        CommonModule, RouterModule.forChild(routes), LayoutModule, DxDataGridModule,FormsModule,DxDateBoxModule,DxTextBoxModule
+        CommonModule, RouterModule.forChild(routes), LayoutModule, DxDataGridModule,FormsModule,DxDateBoxModule,DxTextBoxModule,DxSelectBoxModule
     ], exports: [
         RouterModule
     ], declarations: [

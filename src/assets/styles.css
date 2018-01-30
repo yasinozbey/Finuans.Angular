@@ -6,7 +6,7 @@
 }
 
 .dx-datagrid .dx-column-lines > td {
-    border-left: 1px solid #3a3a3a !important;
+    border-left: 1px solid #dcdcdc !important;
     border-right: 1px solid #3e3e3e2e !important;
 }
 
@@ -19,4 +19,8 @@
 
 .m-body.m-body__content {
     padding: 10px 15px !important;
+}
+
+.dx-datagrid-content .dx-datagrid-table.dx-datagrid-table-fixed {
+    border-collapse: unset;
 }

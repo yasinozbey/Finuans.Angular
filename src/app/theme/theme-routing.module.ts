@@ -30,7 +30,7 @@ const routes: Routes = [
                 "loadChildren": ".\/pages\/default\/finans\/kasalistesi.module#KasaListesiModule"
             },
             {
-                "path": "yenikasa",
+                "path": "yenikasa/:id",
                 "loadChildren": ".\/pages\/default\/finans\/yenikasa.module#YeniKasaModule"
             },
             {

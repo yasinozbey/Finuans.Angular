@@ -31,6 +31,25 @@
                                                             Hızlı İşlemler
                                                         </span>
                                                     </li>
+
+                                                    <li class="m-nav__item" *ngIf="ListeTipi==='kasa'" >
+                                                        <a [routerLink]="['/yenikasa', 'liste/kasa']" class="m-nav__link">
+                                                            <i class="m-nav__link-icon flaticon-share"></i>
+                                                            <span class="m-nav__link-text">
+                                                                Yeni Kasa
+                                                            </span>
+                                                        </a>
+                                                    </li>
+
+                                                    <li class="m-nav__item" *ngIf="ListeTipi==='banka'" >
+                                                        <a routerLink="/yenibanka" class="m-nav__link">
+                                                            <i class="m-nav__link-icon flaticon-share"></i>
+                                                            <span class="m-nav__link-text">
+                                                                Yeni Banka
+                                                            </span>
+                                                        </a>
+                                                    </li>
+                                                    
                                                     <li class="m-nav__item">
                                                         <a href="" class="m-nav__link">
                                                             <i class="m-nav__link-icon flaticon-share"></i>
@@ -44,6 +63,14 @@
                                                             <i class="m-nav__link-icon flaticon-share"></i>
                                                             <span class="m-nav__link-text" (click)="TransferVisible(true,1);">
                                                                 Para Çıkışı
+                                                            </span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="m-nav__item">
+                                                        <a href="" class="m-nav__link">
+                                                            <i class="m-nav__link-icon flaticon-share"></i>
+                                                            <span class="m-nav__link-text" (click)="TransferVisible(true,2);">
+                                                                Hesaplar Arası Transfer
                                                             </span>
                                                         </a>
                                                     </li>
@@ -85,6 +112,17 @@
                     </div>
                 </div>
                 <div class="m-portlet__body">
+                    <div class="form-group m-form__group" *ngIf="KasaGCVisible === true && IslemCinsi===2" >
+                        <label class="exampleInputEmail1">
+                            Diğer Hesap:
+                        </label>
+                        <div *ngIf="ListeTipi=='kasa'" >
+                            <dx-select-box [items]="KasaList" [(ngModel)]="SelectedKasa"></dx-select-box>
+                        </div>
+                        <div *ngIf="ListeTipi=='banka'" >
+                            <dx-select-box [items]="BankaList" [(ngModel)]="SelectedBanka"></dx-select-box>
+                        </div>
+                    </div>
                     <div class="form-group m-form__group">
                         <div class="form-group m-form__group">
                             <label for="exampleInputEmail1">

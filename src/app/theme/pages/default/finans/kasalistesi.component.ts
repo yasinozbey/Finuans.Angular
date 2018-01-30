@@ -21,23 +21,38 @@ export class KasaListesiComponent implements OnInit, OnDestroy {
 
     data: any;
     KasaGCVisible: boolean = false;
-    IslemCinsi: number = 0; // 0 kasa giriş 1 kasa çıkış
+    IslemCinsi: number = 0; // 0 kasa giriş 1 kasa çıkış 2 transfer
     IslemCinsiText: string;
     Title: string;
     ListeTipi: string;
     private sub: any;
+    KasaList: string[] = [
+        "TL Kasası",
+        "USD Kasası",
+        "EURO Kasası",
+    ];
+    BankaList: string[] = [
+        "Akbank",
+        "Garanti",
+        "İş Bankası",
+    ];
+
+    SelectedBanka: string;
+    SelectedKasa: string;
 
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
             this.ListeTipi = params['id'];
 
-        if (this.ListeTipi == "kasa")
-            this.Title = "Kasa Listesi";
-        else
-            this.Title = "Banka Listesi";
+            if (this.ListeTipi == "kasa") {
+                this.Title = "Kasa Listesi";
+                this.svc.get().subscribe(x => this.data = x);
+            }
+            else {
+                this.Title = "Banka Listesi";
+                this.data = null;
+            }
         });
-
-        this.svc.get().subscribe(x => this.data = x);
     }
 
     ngOnDestroy() {
@@ -49,8 +64,12 @@ export class KasaListesiComponent implements OnInit, OnDestroy {
         this.IslemCinsi = tip;
         if (tip == 0)
             this.IslemCinsiText = "Para Girişi";
-        else
+        else if (tip == 1)
             this.IslemCinsiText = "Para Çıkışı";
+        else if (tip == 2)
+            this.IslemCinsiText = "Transfer";
+
+            // ?returnURL=liste/kasa
     }
 
     lastRowCLickedId: number;
