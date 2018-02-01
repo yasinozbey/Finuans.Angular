@@ -20,13 +20,13 @@ export class YeniKasaComponent implements OnInit {
     returnUrl: any;
     constructor(private route: ActivatedRoute, private r: Router) {
         //this.AcilisTarihi
-        this.route.params.subscribe(params => {
-            this.returnUrl = params['id'];
-            console.log(params);
+        // this.route.params.subscribe(params => {
+        //     this.returnUrl = params['id'];
+        //     console.log(params);
             
-            console.log(this.returnUrl);
+        //     console.log(this.returnUrl);
             
-        });
+        // });
     }
 
 

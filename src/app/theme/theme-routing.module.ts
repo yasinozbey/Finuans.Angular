@@ -26,16 +26,12 @@ const routes: Routes = [
                 "loadChildren": ".\/pages\/default\/not-found\/not-found.module#NotFoundModule"
             },
             {
-                "path": "liste/:id",
+                "path": "finans-liste/:id",
                 "loadChildren": ".\/pages\/default\/finans\/kasalistesi.module#KasaListesiModule"
             },
             {
-                "path": "yenikasa/:id",
-                "loadChildren": ".\/pages\/default\/finans\/yenikasa.module#YeniKasaModule"
-            },
-            {
-                "path": "yenibanka",
-                "loadChildren": ".\/pages\/default\/finans\/yenibanka.module#YeniBankaModule"
+                "path": "stok-liste/:id",
+                "loadChildren": ".\/pages\/default\/stok\/stokhizmetliste.module#StokHizmetListeModule"
             },
             {
                 "path": "",
