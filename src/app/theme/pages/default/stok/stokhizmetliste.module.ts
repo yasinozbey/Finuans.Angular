@@ -28,7 +28,7 @@ const routes: Routes = [
         StokHizmetListComponent
     ]
 })
-export class StokHizmetListeModule {
+export class StokHizmetListModule {
 
 
 }

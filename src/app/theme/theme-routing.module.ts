@@ -31,7 +31,7 @@ const routes: Routes = [
             },
             {
                 "path": "stok-liste/:id",
-                "loadChildren": ".\/pages\/default\/stok\/stokhizmetliste.module#StokHizmetListeModule"
+                "loadChildren": ".\/pages\/default\/stok\/stokhizmetliste.module#StokHizmetListModule"
             },
             {
                 "path": "yenistok",
@@ -56,6 +56,26 @@ const routes: Routes = [
             {
                 "path": "calisan/:id",
                 "loadChildren": ".\/pages\/default\/satis\/calisan.module#CalisanModule"
+            },
+            {
+                "path": "maasprim/:id",
+                "loadChildren": ".\/pages\/default\/giderler\/maasprim.module#MaasPrimModule"
+            },
+            {
+                "path": "vergisgk/:id",
+                "loadChildren": ".\/pages\/default\/giderler\/vergisgk.module#VergiSgkModule"
+            },
+            {
+                "path": "bankagideri/:id",
+                "loadChildren": ".\/pages\/default\/giderler\/bankagideri.module#BankaGideriModule"
+            },
+            {
+                "path": "cari-liste/:id",
+                "loadChildren": ".\/pages\/default\/satis\/cariliste.module#CariListModule"
+            },
+            {
+                "path": "gider-liste",
+                "loadChildren": ".\/pages\/default\/giderler\/giderliste.module#GiderListModule"
             },
             {
                 "path": "",
