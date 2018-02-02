@@ -50,6 +50,14 @@ const routes: Routes = [
                 "loadChildren": ".\/pages\/default\/stok\/stokgiriscikis.module#StokGirisCikisModule"
             },
             {
+                "path": "cari/:id",
+                "loadChildren": ".\/pages\/default\/satis\/cari.module#CariModule"
+            },
+            {
+                "path": "calisan/:id",
+                "loadChildren": ".\/pages\/default\/satis\/calisan.module#CalisanModule"
+            },
+            {
                 "path": "",
                 "redirectTo": "index",
                 "pathMatch": "full"

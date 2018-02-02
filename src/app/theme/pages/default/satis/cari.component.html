@@ -1,0 +1,179 @@
+<div class="m-content">
+    <div class="row">
+        <div class="m-portlet m-portlet--tab" style="width:100%">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <span class="m-portlet__head-icon m--hide">
+                            <i class="la la-gear"></i>
+                        </span>
+                        <h3 class="m-portlet__head-text">
+                            Tedarikçi
+                        </h3>
+                    </div>
+                </div>
+                <div class="m-portlet__head-tools">
+                    <ul class="m-portlet__nav">
+                        <li class="m-portlet__nav-item m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push"
+                            data-dropdown-toggle="hover">
+
+                            <div class="m-form__actions">
+                                <button type="reset" (click)="Kaydet()" class="btn btn-primary">
+                                    Kaydet
+                                </button>
+                                <button type="reset" (click)="Sil()" class="btn btn-danger">
+                                    Vazgeç
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="m-form m-form--fit m-form--label-align-left">
+                <div class="m-portlet__body">
+                    <div class="form-group m-form__group row">
+                        <label class="col-lg-2 col-form-label">
+                            Ünvanı:
+                        </label>
+                        <div class="col-lg-10">
+                            <dx-text-box [(ngModel)]="HesapAdi"></dx-text-box>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-lg-2 col-form-label">
+                            Türü:
+                        </label>
+                        <div class="col-lg-4">
+                            <dx-select-box [items]="DovizList" [(ngModel)]="SelectedDoviz"></dx-select-box>
+                        </div>
+                        <label class="col-lg-2 col-form-label">
+                            Kategori:
+                        </label>
+                        <div class="col-lg-4">
+                            <dx-select-box [items]="DovizList" [(ngModel)]="SelectedDoviz"></dx-select-box>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-lg-2 col-form-label">
+                            Eposta Adresi:
+                        </label>
+                        <div class="col-lg-4">
+                            <dx-text-box [(ngModel)]="AcilisBakiyesi"></dx-text-box>
+                        </div>
+                        <label class="col-lg-2 col-form-label">
+                            Telefon Numarası:
+                        </label>
+                        <div class="col-lg-4">
+                            <dx-text-box [(ngModel)]="AcilisBakiyesi"></dx-text-box>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-lg-2 col-form-label">
+                            Adres:
+                        </label>
+                        <div class="col-lg-4">
+                            <dx-text-area [height]="90" [maxLength]="100">
+                            </dx-text-area>
+                        </div>
+                        <label class="col-lg-2 col-form-label">
+                            IBAN:
+                        </label>
+                        <div class="col-lg-4">
+                            <dx-text-box [(ngModel)]="AcilisBakiyesi"></dx-text-box>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-lg-2 col-form-label">
+                            İl:
+                        </label>
+                        <div class="col-lg-2">
+                            <dx-select-box [items]="KategoriList" [(ngModel)]="SelectedKetegori"></dx-select-box>
+                        </div>
+                        <label class="col-lg-1 col-form-label">
+                            İlçe:
+                        </label>
+                        <div class="col-lg-3">
+                            <dx-select-box [items]="KategoriList" [(ngModel)]="SelectedKetegori"></dx-select-box>
+                        </div>
+                    </div>
+                    <div class="form-group m-form__group row">
+                        <label class="col-lg-2 col-form-label">
+                            Vergi Daire:
+                        </label>
+                        <div class="col-lg-2">
+                            <dx-text-box [(ngModel)]="AcilisBakiyesi"></dx-text-box>
+                        </div>
+                        <label class="col-lg-1 col-form-label">
+                            Vergi No:
+                        </label>
+                        <div class="col-lg-3">
+                            <dx-text-box [(ngModel)]="AcilisBakiyesi"></dx-text-box>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row">
+                        <label class="col-lg-2 col-form-label">
+                            Açılış Bakiyesi:
+                        </label>
+                        <div class="col-lg-2">
+                            <dx-text-box [(ngModel)]="AcilisBakiyesi"></dx-text-box>
+                        </div>
+                        <label class="col-lg-2 col-form-label">
+                            Açılış Bakiyesi Tarihi:
+                        </label>
+                        <div class="col-lg-2">
+                            <dx-date-box [(ngModel)]="AcilisTarihi" displayFormat="dd.MM.yyyy" type="date" style="width: 100% !important;">
+                            </dx-date-box>
+                        </div>
+                        <label class="col-lg-1 col-form-label">
+                            Borç Tipi:
+                        </label>
+                        <div class="col-lg-3">
+                            <dx-select-box [items]="KategoriList" [(ngModel)]="SelectedKetegori"></dx-select-box>
+                        </div>
+                    </div>
+
+                    <div class="m-form__seperator m-form__seperator--dashed"></div>
+
+                    <div class="form-group m-form__group row pb-0">
+                        <label class="col-lg-6 col-form-label">
+                            Yetkili Adı Soyadı:
+                        </label>
+                        <label class="col-lg-2 col-form-label">
+                            Eposta
+                        </label>
+                        <label class="col-lg-2 col-form-label">
+                            Telefon
+                        </label>
+                    </div>
+                    <div class="m-form__seperator m-form__seperator"></div>
+
+                    <div class="form-group m-form__group row  pb-0">
+                        <div class="col-lg-6">
+                            <dx-text-box [(ngModel)]="HesapAdi" class="form-control m-input"></dx-text-box>
+                        </div>
+                        <div class="col-lg-2">
+                            <dx-text-box [(ngModel)]="HesapAdi" class="form-control m-input"></dx-text-box>
+                        </div>
+                        <div class="col-lg-2">
+                            <dx-text-box [(ngModel)]="HesapAdi" class="form-control m-input"></dx-text-box>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-form__group row pt-1">
+                        <div class="col-lg-6">
+                            <dx-text-box [(ngModel)]="HesapAdi" class="form-control m-input"></dx-text-box>
+                        </div>
+                        <div class="col-lg-2">
+                            <dx-text-box [(ngModel)]="HesapAdi" class="form-control m-input"></dx-text-box>
+                        </div>
+                        <div class="col-lg-2">
+                            <dx-text-box [(ngModel)]="HesapAdi" class="form-control m-input"></dx-text-box>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
