@@ -55,7 +55,7 @@ const routes: Routes = [
             },
             {
                 "path": "calisan/:id",
-                "loadChildren": ".\/pages\/default\/satis\/calisan.module#CalisanModule"
+                "loadChildren": ".\/pages\/default\/giderler\/calisan.module#CalisanModule"
             },
             {
                 "path": "maasprim/:id",
@@ -76,6 +76,10 @@ const routes: Routes = [
             {
                 "path": "gider-liste",
                 "loadChildren": ".\/pages\/default\/giderler\/giderliste.module#GiderListModule"
+            },
+            {
+                "path": "calisan-liste",
+                "loadChildren": ".\/pages\/default\/giderler\/calisanliste.module#CalisanListModule"
             },
             {
                 "path": "",

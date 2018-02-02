@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'calisan-kart',
@@ -17,7 +18,7 @@ export class CalisanComponent implements OnInit {
         "EURO",
     ];
 
-    constructor() { 
+    constructor(private r: Router) { 
         //this.AcilisTarihi
     }
     
@@ -30,9 +31,9 @@ export class CalisanComponent implements OnInit {
         console.log(this.AcilisBakiyesi);
     }
 
-    Sil()
+    Vazgec()
     {
-
+        this.r.navigate(['/calisan-liste']);
     }
 
     ngOnInit() {
