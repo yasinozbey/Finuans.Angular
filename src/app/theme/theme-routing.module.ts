@@ -34,6 +34,18 @@ const routes: Routes = [
                 "loadChildren": ".\/pages\/default\/stok\/stokhizmetliste.module#StokHizmetListeModule"
             },
             {
+                "path": "yenistok",
+                "loadChildren": ".\/pages\/default\/stok\/yenistok.module#YeniStokModule"
+            },
+            {
+                "path": "yenikasa",
+                "loadChildren": ".\/pages\/default\/finans\/yenikasa.module#YeniKasaModule"
+            },
+            {
+                "path": "yenibanka",
+                "loadChildren": ".\/pages\/default\/finans\/yenibanka.module#YeniBankaModule"
+            },
+            {
                 "path": "",
                 "redirectTo": "index",
                 "pathMatch": "full"

@@ -37,8 +37,8 @@ export class YeniKasaComponent implements OnInit {
         console.log(this.AcilisBakiyesi);
     }
 
-    Sil() {
-        this.r.navigate(['/liste/kasa']);
+    Vazgec() {
+        this.r.navigate(['/finans-liste/kasa']);
     }
 
     ngOnInit() {
