@@ -46,6 +46,10 @@ const routes: Routes = [
                 "loadChildren": ".\/pages\/default\/finans\/yenibanka.module#YeniBankaModule"
             },
             {
+                "path": "stokhareket/:id",
+                "loadChildren": ".\/pages\/default\/stok\/stokgiriscikis.module#StokGirisCikisModule"
+            },
+            {
                 "path": "",
                 "redirectTo": "index",
                 "pathMatch": "full"

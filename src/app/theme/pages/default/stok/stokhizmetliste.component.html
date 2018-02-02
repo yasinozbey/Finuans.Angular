@@ -32,7 +32,7 @@
                                                         </span>
                                                     </li>
 
-                                                    <li class="m-nav__item" *ngIf="ListeTipi==='stok'" >
+                                                    <li class="m-nav__item" *ngIf="ListeTipi==='stok'">
                                                         <a [routerLink]="['/yenistok']" class="m-nav__link">
                                                             <i class="m-nav__link-icon flaticon-share"></i>
                                                             <span class="m-nav__link-text">
@@ -41,11 +41,29 @@
                                                         </a>
                                                     </li>
 
-                                                    <li class="m-nav__item" *ngIf="ListeTipi==='hizmet'" >
+                                                    <li class="m-nav__item" *ngIf="ListeTipi==='hizmet'">
                                                         <a routerLink="/yenihizmet" class="m-nav__link">
                                                             <i class="m-nav__link-icon flaticon-share"></i>
                                                             <span class="m-nav__link-text">
                                                                 Yeni Hizmet
+                                                            </span>
+                                                        </a>
+                                                    </li>
+
+                                                    <li class="m-nav__item" *ngIf="ListeTipi==='stok'">
+                                                        <a [routerLink]="['/stokhareket/giris']" class="m-nav__link">
+                                                            <i class="m-nav__link-icon flaticon-share"></i>
+                                                            <span class="m-nav__link-text">
+                                                                Stok Giriş
+                                                            </span>
+                                                        </a>
+                                                    </li>
+
+                                                    <li class="m-nav__item" *ngIf="ListeTipi==='stok'">
+                                                        <a [routerLink]="['/stokhareket/cikis']" class="m-nav__link">
+                                                            <i class="m-nav__link-icon flaticon-share"></i>
+                                                            <span class="m-nav__link-text">
+                                                                Stok Çıkış
                                                             </span>
                                                         </a>
                                                     </li>
@@ -87,14 +105,14 @@
                     </div>
                 </div>
                 <div class="m-portlet__body">
-                    <div class="form-group m-form__group" *ngIf="KasaGCVisible === true && IslemCinsi===2" >
+                    <div class="form-group m-form__group" *ngIf="KasaGCVisible === true && IslemCinsi===2">
                         <label class="exampleInputEmail1">
                             Diğer Hesap:
                         </label>
-                        <div *ngIf="ListeTipi=='kasa'" >
+                        <div *ngIf="ListeTipi=='kasa'">
                             <dx-select-box [items]="KasaList" [(ngModel)]="SelectedKasa"></dx-select-box>
                         </div>
-                        <div *ngIf="ListeTipi=='banka'" >
+                        <div *ngIf="ListeTipi=='banka'">
                             <dx-select-box [items]="BankaList" [(ngModel)]="SelectedBanka"></dx-select-box>
                         </div>
                     </div>
