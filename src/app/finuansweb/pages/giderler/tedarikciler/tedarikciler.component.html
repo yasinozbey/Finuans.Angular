@@ -1,0 +1,83 @@
+<div #stateHolder>
+  <div class="col-lg-12 n-p fn-container">
+    <div class="col-lg-7 fn-left-side">
+      <div class="fn-header">
+        <span class="main" *ngIf="state === 0">GİDERLER
+          <i class="anticon anticon-right"></i>
+          <b>TEDARİKÇİLER</b>
+        </span>
+        <span class="main" *ngIf="state === 1">GİDERLER
+          <i class="anticon anticon-right"></i>TEDARİKÇİLER
+          <i class="anticon anticon-right"></i>
+          <b>YENİ TEDARİKÇİ</b>
+        </span>
+        <span class="main" *ngIf="state === 2">GİDERLER
+          <i class="anticon anticon-right"></i>TEDARİKÇİLER
+          <i class="anticon anticon-right"></i>
+          <b>TEDARİKÇİ DÜZENLE</b>
+        </span>
+      </div>
+      <div *ngIf="state === 0">
+        <app-fn-grid (rowClick)="handleItem($event)" [dataSource]="dataSource" [dataFields]="dataFields"></app-fn-grid>
+      </div>
+
+      <div *ngIf="state !== 0">
+        <dx-form class="col-lg-12 form-element" [formData]="selectedItem" labelLocation="top" [colCount]="2">
+          <dxi-item dataField="item1" [colSpan]="2" [label]="{text: 'Firma Unvanı'}"></dxi-item>
+          <dxi-item dataField="item2" [label]="{text: 'Kısa İsim'}"></dxi-item>
+          <dxi-item dataField="item3" [label]="{text: 'Kategori'}"></dxi-item>
+          <dxi-item dataField="item4" [label]="{text: 'E-posta Adresi'}"></dxi-item>
+          <dxi-item dataField="item5" [label]="{text: 'Telefon Numarası'}"></dxi-item>
+          <dxi-item dataField="item6" [label]="{text: 'Faks Numarası'}"></dxi-item>
+          <dxi-item dataField="item7" [label]="{text: 'IBAN Numarası'}"></dxi-item>
+          <dxi-item dataField="item8" [label]="{text: 'İl'}"></dxi-item>
+          <dxi-item dataField="item9" [label]="{text: 'İlçe'}"></dxi-item>
+          <dxi-item dataField="item10" [colSpan]="2" [label]="{text: 'Adres'}" editorType="dxTextArea"></dxi-item>
+          <dxi-item dataField="item11" [label]="{text: 'Türü'}"></dxi-item>
+          <dxi-item dataField="item12" [label]="{text: 'VKN/TCKN'}"></dxi-item>
+          <dxi-item dataField="item13" [label]="{text: 'Vergi Dairesi'}"></dxi-item>
+          <dxi-item dataField="item14" [label]="{text: 'Açılış Bakiyesi'}"></dxi-item>
+        </dx-form>
+        <div class="form-bottom col-lg-12">
+          <dx-data-grid id="gridContainer" [dataSource]="dataSource2">
+            <dxo-editing mode="cell" [allowUpdating]="true"> </dxo-editing>
+            <dxi-column dataField="Product" caption="Yetkili Kişinin Adı"></dxi-column>
+            <dxi-column dataField="Product1" caption="E-posta"></dxi-column>
+            <dxi-column dataField="Product2" caption="Telefon"></dxi-column>
+            <dxi-column dataField="Product3" caption="Not"></dxi-column>
+          </dx-data-grid>
+          <div style="margin-top: 10px !important;">
+            <div class="col-lg-3 n-p">
+              <button (click)="addRow()" class="fn-button transparent">
+                <i class="anticon anticon-plus-circle-o"></i>Bir Yetkili Ekle</button>
+            </div>
+          </div>
+        </div>
+        <div class="pull-right fn-form-buttons">
+          <button class="fn-close" (click)="cancelOperation()">Vazgeç</button>
+          <button class="fn-ok" (click)="saveItem()">Kaydet</button>
+        </div>
+      </div>
+    </div>
+    <div class="fn-right-side col-lg-5">
+      <div class="col-lg-12" *ngIf="state === 0">
+        <button class="fn-button" (click)="newItem()">
+          <i class="anticon anticon-plus"></i>
+          <span>Yeni Ekle</span>
+        </button>
+      </div>
+      <div class="fn-info col-lg-12 n-p">
+        <span>Son İşlemler</span>
+        <dx-data-grid class="fn-grid" [dataSource]="info">
+          <dxi-column dataField="Aciklama" caption="Açıklama"></dxi-column>
+          <dxi-column dataField="IslemTuru" caption="İşlem"></dxi-column>
+          <dxi-column dataField="Meblag" caption="Meblağ"></dxi-column>
+          <dxi-column dataField="Bakiye" caption="Bakiye"></dxi-column>
+          <dxo-summary>
+            <dxi-total-item column="Bakiye" summaryType="sum" displayFormat="Toplam: {0}"></dxi-total-item>
+          </dxo-summary>
+        </dx-data-grid>
+      </div>
+    </div>
+  </div>
+</div>

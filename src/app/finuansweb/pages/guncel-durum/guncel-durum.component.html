@@ -1,0 +1,31 @@
+<div class="col-lg-4">
+  <dx-pie-chart id="pie" title="Area of Countries" palette="bright" [dataSource]="areas" (onPointClick)="pointClickHandler($event)"
+    (onLegendClick)="legendClickHandler($event)">
+    <dxi-series argumentField="country" valueField="area">
+      <dxo-label [visible]="true">
+        <dxo-connector [visible]="true" [width]="1"></dxo-connector>
+      </dxo-label>
+    </dxi-series>
+  </dx-pie-chart>
+</div>
+
+<div class="col-lg-4">
+    <dx-pie-chart id="pie" title="Area of Countries" palette="bright" [dataSource]="areas" (onPointClick)="pointClickHandler($event)"
+      (onLegendClick)="legendClickHandler($event)">
+      <dxi-series argumentField="country" valueField="area">
+        <dxo-label [visible]="true">
+          <dxo-connector [visible]="true" [width]="1"></dxo-connector>
+        </dxo-label>
+      </dxi-series>
+    </dx-pie-chart>
+  </div>
+  <div class="col-lg-4">
+      <dx-pie-chart id="pie" title="Area of Countries" palette="bright" [dataSource]="areas" (onPointClick)="pointClickHandler($event)"
+        (onLegendClick)="legendClickHandler($event)">
+        <dxi-series argumentField="country" valueField="area">
+          <dxo-label [visible]="true">
+            <dxo-connector [visible]="true" [width]="1"></dxo-connector>
+          </dxo-label>
+        </dxi-series>
+      </dx-pie-chart>
+    </div>

@@ -1,0 +1,71 @@
+<div #stateHolder>
+  <div class="col-lg-12 n-p fn-container">
+
+    <div class="col-lg-7 fn-left-side" *ngIf="state === 0">
+      <div class="fn-header">
+        <span class="main">STOK
+          <i class="anticon anticon-right"></i>
+          <b>HİZMET VE ÜRÜNLER</b>
+        </span>
+      </div>
+      <app-fn-grid (rowClick)="handleItem($event)" [dataSource]="dataSource" [dataFields]="dataFields"></app-fn-grid>
+    </div>
+
+    <div class="fn-right-side col-lg-5" *ngIf="state === 0">
+      <div class="col-lg-12">
+        <button class="fn-button" (click)="newItem()">
+          <i class="anticon anticon-plus"></i>
+          <span>Yeni Ekle</span>
+        </button>
+      </div>
+      <div class="fn-info col-lg-12 n-p">
+        <span>Son İşlemler</span>
+        <dx-data-grid class="fn-grid" [dataSource]="info">
+          <dxi-column dataField="Aciklama" caption="Açıklama"></dxi-column>
+          <dxi-column dataField="IslemTuru" caption="İşlem"></dxi-column>
+          <dxi-column dataField="Meblag" caption="Meblağ"></dxi-column>
+          <dxi-column dataField="Bakiye" caption="Bakiye"></dxi-column>
+          <dxo-summary>
+            <dxi-total-item column="Bakiye" summaryType="sum" displayFormat="Toplam: {0}"></dxi-total-item>
+          </dxo-summary>
+        </dx-data-grid>
+      </div>
+    </div>
+
+    <div class="col-lg-12" *ngIf="state !== 0">
+      <div class="fn-header">
+        <span class="main" *ngIf="state === 1">STOK
+          <i class="anticon anticon-right"></i>HİZMET VE ÜRÜNLER
+          <i class="anticon anticon-right"></i>
+          <b>YENİ HİZMET/ÜRÜN</b>
+        </span>
+        <span class="main" *ngIf="state === 2">STOK
+          <i class="anticon anticon-right"></i>HİZMET VE ÜRÜNLER
+          <i class="anticon anticon-right"></i>
+          <b>TEKLİF HİZMET/ÜRÜN</b>
+        </span>
+      </div>
+      <div class="col-lg-5">
+        <dx-form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="2">
+          <dxi-item dataField="item1" [colSpan]="2" [label]="{text: 'Adı'}"></dxi-item>
+          <dxi-item dataField="item2" [colSpan]="2" [label]="{text: 'Ürün / Stok Kodu'}"></dxi-item>
+          <dxi-item dataField="item3" [label]="{text: 'Barkod No'}"></dxi-item>
+          <dxi-item dataField="item4" [label]="{text: 'Kategori'}"></dxi-item>
+          <dxi-item dataField="item5" [label]="{text: 'Alış Satış Birimi'}"></dxi-item>
+          <dxi-item dataField="item6" [label]="{text: 'Stok Takibi'}"></dxi-item>
+          <dxi-item dataField="item7" [label]="{text: 'Başlangıç Stok Miktarı'}"></dxi-item>
+          <dxi-item dataField="item8" [label]="{text: 'Kritk Stok Uyarısı'}"></dxi-item>
+          <dxi-item dataField="item9" [label]="{text: 'Alış Fiyatı'}"></dxi-item>
+          <dxi-item dataField="item10" [label]="{text: 'Satış Fiyatı'}"></dxi-item>
+          <dxi-item dataField="item11" [label]="{text: 'KDV'}"></dxi-item>
+          <dxi-item dataField="item12" [label]="{text: 'Alış Vergisi'}"></dxi-item>
+          <dxi-item dataField="item13" [label]="{text: 'Satış Vergisi'}"></dxi-item>
+        </dx-form>
+        <div class="pull-right fn-form-buttons">
+          <button class="fn-close" (click)="cancelOperation()">Vazgeç</button>
+          <button class="fn-ok" (click)="saveItem()">Kaydet</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

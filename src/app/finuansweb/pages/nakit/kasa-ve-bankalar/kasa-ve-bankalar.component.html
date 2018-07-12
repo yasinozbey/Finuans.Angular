@@ -1,0 +1,79 @@
+<div #stateHolder>
+  <div class="col-lg-12 n-p fn-container">
+    <div class="col-lg-7 fn-left-side" *ngIf="state === 0">
+      <div class="fn-header">
+        <span class="main">NAKİT
+          <i class="anticon anticon-right"></i>
+          <b>KASA VE BANKALAR</b>
+        </span>
+      </div>
+      <app-fn-grid (rowClick)="handleItem($event)" [dataSource]="dataSource" [dataFields]="dataFields"></app-fn-grid>
+    </div>
+
+    <div class="fn-right-side col-lg-5" *ngIf="state === 0">
+      <div class="col-lg-12">
+        <button class="fn-button" (click)="newItem('KASA')">
+          <i class="anticon anticon-plus"></i>
+          <span>Yeni Kasa Ekle</span>
+        </button>
+      </div>
+      <div class="col-lg-12">
+        <button class="fn-button" (click)="newItem('BANKA')">
+          <i class="anticon anticon-plus"></i>
+          <span>Yeni Banka Ekle</span>
+        </button>
+      </div>
+      <div class="fn-info col-lg-12 n-p">
+        <span>Son İşlemler</span>
+        <dx-data-grid class="fn-grid" [dataSource]="info">
+          <dxi-column dataField="Aciklama" caption="Açıklama"></dxi-column>
+          <dxi-column dataField="IslemTuru" caption="İşlem"></dxi-column>
+          <dxi-column dataField="Meblag" caption="Meblağ"></dxi-column>
+          <dxi-column dataField="Bakiye" caption="Bakiye"></dxi-column>
+          <dxo-summary>
+            <dxi-total-item column="Bakiye" summaryType="sum" displayFormat="Toplam: {0}"></dxi-total-item>
+          </dxo-summary>
+        </dx-data-grid>
+      </div>
+    </div>
+
+    <div class="col-lg-12" *ngIf="state !== 0">
+      <div class="fn-header">
+        <span class="main" *ngIf="state === 1">NAKİT
+          <i class="anticon anticon-right"></i>KASA VE BANKALAR
+          <i class="anticon anticon-right"></i>
+          <b *ngIf="stateType == 'KASA'">YENİ KASA</b>
+          <b *ngIf="stateType == 'BANKA'">YENİ BANKA</b>
+        </span>
+        <span class="main" *ngIf="state === 2">NAKİT
+          <i class="anticon anticon-right"></i>KASA VE BANKALAR
+          <i class="anticon anticon-right"></i>
+          <b *ngIf="stateType == 'KASA'">KASA DÜZENLE</b>
+          <b *ngIf="stateType == 'BANKA'">BANKA DÜZENLE</b>
+        </span>
+      </div>
+      <div class="col-lg-5">
+        <dx-form class="form-element" *ngIf="stateType == 'KASA'" [formData]="selectedItem" labelLocation="top" [colCount]="2">
+          <dxi-item dataField="item1" [colSpan]="2" [label]="{text: 'Hesap İsmi'}"></dxi-item>
+          <dxi-item dataField="item2" [colSpan]="2" [label]="{text: 'Döviz'}"></dxi-item>
+          <dxi-item dataField="item3" [label]="{text: 'Açılış Bakiyesi'}"></dxi-item>
+          <dxi-item dataField="item4" [label]="{text: 'Açılış Bakiyesi Tarihi'}" editorType="dxDateBox" [editorOptions]="{ width: '100%'}"></dxi-item>
+        </dx-form>
+        <dx-form class="form-element" *ngIf="stateType == 'BANKA'" [formData]="selectedItem" labelLocation="top" [colCount]="2">
+          <dxi-item dataField="item1" [colSpan]="2" [label]="{text: 'Hesap İsmi'}"></dxi-item>
+          <dxi-item dataField="item2" [colSpan]="2" [label]="{text: 'Döviz'}"></dxi-item>
+          <dxi-item dataField="item3" [label]="{text: 'Açılış Bakiyesi'}"></dxi-item>
+          <dxi-item dataField="item4" [label]="{text: 'Açılış Bakiyesi Tarihi'}" editorType="dxDateBox" [editorOptions]="{ width: '100%'}"></dxi-item>
+          <dxi-item dataField="item5" [label]="{text: 'Banka İsmi'}"></dxi-item>
+          <dxi-item dataField="item5" [label]="{text: 'Banka Şubesi'}"></dxi-item>
+          <dxi-item dataField="item5" [label]="{text: 'Hesap Numarası'}"></dxi-item>
+          <dxi-item dataField="item5" [label]="{text: 'IBAN'}"></dxi-item>
+        </dx-form>
+        <div class="pull-right fn-form-buttons">
+          <button class="fn-close" (click)="cancelOperation()">Vazgeç</button>
+          <button class="fn-ok" (click)="saveItem()">Kaydet</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

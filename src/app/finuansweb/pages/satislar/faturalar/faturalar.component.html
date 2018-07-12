@@ -1,0 +1,105 @@
+<div #stateHolder>
+    <div class="col-lg-12 n-p fn-container">
+        <div class="col-lg-7 fn-left-side" *ngIf="state === 0">
+            <div class="fn-header">
+                <span class="main">SATIŞLAR
+                    <i class="anticon anticon-right"></i>
+                    <b>FATURALAR</b>
+                </span>
+                <span class="main" *ngIf="state === 1">SATIŞLAR
+                    <i class="anticon anticon-right"></i>FATURALAR
+                    <i class="anticon anticon-right"></i>
+                    <b>YENİ FATURA</b>
+                </span>
+                <span class="main" *ngIf="state === 2">SATIŞLAR
+                    <i class="anticon anticon-right"></i>FATURALAR
+                    <i class="anticon anticon-right"></i>
+                    <b>FATURA DÜZENLE</b>
+                </span>
+            </div>
+            <app-fn-grid (rowClick)="handleItem($event)" [dataSource]="dataSource" [dataFields]="dataFields"></app-fn-grid>
+        </div>
+
+        <div class="fn-right-side col-lg-5" *ngIf="state === 0">
+            <div class="col-lg-12">
+                <button class="fn-button" (click)="newItem()">
+                    <i class="anticon anticon-plus"></i>
+                    <span>Yeni Ekle</span>
+                </button>
+            </div>
+            <div class="fn-info col-lg-12 n-p">
+                <span>Son İşlemler</span>
+                <dx-data-grid class="fn-grid" [dataSource]="info">
+                    <dxi-column dataField="Aciklama" caption="Açıklama"></dxi-column>
+                    <dxi-column dataField="IslemTuru" caption="İşlem"></dxi-column>
+                    <dxi-column dataField="Meblag" caption="Meblağ"></dxi-column>
+                    <dxi-column dataField="Bakiye" caption="Bakiye"></dxi-column>
+                    <dxo-summary>
+                        <dxi-total-item column="Bakiye" summaryType="sum" displayFormat="Toplam: {0}"></dxi-total-item>
+                    </dxo-summary>
+                </dx-data-grid>
+            </div>
+        </div>
+
+
+        <div class="col-lg-12" *ngIf="state !== 0">
+            <div class="fn-header">
+                <span class="main" *ngIf="state === 1">SATIŞLAR
+                    <i class="anticon anticon-right"></i>FATURALAR
+                    <i class="anticon anticon-right"></i>
+                    <b>YENİ FATURA</b>
+                </span>
+                <span class="main" *ngIf="state === 2">SATIŞLAR
+                    <i class="anticon anticon-right"></i>FATURALAR
+                    <i class="anticon anticon-right"></i>
+                    <b>FATURA DÜZENLE</b>
+                </span>
+            </div>
+            <div class="col-lg-5">
+                <dx-form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="2">
+                    <dxi-item dataField="item1" [colSpan]="2" [label]="{text: 'Tip'}"></dxi-item>
+                    <dxi-item dataField="item1" [colSpan]="2" [label]="{text: 'Açıklama'}"></dxi-item>
+                    <dxi-item dataField="item2" [colSpan]="2" [label]="{text: 'Müşteri'}"></dxi-item>
+                    <dxi-item dataField="item3" [label]="{text: 'Düzenleme Tarihi'}" editorType="dxDateBox" [editorOptions]="{ width: '100%'}"></dxi-item>
+                    <dxi-item dataField="item4" [label]="{text: 'Vade Tarihi'}" editorType="dxDateBox" [editorOptions]="{ width: '100%'}"></dxi-item>
+                    <dxi-item dataField="item5" [label]="{text: 'Fatura No'}"></dxi-item>
+                    <dxi-item dataField="item5" [label]="{text: 'Döviz'}"></dxi-item>
+                </dx-form>
+                <div class="pull-right fn-form-buttons">
+                  <button class="fn-close" (click)="cancelOperation()">Vazgeç</button>
+                  <button class="fn-ok" (click)="saveItem()">Kaydet</button>
+                </div>
+            </div>
+            <div class="form-bottom col-lg-7">
+                <dx-data-grid id="gridContainer" [dataSource]="dataSource2">
+                    <dxo-editing mode="cell" [allowUpdating]="true"> </dxo-editing>
+                    <dxi-column dataField="Product" caption="Hizmet/Ürün"></dxi-column>
+                    <dxi-column dataField="Product1" caption="Miktar"></dxi-column>
+                    <dxi-column dataField="Product2" caption="Br. Fiyat"></dxi-column>
+                    <dxi-column dataField="Product3" caption="Vergi"></dxi-column>
+                    <dxi-column dataField="Product4" caption="Toplam"></dxi-column>
+                </dx-data-grid>
+                <div style="margin-top: 10px !important;">
+                    <div class="col-lg-3 n-p">
+                        <button (click)="addRow()" class="fn-button transparent">
+                            <i class="anticon anticon-plus-circle-o"></i>Yeni Satır Ekle</button>
+                    </div>
+                    <div class="col-lg-4 col-lg-offset-5 fn-bill">
+                        <div class="col-lg-12 n-p">
+                            <span class="col-lg-8 n-p">Ara Toplam</span>
+                            <span class="col-lg-4">0,00TL</span>
+                        </div>
+                        <div class="col-lg-12 n-p">
+                            <span class="col-lg-8 n-p">Toplam KDV</span>
+                            <span class="col-lg-4">0,00TL</span>
+                        </div>
+                        <div class="col-lg-12 n-p">
+                            <span class="col-lg-8 n-p">Genel Toplam</span>
+                            <span class="col-lg-4">0,00TL</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
