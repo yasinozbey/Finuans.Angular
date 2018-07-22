@@ -227,6 +227,10 @@ export class FinuansposComponent implements OnInit {
     })
   }
 
+  closePOS(){
+    localStorage.setItem("POSActivated", "false");
+  }
+
   constructor(private service: POSService) { }
 
   ngOnInit() {
