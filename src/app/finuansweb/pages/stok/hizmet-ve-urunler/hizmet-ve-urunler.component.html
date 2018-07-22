@@ -1,69 +1,83 @@
 <div #stateHolder>
   <div class="col-lg-12 n-p fn-container">
-
-    <div class="col-lg-7 fn-left-side" *ngIf="state === 0">
+    <div class="col-lg-12 fn-left-side" *ngIf="state === 0">
       <div class="fn-header">
-        <span class="main">STOK
+        <span class="main">Stok
           <i class="anticon anticon-right"></i>
-          <b>HİZMET VE ÜRÜNLER</b>
+          <b> Hizmet ve Ürünler</b>
         </span>
+      </div>
+      <div class="fn-button-holder">
+        <button class="fn-button">
+          <i class="anticon anticon-bars"></i>
+          <span>İşlemler</span>
+        </button>
+        <div class="fn-dropdown">
+          <span (click)="newItem()">Yeni Hizmet/Ürün</span>
+        </div>
       </div>
       <app-fn-grid (rowClick)="handleItem($event)" [dataSource]="dataSource" [dataFields]="dataFields"></app-fn-grid>
     </div>
-
-    <div class="fn-right-side col-lg-5" *ngIf="state === 0">
-      <div class="col-lg-12">
-        <button class="fn-button" (click)="newItem()">
-          <i class="anticon anticon-plus"></i>
-          <span>Yeni Ekle</span>
-        </button>
-      </div>
-      <div class="fn-info col-lg-12 n-p">
-        <span>Son İşlemler</span>
-        <dx-data-grid class="fn-grid" [dataSource]="info">
-          <dxi-column dataField="Aciklama" caption="Açıklama"></dxi-column>
-          <dxi-column dataField="IslemTuru" caption="İşlem"></dxi-column>
-          <dxi-column dataField="Meblag" caption="Meblağ"></dxi-column>
-          <dxi-column dataField="Bakiye" caption="Bakiye"></dxi-column>
-          <dxo-summary>
-            <dxi-total-item column="Bakiye" summaryType="sum" displayFormat="Toplam: {0}"></dxi-total-item>
-          </dxo-summary>
-        </dx-data-grid>
-      </div>
-    </div>
-
     <div class="col-lg-12" *ngIf="state !== 0">
       <div class="fn-header">
-        <span class="main" *ngIf="state === 1">STOK
-          <i class="anticon anticon-right"></i>HİZMET VE ÜRÜNLER
+        <span class="main" *ngIf="state === 1">Stok
+          <i class="anticon anticon-right"></i>Hizmet ve Ürünler
           <i class="anticon anticon-right"></i>
-          <b>YENİ HİZMET/ÜRÜN</b>
+          <b>Yeni Hizmet/Ürün</b>
         </span>
-        <span class="main" *ngIf="state === 2">STOK
-          <i class="anticon anticon-right"></i>HİZMET VE ÜRÜNLER
+        <span class="main" *ngIf="state === 2">Stok
+          <i class="anticon anticon-right"></i>Hizmet ve Ürünler
           <i class="anticon anticon-right"></i>
-          <b>TEKLİF HİZMET/ÜRÜN</b>
+          <b>Hizmet/Ürün Düzenle</b>
         </span>
-      </div>
-      <div class="col-lg-5">
-        <dx-form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="2">
-          <dxi-item dataField="item1" [colSpan]="2" [label]="{text: 'Adı'}"></dxi-item>
-          <dxi-item dataField="item2" [colSpan]="2" [label]="{text: 'Ürün / Stok Kodu'}"></dxi-item>
-          <dxi-item dataField="item3" [label]="{text: 'Barkod No'}"></dxi-item>
-          <dxi-item dataField="item4" [label]="{text: 'Kategori'}"></dxi-item>
-          <dxi-item dataField="item5" [label]="{text: 'Alış Satış Birimi'}"></dxi-item>
-          <dxi-item dataField="item6" [label]="{text: 'Stok Takibi'}"></dxi-item>
-          <dxi-item dataField="item7" [label]="{text: 'Başlangıç Stok Miktarı'}"></dxi-item>
-          <dxi-item dataField="item8" [label]="{text: 'Kritk Stok Uyarısı'}"></dxi-item>
-          <dxi-item dataField="item9" [label]="{text: 'Alış Fiyatı'}"></dxi-item>
-          <dxi-item dataField="item10" [label]="{text: 'Satış Fiyatı'}"></dxi-item>
-          <dxi-item dataField="item11" [label]="{text: 'KDV'}"></dxi-item>
-          <dxi-item dataField="item12" [label]="{text: 'Alış Vergisi'}"></dxi-item>
-          <dxi-item dataField="item13" [label]="{text: 'Satış Vergisi'}"></dxi-item>
-        </dx-form>
-        <div class="pull-right fn-form-buttons">
+        <div class="fn-form-buttons">
           <button class="fn-close" (click)="cancelOperation()">Vazgeç</button>
           <button class="fn-ok" (click)="saveItem()">Kaydet</button>
+        </div>
+      </div>
+      <div class="form-holder">
+        <div class="col-lg-6">
+          <dx-form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="8" [showColonAfterLabel]=false>
+            <dxi-item dataField="Adi" [colSpan]="8" [label]="{text: 'Adı'}"></dxi-item>
+            <dxi-item dataField="Kodu" [colSpan]="4" [label]="{text: 'Ürün / Stok Kodu'}"></dxi-item>
+            <dxi-item dataField="KategoriID" [colSpan]="4" [label]="{text: 'Kategori'}" editorType="dxSelectBox" [editorOptions]="{ items: categories, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
+            <dxi-item dataField="AlisFiyati" [colSpan]="2" [label]="{text: 'Alış Fiyatı'}"></dxi-item>
+            <dxi-item dataField="AlisFiyatiDovizTipi" [colSpan]="2" [label]="{text: 'Döviz'}" editorType="dxSelectBox" [editorOptions]="{ items: currencies, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
+            <dxi-item dataField="SatisFiyati" [colSpan]="2" [label]="{text: 'Satış Fiyatı'}"></dxi-item>
+            <dxi-item dataField="SatisFiyatiDovizTipi" [colSpan]="2" [label]="{text: 'Döviz'}" editorType="dxSelectBox" [editorOptions]="{ items: currencies, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
+            <dxi-item dataField="AcilisStokMiktari" [colSpan]="2" [label]="{text: 'Açılış Stok'}"></dxi-item>
+            <dxi-item dataField="StokTakibiYapisin" [colSpan]="2" editorType="dxCheckBox" [label]="{text: 'Stok Takibi'}"></dxi-item>
+            <dxi-item dataField="item11" [colSpan]="2" [label]="{text: 'KDV'}"></dxi-item>
+          </dx-form>
+        </div>
+        <div class="fn-right-side col-lg-6">
+          <div class="fn-info col-lg-12 n-p">
+            <span>Son İşlemler</span>
+            <dx-data-grid class="fn-grid" [dataSource]="info" noDataText="Kayıt Bulunamadı">
+              <dxi-column dataField="Aciklama" caption="Açıklama"></dxi-column>
+              <dxi-column dataField="IslemTuru" caption="İşlem"></dxi-column>
+              <dxi-column dataField="Meblag" caption="Meblağ"></dxi-column>
+              <dxi-column dataField="Bakiye" caption="Bakiye"></dxi-column>
+              <dxo-summary>
+                <dxi-total-item column="Bakiye" summaryType="sum" displayFormat="Toplam: {0}"></dxi-total-item>
+              </dxo-summary>
+            </dx-data-grid>
+          </div>
+        </div>
+      </div>
+      <div class="fn-grid-holder">
+        <dx-data-grid id="gridContainer" [dataSource]="dataSource2" noDataText="Kayıt Bulunamadı">
+          <dxo-editing mode="cell" [allowUpdating]="true"> </dxo-editing>
+          <dxi-column dataField="Barkod" caption="Barkod"></dxi-column>
+          <dxi-column dataField="Birim" caption="Birim"></dxi-column>
+          <dxi-column dataField="Miktar" caption="Miktar"></dxi-column>
+          <dxi-column dataField="Fiyat" caption="Fiyat"></dxi-column>
+        </dx-data-grid>
+        <div style="margin-top: 10px !important;">
+          <div class="col-lg-3 n-p">
+            <button (click)="addRow()" class="fn-button transparent">
+              <i class="anticon anticon-plus-circle-o"></i>Yeni Satır Ekle</button>
+          </div>
         </div>
       </div>
     </div>

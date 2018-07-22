@@ -11,11 +11,11 @@ export class CalisanlarComponent implements OnInit {
 
   dataSource = [];
   dataFields = [
-    {dataField: "Adi", caption: "Adı"},
-    {dataField: "Soyadi", caption: "Soyadı"},
-    {dataField: "EpostaAdresi", caption: "E-mail"},
-    {dataField: "IBAN", caption: "IBAN"},
-    {dataField: "Product", caption: "Bakiye"},
+    {dataField: "ID", caption: "ID"},
+    {dataField: "AdSoyad", caption: "Ad Soyad"},
+    {dataField: "Bakiye", caption: "Bakiye"},
+    {dataField: "Avans", caption: "Avans"},
+    {dataField: "Odenecek", caption: "Ödenecek"},
   ];
   info;
   categories;
@@ -28,28 +28,25 @@ export class CalisanlarComponent implements OnInit {
     this.main.reqGet("Calisan/List").subscribe(res => {
       this.dataSource = res;
       this.state = 0;
-      this.main.reqGet("Calisan/IslemGecmisi").subscribe(resIslem => {
-        this.info = res;
-      });
+    });
+    this.main.reqGet("Kategori/Get").subscribe(res => {
+      this.categories = res;
     });
   }
 
   handleItem(e) {
     this.main.reqGet("Calisan/GetbyId/" + e.data.ID).subscribe(res => {
       this.selectedItem = res;
-      this.main.reqGet("Kategori/Get").subscribe(res => {
-        this.categories = res;
-      });
       this.state = 2;
+    });
+    this.main.reqGet("Calisan/IslemGecmisi/" + e.data.ID).subscribe(resIslem => {
+      this.info = resIslem;
     });
   }
 
   newItem() {
-    this.main.reqGet("Kategori/Get").subscribe(res => {
-      this.selectedItem = new Object();
-      this.categories = res;
-      this.state = 1;
-    });
+    this.selectedItem = new Object();
+    this.state = 1;
   }
 
   cancelOperation() {

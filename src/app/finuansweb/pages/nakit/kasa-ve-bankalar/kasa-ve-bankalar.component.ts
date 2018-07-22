@@ -13,6 +13,7 @@ export class KasaVeBankalarComponent implements OnInit {
   dataFields = [];
   info;
   categories;
+  currencies;
   selectedItem;
   state = 0;
   stateType;
@@ -20,27 +21,36 @@ export class KasaVeBankalarComponent implements OnInit {
   getList() {
     this.main.reqGet("BankaHesabi/List").subscribe(res => {
       this.dataSource = res;
-      this.main.reqGet("KasaHesabi/IslemGecmisi").subscribe(resKasa => {
-        this.dataSource.concat(resKasa);
-        this.state = 0;
-      });
-      this.main.reqGet("BankaHesabi/IslemGecmisi").subscribe(resIslem => {
-        this.info = resIslem;
-        this.main.reqGet("BankaHesabi/IslemGecmisi").subscribe(resKasaIslem => {
-          this.info.concat(resKasaIslem);
-        });
-      });
+      this.state = 0;
+    });
+    this.main.reqGet("Kategori/Get").subscribe(resKategori => {
+      this.categories = resKategori;
+    });
+    this.main.reqGet("Doviz/Get").subscribe(resDoviz => {
+      this.currencies = resDoviz;
     });
   }
 
   handleItem(e) {
-    // this.main.reqGet("Calisan/GetbyId/" + e.data.ID).subscribe(res => {
-    //   this.selectedItem = res;
-    //   this.main.reqGet("Kategori/Get").subscribe(resKategori => {
-    //     this.categories = resKategori;
-    //   });
-    //   this.state = 2;
-    // });
+    if (e.data.IsKasa) {
+      this.main.reqGet("KasaHesabi/GetbyId/" + e.data.ID).subscribe(res => {
+        this.selectedItem = res;
+        this.stateType = "KASA";
+        this.state = 2;
+      });
+      this.main.reqGet("BankaHesabi/IslemGecmisi/" + e.data.ID + "?isKasa=1").subscribe(resIslem => {
+        this.info = resIslem;
+      });
+    } else {
+      this.main.reqGet("BankaHesabi/GetbyId/" + e.data.ID).subscribe(res => {
+        this.selectedItem = res;
+        this.stateType = "BANKA";
+        this.state = 2;
+      });
+      this.main.reqGet("BankaHesabi/IslemGecmisi/" + e.data.ID + "?isKasa=0").subscribe(resIslem => {
+        this.info = resIslem;
+      });
+    }
   }
 
   newItem(e) {
@@ -59,13 +69,13 @@ export class KasaVeBankalarComponent implements OnInit {
     if (this.state === 1) {
       if (this.stateType === 'BANKA') {
         url = "BankaHesabi/Insert";
-      } else{
+      } else {
         url = "KasaHesabi/Insert";
       }
     } else {
       if (this.stateType === 'BANKA') {
         url = "BankaHesabi/Update";
-      } else{
+      } else {
         url = "KasaHesabi/Update";
       }
     }

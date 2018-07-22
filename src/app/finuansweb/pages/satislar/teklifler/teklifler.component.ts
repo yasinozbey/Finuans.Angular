@@ -10,9 +10,17 @@ import { MainService } from '../../../shared/main.service';
 export class TekliflerComponent implements OnInit {
 
   dataSource = [];
-  dataFields = [];
+  dataFields = [
+    {dataField: "ID", caption: "ID"},
+    {dataField: "Aciklama", caption: "Açıklama"},
+    {dataField: "HesapAdi", caption: "Hesap Adı"},
+    {dataField: "Fatura", caption: "Fatura"},
+    {dataField: "DuzenlenmeTarihi", caption: "Düzenleme Tarihi"},
+    {dataField: "TeklifTutari", caption: "Teklif Tutarı"},
+  ];
   info;
-  categories;
+  customers;
+  currencies;
   selectedItem;
   state = 0;
 
@@ -20,9 +28,12 @@ export class TekliflerComponent implements OnInit {
     this.main.reqGet("Teklif/List").subscribe(res => {
       this.dataSource = res;
       this.state = 0;
-      this.main.reqGet("Teklif/IslemGecmisi").subscribe(resIslem => {
-        this.info = resIslem;
-      });
+    });
+    this.main.reqGet("CariHesap/List").subscribe(res => {
+      this.customers = res;
+    });
+    this.main.reqGet("Doviz/Get").subscribe(res => {
+      this.currencies = res;
     });
   }
 
@@ -55,9 +66,16 @@ export class TekliflerComponent implements OnInit {
     });
   }
 
+  getCustomers () {
+    this.main.reqGet("CariHesap/Get").subscribe(res => {
+      this.customers = res;
+    })
+  }
+
   constructor(private main: MainService) { }
 
   ngOnInit(): void {
     this.getList();
+    this.getCustomers();
   }
 }

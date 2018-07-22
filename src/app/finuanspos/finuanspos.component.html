@@ -1,112 +1,131 @@
-<div id="invoice" class="col-lg-3">
-  <div class="invoice-head">
-    <i class="anticon anticon-profile"></i>
-    <span>FİŞ</span>
-  </div>
-  <dx-data-grid id="gridContainer" class="fn-grid" (onRowClick)="onRowClick($event)" [dataSource]="dataSource" [rowAlternationEnabled]="true"
-    noDataText="  ">
-    <dxi-column dataField="Miktar" caption="Miktar" cellTemplate="cellTemplate"></dxi-column>
-    <div *dxTemplate="let item of 'cellTemplate'">
-      <span>{{item.data.Miktar}} {{item.data.MiktarTip}} </span>
-    </div>
-    <dxi-column dataField="Urun" caption="Ürün"></dxi-column>
-    <dxi-column dataField="KDV" caption="KDV"></dxi-column>
-    <dxi-column dataField="Fiyat" caption="Fiyat" cellTemplate="cellTemplate2"></dxi-column>
-    <div *dxTemplate="let item of 'cellTemplate2'">
-      <span>{{item.data.Fiyat*item.data.Miktar}} TL</span>
-    </div>
-  </dx-data-grid>
-</div>
-<div class="col-lg-9 fn-pos-right">
-  <div id="header" class="col-lg-12">
-    <div *ngIf="actionItem">
-      <span>{{actionItem.Miktar + " " + actionItem.MiktarTip}}</span>
-      <span>{{actionItem.Urun}}</span>
-      <span>{{actionItem.Fiyat*actionItem.Miktar}} TL</span>
-    </div>
-    <button class="closePOS" (click)="closePOS()">
-      <i class="anticon anticon-close"></i>
-    </button>
-  </div>
-  <div id="smartItems" class="col-lg-12">
-    <dx-tab-panel #tabPanel [dataSource]="smartItems" [selectedIndex]="0" [loop]="false" [animationEnabled]="true" [swipeEnabled]="true">
-      <div *dxTemplate="let tab of 'title'">
-        <span>{{tab.Name}}</span>
+<div class="main">
+    <div id="invoice" class="col-lg-3">
+        <div class="invoice-head">
+          <input #barkodInput type="text" class="barcodeInput" placeholder="Barkod" [(value)]="barkodValue">
+          <span>FİŞ</span>
+        </div>
+        <dx-data-grid #invoiceTable id="gridContainer" class="fn-grid" [dataSource]="dataSource" [rowAlternationEnabled]="true" noDataText="  ">
+          <dxo-selection mode="single"></dxo-selection>
+          <dxi-column dataField="Miktar" caption="Miktar"></dxi-column>
+          <dxi-column dataField="Birim" caption="Birim"></dxi-column>
+          <dxi-column dataField="Urun" caption="Ürün"></dxi-column>
+          <dxi-column dataField="Fiyat" caption="Fiyat"></dxi-column>
+          <dxi-column dataField="Tutar" caption="Tutar"></dxi-column>
+        </dx-data-grid>
       </div>
-      <div *dxTemplate="let element of 'item'">
-        <div class="tabpanel-item">
-          <div *ngFor="let product of element.Elements" class="product" (click)="addItem(product)">{{product.Urun}}</div>
+      
+      <div class="col-lg-9 fn-pos-right">
+        <div id="header" class="col-lg-12">
+          <div *ngIf="neonLights">
+            <span *ngIf="neonLights.Miktar">{{neonLights.Miktar + " "}}
+              <span *ngIf="neonLights.Birim">{{neonLights.Birim}}</span>
+            </span>
+            <span *ngIf="neonLights.Urun">{{neonLights.Urun}}</span>
+            <span *ngIf="neonLights.Tutar">{{neonLights.Tutar}} TL</span>
+          </div>
+          <button class="closePOS" (click)="closePOS()">
+            <i class="anticon anticon-close"></i>
+          </button>
+        </div>
+        <div id="smartItems" class="col-lg-12">
+          <dx-tab-panel #tabPanel [dataSource]="tabs" [selectedIndex]="0" [loop]="false" [animationEnabled]="true" [swipeEnabled]="true">
+            <div *dxTemplate="let tab of 'title'">
+              <span>{{tab.Adi}}</span>
+            </div>
+            <div *dxTemplate="let element of 'item'">
+              <div class="tabpanel-item">
+                <div *ngFor="let product of smartItems[element.ID]" class="product" (click)="addSmartItem(product)">{{product.Adi}}</div>
+              </div>
+            </div>
+          </dx-tab-panel>
+        </div>
+        <div id="actions" class="col-lg-7">
+          <button (click)="moveUp()">
+            <i class="anticon anticon-up-circle"></i>
+          </button>
+          <button>Askıdaki
+            <br>İşlemler
+            <!-- <span class="mini" *ngIf="pendingList.length">{{pendingList.length}}</span> -->
+          </button>
+          <button (click)="itemsListPopup = true; filterTitle = 'Müşteri Listesi'">Müşteri
+            <br>Listesi</button>
+          <button (click)="itemsListPopup = true; filterTitle = 'Ürün Listesi'">Ürün
+            <br>Listesi</button>
+          <button (click)="seekItem = true">Fiyat
+            <br>Gör</button>
+          <button (click)="moveDown()">
+            <i class="anticon anticon-down-circle"></i>
+          </button>
+          <button>Askıya
+            <br>Al</button>
+          <button>Belge
+            <br>Tekrarı</button>
+          <button>Belge
+            <br>İptal</button>
+          <button (click)="removeRow()">Satır
+            <br>İptal</button>
+          <button>İşlemler</button>
+          <button>Satıcı
+            <br>Seçimi</button>
+          <button>Masalar</button>
+          <button>Kasa
+            <br>Çıkış</button>
+          <button>Kasa
+            <br>Giriş</button>
+          <button>OKC
+            <br>Ayarları</button>
+          <button>Ürün
+            <br>Tekrar</button>
+          <button>Ödeme</button>
+          <button>Tahsilat</button>
+          <button>Ara
+            <br>Toplam</button>
+            <button *ngIf="paymentTypes.length == 1"></button>
+            <button *ngIf="paymentTypes.length == 1 || paymentTypes.length == 2"></button>
+            <button *ngIf="paymentTypes.length == 1 || paymentTypes.length == 2 || paymentTypes.length == 3"></button>
+            <button *ngIf="paymentTypes.length == 1 || paymentTypes.length == 2 || paymentTypes.length == 3 || paymentTypes.length == 4"></button>
+          <button *ngFor="let item of paymentTypes">{{item.Adi}}</button>
+        </div>
+        <div id="numPad" class="col-lg-5">
+          <button (click)="math('7')">7</button>
+          <button (click)="math('8')">8</button>
+          <button (click)="math('9')">9</button>
+          <button (click)="math('4')">4</button>
+          <button (click)="math('5')">5</button>
+          <button (click)="math('6')">6</button>
+          <button (click)="math('1')">1</button>
+          <button (click)="math('2')">2</button>
+          <button (click)="math('3')">3</button>
+          <button (click)="math('0')">0</button>
+          <button (click)="math('00')">00</button>
+          <button (click)="addBarkodItem()">ONAY</button>
+          <button>,</button>
+          <button (click)="removeLastCharFromBarkod()">
+            <i class="anticon anticon-left-circle"></i>
+          </button>
+          <button (click)="math('*')">X</button>
+        </div>
+        <div class="col-lg-12 fn-pos-footer">
+          <div class="col-lg-8" *ngIf="currentCustomer">
+            <span class="col-lg-2" style="text-align: center;">{{currentCustomer.Unvani}}</span>
+            <span class="col-lg-2" style="text-align: center;">{{currentCustomer.VergiDaire}}</span>
+            <span class="col-lg-2" style="text-align: center;">{{currentCustomer.VergiNo}}</span>
+            <span class="col-lg-2" style="text-align: center;">
+              <span>E-Fatura:</span>
+              <i class="anticon" [ngClass]="{'anticon-check-circle': currentCustomer.EFatura, 'anticon-close-circle': !currentCustomer.EFatura}"></i>
+            </span>
+            <span class="col-lg-2" style="text-align: center;">
+              <span>E-Arşiv:</span>
+              <i class="anticon" [ngClass]="{'anticon-check-circle': currentCustomer.EArsiv, 'anticon-close-circle': !currentCustomer.EArsiv}"></i>
+            </span>
+            <span class="col-lg-2" style="text-align: center;">{{currentCustomer.IndirimOrani}}%</span>
+          </div>
+          <div class="col-lg-4" [ngClass]="{'col-lg-offset-8': !currentCustomer}">
+            <span class="col-lg-6" style="text-align: center;">Test User</span>
+            <span class="col-lg-6" style="text-align: center;">Bağlantı Var</span>
+          </div>
         </div>
       </div>
-    </dx-tab-panel>
-  </div>
-  <div id="actions" class="col-lg-7">
-    <button (click)="moveUp()">
-      <i class="anticon anticon-up-circle"></i>
-    </button>
-    <button (click)="showPendings()">Askıdaki
-      <br>İşlemler
-      <span class="mini" *ngIf="pendingList.length">{{pendingList.length}}</span>
-    </button>
-    <button>Müşteri
-      <br>Listesi</button>
-    <button>Ürün
-      <br>Listesi</button>
-    <button>Fiyat
-      <br>Gör</button>
-    <button (click)="moveDown()">
-      <i class="anticon anticon-down-circle"></i>
-    </button>
-    <button (click)="addToPendings()">Askıya
-      <br>Al</button>
-    <button>Belge
-      <br>Tekrarı</button>
-    <button (click)="cancelDoc()">Belge
-      <br>İptal</button>
-    <button (click)="removeRow()">Satır
-      <br>İptal</button>
-    <button>İşlemler</button>
-    <button>Satıcı
-      <br>Seçimi</button>
-    <button>Masalar</button>
-    <button>Kasa
-      <br>Çıkış</button>
-    <button>Kasa
-      <br>Giriş</button>
-    <button>OKC
-      <br>Ayarları</button>
-    <button>Ürün
-      <br>Tekrar</button>
-    <button>Ödeme</button>
-    <button>Tahsilat</button>
-    <button>Ara
-      <br>Toplam</button>
-    <button></button>
-    <button></button>
-    <button>Puan</button>
-    <button>Kredi
-      <br>Kartı</button>
-    <button>Nakit</button>
-  </div>
-  <div id="numPad" class="col-lg-5">
-    <button (click)="multiply(7)">7</button>
-    <button (click)="multiply(8)">8</button>
-    <button (click)="multiply(9)">9</button>
-    <button (click)="multiply(4)">4</button>
-    <button (click)="multiply(5)">5</button>
-    <button (click)="multiply(6)">6</button>
-    <button (click)="multiply(1)">1</button>
-    <button (click)="multiply(2)">2</button>
-    <button (click)="multiply(3)">3</button>
-    <button (click)="multiply(0)">0</button>
-    <button (click)="multiply(00)">00</button>
-    <button (click)="acceptItem()">ONAY</button>
-    <button>,</button>
-    <button>
-      <i class="anticon anticon-left-circle"></i>
-    </button>
-    <button>X</button>
-  </div>
 </div>
 
 <dx-popup class="popup" [width]="600" [height]="250" [dragEnabled]="false" [closeOnOutsideClick]="true" [(visible)]="popupVisible">
@@ -114,9 +133,92 @@
     <p class="popupText">
       {{popupText}}
     </p>
-    <button class="actionButton" (click)="continueAction()">EVET</button>
+    <button *ngIf="popupButton" class="actionButton" (click)="pendingAction()">EVET</button>
   </div>
 </dx-popup>
+
+<dx-popup class="fn-items-list-popup" [width]="900" [dragEnabled]="false" title="{{filterTitle}}" [closeOnOutsideClick]="true"
+  [(visible)]="itemsListPopup">
+  <div *dxTemplate="let data of 'content'">
+    <div style="position: relative;">
+      <div class="fn-filter-holder">
+        <input type="text" [(ngModel)]="filterValue">
+        <button (click)="searchItems()">ARA</button>
+      </div>
+      <div style="margin-top: 20px">
+        <dx-data-grid [dataSource]="filterResult" [rowAlternationEnabled]="true" noDataText="  " (onRowClick)="selectItem($event)">
+          <div *ngIf="filterTitle == 'Ürün Listesi'">
+            <dxi-column dataField="Barkod" caption="Barkod"></dxi-column>
+            <dxi-column dataField="Adi" caption="Adı"></dxi-column>
+            <dxi-column dataField="Fiyat" caption="Fiyat"></dxi-column>
+          </div>
+          <div *ngIf="filterTitle == 'Müşteri Listesi'">
+            <dxi-column dataField="Unvani" caption="Unvanı"></dxi-column>
+            <dxi-column dataField="Sehir" caption="Şehir"></dxi-column>
+            <dxi-column dataField="Adres" caption="Adres"></dxi-column>
+          </div>
+        </dx-data-grid>
+      </div>
+      <div class="fn-keyboard-holder">
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>5</button>
+        <button>6</button>
+        <button>7</button>
+        <button>8</button>
+        <button>9</button>
+        <button>0</button>
+        <button>.</button>
+        <button>,</button>
+        <button class="fn-colored">
+          <i class="anticon anticon-left-circle-o"></i>
+        </button>
+        <button>Q</button>
+        <button>W</button>
+        <button>E</button>
+        <button>R</button>
+        <button>T</button>
+        <button>Y</button>
+        <button>U</button>
+        <button>I</button>
+        <button>O</button>
+        <button>P</button>
+        <button>Ğ</button>
+        <button>Ü</button>
+        <button class="fn-colored">
+          <i class="anticon anticon-close-circle-o"></i>
+        </button>
+        <button>A</button>
+        <button>S</button>
+        <button>D</button>
+        <button>F</button>
+        <button>G</button>
+        <button>H</button>
+        <button>J</button>
+        <button>K</button>
+        <button>L</button>
+        <button>Ş</button>
+        <button>İ</button>
+        <button class="fn-two-times" (click)="handleFilter()">
+          <i class="anticon anticon-check-circle-o"></i>ONAYLA</button>
+        <button>Z</button>
+        <button>X</button>
+        <button>C</button>
+        <button>V</button>
+        <button>B</button>
+        <button class="fn-four-times">SPACE</button>
+        <button>N</button>
+        <button>M</button>
+        <button>Ö</button>
+        <button>Ç</button>
+      </div>
+    </div>
+  </div>
+</dx-popup>
+
+<!--
 
 <dx-popup class="popup" [width]="900" [dragEnabled]="false" [closeOnOutsideClick]="true" [(visible)]="pendingItemsPopup">
   <div *dxTemplate="let data of 'content'">
@@ -139,4 +241,4 @@
     </div>
     <button *ngIf="pendingItemDetail" class="actionButton" (click)="continueFromPending()">SEÇİLİ İŞLEMİ GETİR</button>
   </div>
-</dx-popup>
+</dx-popup> -->

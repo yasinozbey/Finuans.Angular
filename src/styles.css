@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Arimo:400,700');
+@import url('https://fonts.googleapis.com/css?family=Raleway:300,400,700');
 html {
     float: left;
     width: 100vw;
@@ -11,11 +11,11 @@ body {
     float: left;
     width: 100vw;
     height: 100%;
-    font-family: 'Arimo', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
+    font-family: 'Raleway', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
 }
 
 .dx-widget {
-    font-family: 'Arimo', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
+    font-family: 'Raleway', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
 }
 
 ::-webkit-scrollbar {
@@ -47,9 +47,18 @@ body {
 }
 
 .fn-container .form-element {
-    padding: 20px 0 15px 10px;
+    padding: 29px 0 15px 10px;
     background: rgb(255, 255, 255);
     margin-top: 0;
+}
+
+.fn-container .form-element .dx-form-group-with-caption.dx-form-group {
+    background: rgb(244, 244, 244);
+    padding: 20px;
+}
+
+.fn-container .form-element .dx-item.dx-box-item {
+    margin-bottom: 6px;
 }
 
 .fn-container .form-element .dx-field-item-label-text {
@@ -59,7 +68,7 @@ body {
 }
 
 .fn-container .form-element .dx-field-item-label-location-top {
-    margin-bottom: 3px;
+    margin-bottom: 8px;
 }
 
 .fn-container .form-side {
@@ -133,20 +142,20 @@ body {
     box-shadow: 0 0 16px -9px black;
 }
 
-.fn-info .dx-datagrid{
-    color:white;
+.fn-info .dx-datagrid {
+    color: rgb(37, 40, 52);
 }
 
-.fn-info .dx-datagrid-headers.dx-datagrid-nowrap{
-    color:white;
+.fn-info .dx-datagrid-headers.dx-datagrid-nowrap {
+    color: rgb(37, 40, 52);
 }
 
-.fn-info .dx-datagrid-summary-item{
-    color:white;
+.fn-info .dx-datagrid-summary-item {
+    color: rgb(37, 40, 52);
 }
 
-.fn-info .dx-datagrid-total-footer .dx-datagrid-content.dx-datagrid-scroll-container td{
-    border-bottom:none;
+.fn-info .dx-datagrid-total-footer .dx-datagrid-content.dx-datagrid-scroll-container td {
+    border-bottom: none;
 }
 
 .dx-datagrid-headers.dx-datagrid-nowrap {
@@ -172,39 +181,32 @@ body {
 }
 
 .fn-button {
-    padding: 0 20px;
+    padding: 6px 20px;
     background: rgba(0, 0, 0, 0);
+    background: linear-gradient(45deg, rgb(139, 98, 255), rgb(10, 141, 255));
     position: relative;
-    color: rgb(128, 128, 128);
-    height: 80px;
+    color: rgb(255, 255, 255);
     text-align: center;
-    font-size: 25px;
+    font-size: 20px;
     outline: none;
     margin-right: 0;
-    border-radius: 8px;
-    width: 100%;
-    border: 2px dashed rgba(0, 0, 0, 0.16);
+    border-radius: 20px;
+    border: none;
     transition: all cubic-bezier(.62, .28, .23, .99) 0.3s;
 }
 
 .fn-button:hover {
-    background: rgb(255, 255, 255);
-    border: 2px dashed rgb(33, 150, 243);
-    color: rgb(33, 150, 243);
     box-shadow: 0 0 16px -9px black;
 }
 
 .fn-button i {
-    font-size: 45px;
     position: relative;
-    top: 5px;
-    margin-right: 15px;
+    top: 0;
+    margin-right: 5px;
 }
 
 .fn-button span {
     display: inline-block;
-    line-height: 75px;
-    font-size: 30px;
 }
 
 .fn-button.transparent {
@@ -244,27 +246,33 @@ body {
     height: 65px;
 }
 
+.fn-form-buttons {
+    margin-top: -2px;
+    float: left;
+}
+
 .fn-form-buttons button {
-    border: none;
-    background: transparent;
     outline: none;
-    font-size: 25px;
+    border: none;
+    font-size: 20px;
 }
 
 .fn-form-buttons .fn-close {
+    background: transparent;
     color: rgb(146, 146, 146);
-    padding: 5px 20px;
+    padding: 6px 20px;
 }
 
 .fn-form-buttons .fn-ok {
-    padding: 5px 39px;
-    margin-left: 20px;
-    border: none;
-    background: rgb(0, 142, 255);
+    padding: 6px 20px;
+    background: linear-gradient(45deg, rgb(139, 98, 255), rgb(10, 141, 255));
     position: relative;
     color: rgb(255, 255, 255);
-    border-radius: 0;
-    height: 45px;
+    text-align: center;
+    outline: none;
+    margin-right: 0;
+    border-radius: 20px;
+    transition: all cubic-bezier(.62, .28, .23, .99) 0.3s;
 }
 
 .fn-left-side {
@@ -272,28 +280,25 @@ body {
 }
 
 .fn-right-side {
-    padding-top: 30px;
-    height: 100vh;
+    margin-top: 5px;
+    padding-top: 0;
 }
 
 .fn-info {
-    position: absolute !important;
-    bottom: 30px;
-    right: 30px;
-    width: calc(100% - 60px) !important;
-    background: linear-gradient(45deg,rgb(139,98,255),rgb(10,141,255));
-    border: 1px solid rgb(232, 234, 235);
-    padding: 10px !important;
-    border-radius: 8px;
+    background: rgb(250, 250, 250);
+    white-space: 1px solid rgb(232, 234, 235);
+    padding: 16px 10px !important;
+    border-radius: 0;
+    height: 100%;
 }
 
 .fn-info>span {
-    font-size: 25px;
+    font-size: 24px;
     margin-left: 30px;
     font-weight: 700;
-    margin-bottom: 15px;
+    margin-bottom: 17px;
     display: inline-block;
-    color:white;
+    color: rgb(37, 40, 52);
 }
 
 .fn-header {
@@ -301,7 +306,7 @@ body {
     margin-top: 35px;
     width: 100%;
     display: inline-block;
-    padding-left: 26px;
+    padding-left: 20px;
 }
 
 .fn-header span {
@@ -309,7 +314,7 @@ body {
 }
 
 .fn-header span.main {
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 100;
     color: rgb(27, 38, 52);
     width: auto;
@@ -317,7 +322,6 @@ body {
 }
 
 .fn-header span.main b {
-    font-size: 28px;
     font-weight: 900;
 }
 
@@ -326,7 +330,7 @@ body {
     padding: 0;
 }
 
-.fn-right-side > .col-lg-12:not(.fn-info) {
+.fn-right-side>.col-lg-12:not(.fn-info) {
     margin-bottom: 15px;
 }
 
@@ -348,15 +352,15 @@ div.dx-datagrid-header-panel {
     border-bottom: none;
 }
 
-.dx-datagrid-total-footer{
-    border-top:none !important;
+.dx-datagrid-total-footer {
+    border-top: none !important;
 }
 
 .dx-datagrid-header-panel .dx-toolbar .dx-texteditor {
     background: rgba(0, 0, 0, 0);
     border-bottom: 1px solid rgb(221, 221, 221);
     width: 290px !important;
-    margin-top: 13px;
+    margin-top: 17px;
 }
 
 div.dx-searchbox .dx-icon-search {
@@ -369,7 +373,7 @@ div.dx-searchbox .dx-icon-search {
     padding: 0;
     text-align: center;
     line-height: 30px;
-    font-size: 25px;
+    font-size: 24px;
     color: rgb(128, 128, 128);
 }
 
@@ -390,9 +394,9 @@ div.dx-searchbox .dx-icon-search {
     border-radius: 0;
     background: rgba(0, 0, 0, 0);
     border: none;
-    height: 38px;
+    height: 40px;
     padding-left: 50px;
-    font-size: 30px;
+    font-size: 24px;
     color: rgb(128, 128, 128);
 }
 
@@ -428,4 +432,59 @@ div.dx-searchbox .dx-icon-search {
 
 .fn-form-header+div {
     margin-bottom: 10px;
+}
+
+.form-holder {
+    display: flex;
+}
+
+.form-holder>div {
+    flex: 1 1;
+    max-width: 50%;
+}
+
+.fn-grid-holder {
+    margin-top: 25px;
+    margin-bottom: 50px;
+    float: left;
+    width: 100%;
+}
+
+.fn-button-holder {
+    position: relative;
+    z-index: 99999;
+    padding-left: 20px;
+    top: 23px;
+    margin-bottom: 19px;
+}
+
+.fn-button-holder button:focus+.fn-dropdown, .fn-dropdown:hover {
+    pointer-events: all;
+    opacity: 1;
+    top: 53px;
+}
+
+.fn-dropdown {
+    background: rgb(255, 255, 255);
+    box-shadow: 0 0 16px 3px rgba(0, 0, 0, 0.05);
+    padding: 15px 25px 15px 15px;
+    position: absolute;
+    pointer-events: none;
+    top: 40px;
+    min-width: 139px;
+    opacity: 0;
+    transition: all cubic-bezier(.62, .28, .23, .99) 0.3s;
+}
+
+.fn-dropdown span {
+    display: block;
+    padding: 5px 0;
+    cursor: pointer;
+}
+
+.fn-dropdown span:hover {
+    display: block;
+    padding: 5px 0;
+    cursor: pointer;
+    color: rgb(10, 141, 255);
 }

@@ -10,9 +10,17 @@ import { MainService } from '../../../shared/main.service';
 export class HizmetVeUrunlerComponent implements OnInit {
 
   dataSource = [];
-  dataFields = [];
+  dataSource2 = [];
+  dataFields = [
+    {dataField: "ID", caption: "ID"},
+    {dataField: "Adi", caption: "Adı"},
+    {dataField: "Miktar", caption: "Miktar"},
+    {dataField: "AlisFiyati", caption: "Alış Fiyatı"},
+    {dataField: "SatisFiyati", caption: "Satış Fiyatı"},
+  ];
   info;
   categories;
+  currencies;
   selectedItem;
   state = 0;
 
@@ -20,9 +28,6 @@ export class HizmetVeUrunlerComponent implements OnInit {
     this.main.reqGet("StokHizmet/List").subscribe(res => {
       this.dataSource = res;
       this.state = 0;
-      this.main.reqGet("Calisan/IslemGecmisi").subscribe(resIslem => {
-        this.info = resIslem;
-      });
     });
   }
 
@@ -32,16 +37,19 @@ export class HizmetVeUrunlerComponent implements OnInit {
       this.main.reqGet("Kategori/Get").subscribe(resKategori => {
         this.categories = resKategori;
       });
+      this.main.reqGet("Doviz/Get").subscribe(resDoviz => {
+        this.currencies = resDoviz;
+      });
+      this.main.reqGet("StokHizmet/IslemGecmisi/" + e.data.ID).subscribe(resIslem => {
+        this.info = resIslem;
+      });
       this.state = 2;
     });
   }
 
   newItem() {
-    this.main.reqGet("StokHizmet/Get").subscribe(res => {
-      this.selectedItem = new Object();
-      this.categories = res;
-      this.state = 1;
-    });
+    this.state = 1;
+    this.selectedItem = new Object();
   }
 
   cancelOperation() {
@@ -58,6 +66,15 @@ export class HizmetVeUrunlerComponent implements OnInit {
     }
     this.main.reqPost(url, this.selectedItem).subscribe(res => {
       this.getList();
+    });
+  }
+
+  addRow() {
+    this.dataSource2.push({
+      Barkod: "",
+      Birim: "",
+      Miktar: 1,
+      Fiyat: 1
     });
   }
 

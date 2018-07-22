@@ -17,8 +17,15 @@ export class TedarikcilerComponent implements OnInit {
     {dataField: "Odenecek", caption: "Ödenecek"},
     {dataField: "Bakiye", caption: "Bakiye"}
   ];
+  supplierTypes = [
+    { ID: 0, Name: "Tüzel Kişi" },
+    { ID: 1, Name: "Gerçek Kişi" },
+  ]
   info;
   categories;
+  cities;
+  districts;
+  currencies;
   selectedItem;
   state = 0;
 
@@ -28,28 +35,34 @@ export class TedarikcilerComponent implements OnInit {
     this.main.reqGet("CariHesap/List").subscribe(res => {
       this.dataSource = res;
       this.state = 0;
-      this.main.reqGet("CariHesap/IslemGecmisi").subscribe(islemRes => {
-        this.info = islemRes;
-      });
+    });
+    this.main.reqGet("Kategori/Get").subscribe(res => {
+      this.categories = res;
+    });
+    this.main.reqGet("Sehir/Get").subscribe(res => {
+      this.cities = res;
+    });
+    this.main.reqGet("Kasaba/Get").subscribe(res => {
+      this.districts = res;
+    });
+    this.main.reqGet("Doviz/Get").subscribe(resDoviz => {
+      this.currencies = resDoviz;
     });
   }
 
   handleItem(e) {
-    this.main.reqGet("Calisan/GetbyId/" + e.data.ID).subscribe(res => {
+    this.main.reqGet("CariHesap/GetbyId/" + e.data.ID).subscribe(res => {
       this.selectedItem = res;
-      this.main.reqGet("Kategori/Get").subscribe(res => {
-        this.categories = res;
-      });
       this.state = 2;
+    });
+    this.main.reqGet("CariHesap/IslemGecmisi/" + e.data.ID).subscribe(islemRes => {
+      this.info = islemRes;
     });
   }
 
   newItem() {
-    this.main.reqGet("Kategori/Get").subscribe(res => {
-      this.selectedItem = new Object();
-      this.categories = res;
-      this.state = 1;
-    });
+    this.selectedItem = new Object();
+    this.state = 1;
   }
 
   cancelOperation() {

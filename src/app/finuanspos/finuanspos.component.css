@@ -1,3 +1,26 @@
+@keyframes pinchIn {
+    0% {
+        opacity:0;
+        top: 50vh;
+        transform: scale(0);
+    }
+    100% {
+        opacity:1;
+        top: 0;
+        transform: scale(1);
+    }
+}
+
+:host .main{
+    position: relative;
+    animation: pinchIn cubic-bezier(.62, .28, .23, .99) 0.5s;
+    animation-iteration-count: 1;
+}
+
+:host /deep/ *:not(i) {
+    font-family: sans-serif !important;
+}
+
 :host /deep/ .dx-datagrid.dx-gridbase-container {
     padding: 0;
 }
@@ -7,17 +30,21 @@
     font-weight: 400;
 }
 
+/deep/ * {
+    outline: none;
+}
+
 /deep/ .dx-overlay-shader {
     background-color: rgba(0, 0, 0, 0.85)!important;
 }
 
-/deep/ .popupList{
+/deep/ .popupList {
     list-style: none;
-    color:white;
+    color: white;
     padding-left: 0;
 }
 
-/deep/ .popupList li{
+/deep/ .popupList li {
     line-height: 40px;
     padding-left: 10px;
     border: none;
@@ -26,12 +53,12 @@
     position: relative;
 }
 
-/deep/ .popupList li.active{
+/deep/ .popupList li.active {
     background: rgb(251, 101, 58);
-    color:white;
+    color: white;
 }
 
-/deep/ .popupList li i{
+/deep/ .popupList li i {
     font-size: 25px;
     position: absolute;
     right: 10px;
@@ -45,7 +72,7 @@
     border-bottom: 1px solid rgb(221, 221, 221);
 }
 
-/deep/ .popupHead{
+/deep/ .popupHead {
     color: rgb(255, 255, 255);
     font-weight: 900;
     font-size: 25px;
@@ -166,6 +193,7 @@
     margin-right: 3px;
     margin-bottom: 3px;
     height: 100px;
+    cursor: pointer;
 }
 
 #actions button {
@@ -256,6 +284,139 @@
     background: rgb(28, 30, 39);
 }
 
-/deep/ .dx-popup-title .dx-closebutton .dx-icon{
-    color:white;
+/deep/ .dx-popup-title .dx-closebutton .dx-icon {
+    color: white;
+}
+
+.barcodeInput {
+    display: inline-block;
+    width: calc(100% - 67px);
+    height: 27px;
+    font-size: 20px;
+    line-height: 20px;
+    border: none;
+    position: relative;
+    top: -8px;
+    border-bottom: 2px solid rgb(37, 40, 52);
+}
+
+:host /deep/ .dx-datagrid-total-footer table td:last-child {
+    width: 100%;
+}
+
+:host /deep/ .dx-datagrid-total-footer table td:last-child .dx-datagrid-summary-item {
+    text-align: right;
+}
+
+:host /deep/ .fn-selected td {
+    background: rgb(13, 140, 255) !important;
+    color: rgb(255, 255, 255);
+}
+
+:host /deep/ .dx-datagrid-rowsview .dx-selection.dx-row>td {
+    background: white;
+}
+
+/deep/ .fn-items-list-popup .dx-toolbar-label .dx-toolbar-item-content>div {
+    color: rgb(255, 255, 255);
+    font-weight: 900;
+}
+
+/deep/ .fn-items-list-popup .fn-filter-holder input {
+    width: calc(100% - 95px);
+    margin-right: 15px;
+    height: 44px;
+    background: rgb(19, 20, 26);
+    border: none;
+    color: rgb(255, 255, 255);
+    padding: 0 15px;
+    line-height: 44px;
+    font-size: 25px;
+}
+
+/deep/ .fn-items-list-popup .fn-filter-holder button {
+    width: 80px;
+    text-align: center;
+    height: 44px;
+    background: linear-gradient(45deg, rgb(250, 89, 77), rgb(251, 103, 54));
+    border: none;
+    color: rgb(255, 255, 255);
+    padding: 0 15px;
+    line-height: 44px;
+    font-size: 25px;
+}
+
+/deep/ .fn-items-list-popup .fn-keyboard-holder {
+    margin-top: 20px;
+}
+
+/deep/ .fn-items-list-popup .fn-keyboard-holder button {
+    float: left;
+    width: calc(100% / 13 - 5px);
+    margin-right: 5px;
+    margin-bottom: 5px;
+    height: 44px;
+    background: rgb(19, 20, 26);
+    border: none;
+    color: rgb(255, 255, 255);
+    font-size: 25px;
+}
+
+/deep/ .fn-items-list-popup .fn-keyboard-holder button.fn-two-times {
+    width: calc((100% / 13) * 2);
+    margin-right: 0;
+    background: linear-gradient(to left, rgb(1, 207, 140), rgb(51, 136, 171));
+    font-size: 17px;
+    font-weight: 700;
+}
+
+/deep/ .fn-items-list-popup .fn-keyboard-holder button.fn-two-times i {
+    margin-right: 5px;
+}
+
+/deep/ .fn-items-list-popup .fn-keyboard-holder button.fn-four-times {
+    width: calc((100% / 13) * 4 - 5px);
+    margin-right: 5px;
+}
+
+/deep/ .fn-items-list-popup .fn-keyboard-holder button.fn-colored {
+    background: rgb(63, 81, 181);
+}
+
+/deep/ .fn-items-list-popup .fn-keyboard-holder button:nth-child(13n) {
+    width: calc(100% / 13);
+    margin-right: 0;
+}
+
+/deep/ .fn-items-list-popup .dx-datagrid.dx-gridbase-container {
+    padding: 0;
+}
+
+/deep/ .fn-items-list-popup dx-data-grid {
+    background: white;
+}
+
+:host .fn-pos-footer {
+    position: absolute;
+    bottom: 0;
+    height: 40px;
+    color: rgb(255, 255, 255);
+    background: rgb(28, 30, 39);
+    left: 0;
+    line-height: 40px;
+    font-size: 15px;
+    padding: 0;
+    text-align: right;
+}
+
+:host .fn-pos-footer .anticon {
+    margin-left: 6px;
+    color: rgb(12, 140, 255);
+    font-size: 20px;
+    position: relative;
+    top: 2px;
+}
+
+:host .fn-pos-footer .anticon.anticon-close-circle {
+    color: rgb(251, 98, 63);
 }

@@ -25,20 +25,19 @@ export class MusterilerComponent implements OnInit {
     this.main.reqGet("CariHesap/List").subscribe(res => {
       this.dataSource = res;
       this.state = 0;
-      this.main.reqGet("CariHesap/IslemGecmisi").subscribe(resIslem => {
-        this.info = resIslem;
-      });
+    });
+    this.main.reqGet("Sehir/Get").subscribe(resSehir => {
+      this.cities = resSehir;
     });
   }
 
   handleItem(e) {
-    debugger;
     this.main.reqGet("CariHesap/GetbyId/" + e.data.ID).subscribe(res => {
       this.selectedItem = res;
-      this.main.reqGet("Sehir/Get").subscribe(resSehir => {
-        this.cities = resSehir;
-      });
       this.state = 2;
+    });
+    this.main.reqGet("CariHesap/IslemGecmisi/" + e.data.ID).subscribe(resIslem => {
+      this.info = resIslem;
     });
   }
 

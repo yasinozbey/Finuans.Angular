@@ -10,9 +10,29 @@ import { MainService } from '../../../shared/main.service';
 export class GiderListesiComponent implements OnInit {
 
   dataSource = [];
-  dataFields = [];
+  dataSource2 = [];
+  dataFields = [
+    {dataField: "ID", caption: "ID"},
+    {dataField: "Aciklama", caption: "Açıklama"},
+    {dataField: "HesapAdi", caption: "Hesap Adı"},
+    {dataField: "DuzenlemeTarihi", caption: "Düzenleme Tarihi"},
+    {dataField: "Bakiye", caption: "Bakiye"},
+    {dataField: "Odendi", caption: "Ödendi"},
+    {dataField: "Odenecek", caption: "Ödenecek"}
+  ];
   info;
   categories;
+  currencies;
+  accounts;
+  tags;
+  accountTypes = [
+    { ID: 0, Name: "Banka" },
+    { ID: 1, Name: "Kasa" }
+  ];
+  paymentStates = [
+    { ID: 0, Name: "Ödenmedi" },
+    { ID: 1, Name: "Ödendi" }
+  ];
   selectedItem;
   state = 0;
   stateType;
@@ -21,20 +41,40 @@ export class GiderListesiComponent implements OnInit {
     this.main.reqGet("Gider/List").subscribe(res => {
       this.dataSource = res;
       this.state = 0;
-      this.main.reqGet("Gider/IslemGecmisi").subscribe(resIslem => {
-        this.info = resIslem;
-      });
+    });
+    this.main.reqGet("Doviz/Get").subscribe(resDoviz => {
+      this.currencies = resDoviz;
+    });
+    this.main.reqGet("Kategori/Get").subscribe(resKategori => {
+      this.categories = resKategori;
+    });
+    this.main.reqGet("Etiket/Get").subscribe(resTags => {
+      this.tags = resTags;
+    });
+    this.main.reqGet("BankaHesabi/List").subscribe(resAccounts => {
+      this.accounts = resAccounts;
     });
   }
 
   handleItem(e) {
-    // this.main.reqGet("Calisan/GetbyId/" + e.data.ID).subscribe(res => {
-    //   this.selectedItem = res;
-    //   this.main.reqGet("Kategori/Get").subscribe(resKategori => {
-    //     this.categories = resKategori;
-    //   });
-    //   this.state = 2;
-    // });
+    if (e.data.Tip === 0) {
+      this.stateType = "MAAS";
+    } else if(e.data.Tip === 1) {
+      this.stateType = "VERGI";
+    } else if(e.data.Tip === 2) {
+      this.stateType = "BANKA";
+    } else if(e.data.Tip === 3) {
+      this.stateType = "AVANS";
+    } else if(e.data.Tip === 4) {
+      this.stateType = "FIS";
+      this.main.reqGet("Fatura/GetDetail?faturaID=" + e.data.ID).subscribe(res => {
+        this.dataSource2 = res;
+      });
+    }
+    this.main.reqGet("Gider/GetbyId/" + e.data.ID).subscribe(res => {
+      this.selectedItem = res;
+      this.state = 2;
+    });
   }
 
   newItem(e) {

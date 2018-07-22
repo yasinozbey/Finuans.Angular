@@ -31,7 +31,6 @@ import { CeklerComponent } from './finuansweb/pages/nakit/cekler/cekler.componen
 import { KasaBankaRaporuComponent } from './finuansweb/pages/nakit/kasa-banka-raporu/kasa-banka-raporu.component';
 import { NakitAkisiRaporuComponent } from './finuansweb/pages/nakit/nakit-akisi-raporu/nakit-akisi-raporu.component';
 import { HizmetVeUrunlerComponent } from './finuansweb/pages/stok/hizmet-ve-urunler/hizmet-ve-urunler.component';
-import { IrsaliyelerComponent } from './finuansweb/pages/stok/irsaliyeler/irsaliyeler.component';
 import { StokGecmisiComponent } from './finuansweb/pages/stok/stok-gecmisi/stok-gecmisi.component';
 import { StoktakiUrunlerRaporuComponent } from './finuansweb/pages/stok/stoktaki-urunler-raporu/stoktaki-urunler-raporu.component';
 import { FnGridComponent } from './finuansweb/shared/fn-grid/fn-grid.component';
@@ -55,7 +54,6 @@ const appRoutes: Routes = [
   { path: 'KasaBankaRaporu', component: KasaBankaRaporuComponent },
   { path: 'NakitAkisiRaporu', component: NakitAkisiRaporuComponent },
   { path: 'HizmetVeUrunler', component: HizmetVeUrunlerComponent },
-  { path: 'Irsaliyeler', component: IrsaliyelerComponent },
   { path: 'StokGecmisi', component: StokGecmisiComponent },
   { path: 'StoktakiUrunlerRaporu', component: StoktakiUrunlerRaporuComponent },
   { path: '', redirectTo: '/GuncelDurum', pathMatch: 'full' },
@@ -86,7 +84,6 @@ const appRoutes: Routes = [
     KasaBankaRaporuComponent,
     NakitAkisiRaporuComponent,
     HizmetVeUrunlerComponent,
-    IrsaliyelerComponent,
     StokGecmisiComponent,
     StoktakiUrunlerRaporuComponent,
     FnGridComponent

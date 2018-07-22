@@ -63,10 +63,6 @@
     line-height: 50px;
 }
 
-#menu-area:hover ul li{
-    padding: 0 15px 0 30px;
-}
-
 #menu-area ul li:hover{
     background: rgba(0, 0, 0, 0.3);
     color: rgb(3, 169, 244);
