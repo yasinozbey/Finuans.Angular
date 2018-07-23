@@ -29,6 +29,10 @@ export class FinuansposComponent implements OnInit {
   index = 0;
   currentCustomer;
   paymentTypes;
+  pendingItemsPopup = false;
+  pendingItems = [];
+  pendingItemDetail;
+  itemsState;
 
   getTabs() {
     this.service.reqGet("Pos/KategoriListesi").subscribe(x => {
@@ -72,7 +76,8 @@ export class FinuansposComponent implements OnInit {
       KDV: e.KdvOrani,
       Fiyat: e.Fiyat,
       Birim: e.BirimAdi,
-      Tutar: (e.Fiyat * miktar)
+      Tutar: (e.Fiyat * miktar),
+      Barkod: e.Barkod
     };
     if (!this.seekItem) {
       this.dataSource.push(tempItem);
@@ -91,18 +96,19 @@ export class FinuansposComponent implements OnInit {
     if (this.barkodValue.length > 0) {
       let indexOfStar = this.barkodValue.indexOf("*");
       let barkod = this.barkodValue.substring(indexOfStar + 1);
+      let miktar = 1;
+      if (indexOfStar > -1) {
+        miktar = parseInt(this.barkodValue.substring(0, indexOfStar));
+      }
       this.service.reqGet("Pos/UrunBul?Barkod=" + barkod + "&musteriID=" + 0).subscribe(resItem => {
-        let miktar = 1;
-        if (indexOfStar > -1) {
-          miktar = parseInt(this.barkodValue.substring(0, indexOfStar));
-        }
         const tempItem = {
           Miktar: miktar,
           Urun: resItem.Adi,
           KDV: resItem.KdvOrani,
           Fiyat: resItem.Fiyat,
           Birim: resItem.BirimAdi,
-          Tutar: (resItem.Fiyat * miktar)
+          Tutar: (resItem.Fiyat * miktar),
+          Barkod: barkod
         };
         if (!this.seekItem) {
           this.dataSource.push(tempItem);
@@ -210,7 +216,7 @@ export class FinuansposComponent implements OnInit {
         this.filterValue = "";
         this.filterResult = [];
       }
-    } else{
+    } else {
       if (this.filterSelectedItem) {
         this.currentCustomer = Object.assign(this.filterSelectedItem);
         this.itemsListPopup = false;
@@ -221,13 +227,139 @@ export class FinuansposComponent implements OnInit {
     }
   }
 
-  takePaymentTypes(){
+  takePaymentTypes() {
     this.service.reqGet("Pos/OdemeTipleri").subscribe(resPaymentTypes => {
       this.paymentTypes = resPaymentTypes;
     })
   }
 
-  closePOS(){
+  keyboardAction(e) {
+    if (this.filterValue) {
+      this.filterValue += "" + e;
+    } else {
+      this.filterValue = e;
+    }
+  }
+
+  removeLastFilter() {
+    this.filterValue = this.filterValue.slice(0, -1);
+  }
+
+  addToPendings() {
+    if (this.dataSource.length > 0) {
+      this.popupVisible = true;
+      this.popupButton = true;
+      this.popupText = "Fişi askıya almak istediğinize emin misiniz?";
+      this.pendingAction = () => {
+        this.popupVisible = false;
+        this.popupText = "";
+        let reqData = [];
+        this.dataSource.forEach(item => {
+          reqData.push({
+            CariID: this.currentCustomer ? this.currentCustomer.ID : 0,
+            Barkodu: item.Barkod,
+            Miktar: item.Miktar
+          })
+        });
+        this.service.reqPost("Pos/AskiyaAl", reqData).subscribe(x => {
+          this.dataSource = [];
+          this.barkodValue = "";
+          this.neonLights = {};
+          this.currentCustomer = undefined;
+        });
+      }
+    } else {
+      this.popupVisible = true;
+      this.popupButton = false;
+      this.popupText = "Fişi askıya almak için önce ürün eklemelisiniz."
+      setTimeout(() => {
+        this.popupVisible = false;
+        this.popupButton = true;
+        this.popupText = ""
+      }, 3000);
+    }
+  }
+
+  showItems(e) {
+    this.itemsState = e;
+    this.service.reqGet("Pos/" + e + "FisListesi").subscribe(x => {
+      this.pendingItems = x;
+      this.pendingItemsPopup = true;
+    })
+  }
+
+  viewItemDetail(e) {
+    if (this.itemsState == "Bekleyen") {
+      this.service.reqGet("Pos/BekleyenGetir?referansNo=" + e).subscribe(x => {
+        this.pendingItemDetail = x;
+      })
+    } else {
+      this.service.reqGet("Pos/fisGetir?referansNo=" + e).subscribe(x => {
+        this.pendingItemDetail = x;
+      })
+    }
+  }
+
+  continueFromPending() {
+    this.dataSource = [];
+    this.neonLights = undefined;
+    this.currentCustomer = undefined;
+    if (this.pendingItemDetail[0].CariHesapID > 0) {
+      this.service.reqGet("Pos/MusteriBul/" + this.pendingItemDetail[0].CariHesapID).subscribe(x => {
+        this.currentCustomer = x;
+        this.pendingItemDetail.forEach(item => {
+          this.barkodValue = item.Miktar + "*" + item.Barkodu;
+          this.addBarkodItem();
+        });
+        this.pendingItemsPopup = false;
+      })
+    } else {
+      this.pendingItemDetail.forEach(item => {
+        this.barkodValue = item.Miktar + "*" + item.Barkodu;
+        this.addBarkodItem();
+      });
+      this.pendingItemsPopup = false;
+      this.pendingItemDetail = undefined;
+    }
+  }
+
+  cancelDocument() {
+    if (this.dataSource.length > 0) {
+      this.popupVisible = true;
+      this.popupButton = true;
+      this.popupText = "Belgeyi iptal etmek istediğinizden emin misiniz?";
+      this.pendingAction = () => {
+        this.dataSource = [];
+        this.neonLights = undefined;
+        this.currentCustomer = undefined;
+        this.popupVisible = false;
+        this.popupText = "";
+        // this.service.reqPost("Pos/BelgeIptal", ).subscribe(x => {
+        //   debugger;
+        //   this.popupVisible = false;
+        //   this.popupText = "";
+        // })
+      }
+    } else {
+      this.popupButton = false;
+      this.popupText = "Belgeye henüz başlamadınız!";
+      this.popupVisible = true;
+      setTimeout(() => {
+        this.popupVisible = false;
+        this.popupButton = true;
+        this.popupText = "";
+      }, 3000);
+    }
+  }
+
+  repeatLastItem(){
+    if(this.neonLights){
+      this.barkodValue = this.neonLights["Miktar"] + "*" + this.neonLights["Barkod"];
+      this.addBarkodItem();
+    }
+  }
+
+  closePOS() {
     localStorage.setItem("POSActivated", "false");
   }
 

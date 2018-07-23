@@ -420,3 +420,20 @@
 :host .fn-pos-footer .anticon.anticon-close-circle {
     color: rgb(251, 98, 63);
 }
+
+/deep/ .popup-grid-holder{
+    margin-top: 20px;
+    height: calc(100% - 275px);
+    display: inline-block;
+}
+
+/deep/ .popup-grid-holder dx-data-grid{
+    height: 100%;
+}
+
+/deep/ .fn-dots{
+    float: left;
+    white-space: nowrap;
+    overflow:hidden !important;
+    text-overflow: ellipsis;
+}
