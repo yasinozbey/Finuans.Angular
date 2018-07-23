@@ -1,0 +1,490 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:300,400,700');
+html {
+    float: left;
+    width: 100vw;
+    height: 100%;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    float: left;
+    width: 100vw;
+    height: 100%;
+    font-family: 'Raleway', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
+}
+
+.dx-widget {
+    font-family: 'Raleway', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    width: 7px;
+}
+
+.n-p {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.fn-container {
+    padding: 0 !important;
+    overflow: hidden;
+    border-radius: 0;
+}
+
+.fn-container .form-element {
+    padding: 29px 0 15px 10px;
+    background: rgb(255, 255, 255);
+    margin-top: 0;
+}
+
+.fn-container .form-element .dx-form-group-with-caption.dx-form-group {
+    background: rgb(244, 244, 244);
+    padding: 20px;
+}
+
+.fn-container .form-element .dx-item.dx-box-item {
+    margin-bottom: 6px;
+}
+
+.fn-container .form-element .dx-field-item-label-text {
+    color: rgb(0, 0, 0);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.fn-container .form-element .dx-field-item-label-location-top {
+    margin-bottom: 8px;
+}
+
+.fn-container .form-side {
+    padding: 0;
+    background: rgba(0, 0, 0, 0.04);
+    padding-bottom: 100%;
+    margin-bottom: -100%;
+    border-left: 1px solid rgb(235, 235, 235);
+}
+
+.fn-container .form-side button {
+    width: 100%;
+    border-radius: 0;
+    background: transparent;
+    border-color: transparent;
+    color: rgb(3, 169, 244);
+    font-size: 20px;
+    font-weight: 600;
+    height: 44px;
+    line-height: 44px;
+    margin-bottom: 10px;
+}
+
+.fn-container .form-side button.save {
+    background: linear-gradient(to right, rgb(33, 190, 252), rgb(94, 115, 234));
+    border: none;
+    color: rgb(255, 255, 255);
+}
+
+.fn-container .form-bottom {
+    padding: 0 15px 30px 15px !important;
+    background: rgb(255, 255, 255);
+    height: calc(100vh - 190px);
+    border-left: 3px dashed rgb(201, 201, 201);
+}
+
+.fn-container .fn-grid {
+    padding: 0;
+}
+
+.fn-type-holder {
+    display: table;
+}
+
+.fn-type {
+    display: table-row;
+    width: 100%;
+    background: rgba(0, 0, 0, 0);
+    border: 3px dashed rgb(221, 221, 221);
+    color: rgb(129, 129, 129);
+    margin-bottom: 20px;
+    height: 161px;
+    font-size: 25px;
+    transition: all cubic-bezier(.62, .28, .23, .99) 0.3s;
+}
+
+.fn-type i {
+    font-size: 50px;
+    margin-top: -20px;
+    width: 100%;
+}
+
+.fn-type:last-child {
+    margin-right: 0;
+}
+
+.fn-type:hover {
+    background: rgb(255, 255, 255);
+    border: 3px dashed rgb(255, 255, 255);
+    color: rgb(33, 150, 243);
+    box-shadow: 0 0 16px -9px black;
+}
+
+.fn-info .dx-datagrid {
+    color: rgb(37, 40, 52);
+}
+
+.fn-info .dx-datagrid-headers.dx-datagrid-nowrap {
+    color: rgb(37, 40, 52);
+}
+
+.fn-info .dx-datagrid-summary-item {
+    color: rgb(37, 40, 52);
+}
+
+.fn-info .dx-datagrid-total-footer .dx-datagrid-content.dx-datagrid-scroll-container td {
+    border-bottom: none;
+}
+
+.dx-datagrid-headers.dx-datagrid-nowrap {
+    border-bottom: none;
+    font-size: 18px;
+    color: black;
+    font-weight: 600;
+}
+
+.dx-datagrid-rowsview {
+    border-top: none;
+}
+
+.dx-datagrid-content .dx-datagrid-table .dx-row>td, .dx-datagrid-content .dx-datagrid-table .dx-row>tr>td {
+    border-bottom: 1px solid rgb(232, 234, 235);
+    border-left: none;
+    border-right: none;
+}
+
+.dx-datagrid-headers .dx-datagrid-table .dx-row>td {
+    border-left: none;
+    border-right: none;
+}
+
+.fn-button {
+    padding: 6px 20px;
+    background: rgba(0, 0, 0, 0);
+    background: linear-gradient(45deg, rgb(139, 98, 255), rgb(10, 141, 255));
+    position: relative;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    font-size: 20px;
+    outline: none;
+    margin-right: 0;
+    border-radius: 20px;
+    border: none;
+    transition: all cubic-bezier(.62, .28, .23, .99) 0.3s;
+}
+
+.fn-button:hover {
+    box-shadow: 0 0 16px -9px black;
+}
+
+.fn-button i {
+    position: relative;
+    top: 0;
+    margin-right: 5px;
+}
+
+.fn-button span {
+    display: inline-block;
+}
+
+.fn-button.transparent {
+    padding: 10px 0;
+    box-shadow: none;
+    border: none;
+    background: rgba(0, 0, 0, 0);
+    color: rgb(33, 150, 243);
+    font-weight: 500;
+    text-align: left;
+    margin-left: 20px;
+    height: auto;
+    font-size: 20px;
+}
+
+.fn-button.transparent i {
+    margin-right: 10px;
+    font-size: 25px;
+    width: auto;
+}
+
+.fn-bill {
+    border-left: 1px solid #ddd;
+    font-size: 18px;
+    margin-top: 15px;
+}
+
+.fn-form-header {
+    padding: 0;
+    font-size: 20px;
+    margin-bottom: 15px;
+    margin-left: 30px;
+    width: calc(100% - 60px);
+    padding-top: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgb(221, 221, 221);
+    height: 65px;
+}
+
+.fn-form-buttons {
+    margin-top: -2px;
+    float: left;
+}
+
+.fn-form-buttons button {
+    outline: none;
+    border: none;
+    font-size: 20px;
+}
+
+.fn-form-buttons .fn-close {
+    background: transparent;
+    color: rgb(146, 146, 146);
+    padding: 6px 20px;
+}
+
+.fn-form-buttons .fn-ok {
+    padding: 6px 20px;
+    background: linear-gradient(45deg, rgb(139, 98, 255), rgb(10, 141, 255));
+    position: relative;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    outline: none;
+    margin-right: 0;
+    border-radius: 20px;
+    transition: all cubic-bezier(.62, .28, .23, .99) 0.3s;
+}
+
+.fn-left-side {
+    height: 100vh;
+}
+
+.fn-right-side {
+    margin-top: 5px;
+    padding-top: 0;
+}
+
+.fn-info {
+    background: rgb(250, 250, 250);
+    white-space: 1px solid rgb(232, 234, 235);
+    padding: 16px 10px !important;
+    border-radius: 0;
+    height: 100%;
+}
+
+.fn-info>span {
+    font-size: 24px;
+    margin-left: 30px;
+    font-weight: 700;
+    margin-bottom: 17px;
+    display: inline-block;
+    color: rgb(37, 40, 52);
+}
+
+.fn-header {
+    user-select: none;
+    margin-top: 35px;
+    width: 100%;
+    display: inline-block;
+    padding-left: 20px;
+}
+
+.fn-header span {
+    float: left;
+}
+
+.fn-header span.main {
+    font-size: 24px;
+    font-weight: 100;
+    color: rgb(27, 38, 52);
+    width: auto;
+    margin-bottom: 0;
+}
+
+.fn-header span.main b {
+    font-weight: 900;
+}
+
+.fn-header span.main i {
+    font-size: 20px;
+    padding: 0;
+}
+
+.fn-right-side>.col-lg-12:not(.fn-info) {
+    margin-bottom: 15px;
+}
+
+.background {
+    position: absolute;
+    opacity: 1;
+    width: 125vw;
+    height: 75vw;
+    background: radial-gradient(rgb(0, 223, 253), rgb(181, 20, 251));
+    border-radius: 100%;
+    right: -50vw;
+    top: -35.5vw;
+    -webkit-filter: drop-shadow(-5px -5px 33px rgba(0, 0, 0, 0.2));
+    filter: drop-shadow(-5px -5px 33px rgba(0, 0, 0, 0.2));
+}
+
+div.dx-datagrid-header-panel {
+    overflow: visible;
+    border-bottom: none;
+}
+
+.dx-datagrid-total-footer {
+    border-top: none !important;
+}
+
+.dx-datagrid-header-panel .dx-toolbar .dx-texteditor {
+    background: rgba(0, 0, 0, 0);
+    border-bottom: 1px solid rgb(221, 221, 221);
+    width: 290px !important;
+    margin-top: 17px;
+}
+
+div.dx-searchbox .dx-icon-search {
+    font: unset;
+    font-family: anticon!important;
+    position: absolute;
+    top: 22px;
+    left: 0;
+    height: 50px;
+    padding: 0;
+    text-align: center;
+    line-height: 30px;
+    font-size: 24px;
+    color: rgb(128, 128, 128);
+}
+
+.dx-searchbox .dx-icon-search:before {
+    content: "\e670" !important;
+}
+
+.dx-datagrid-header-panel .dx-texteditor {
+    border: none;
+}
+
+.dx-datagrid-header-panel div.dx-toolbar {
+    margin-bottom: 40px;
+    background-color: transparent;
+}
+
+.dx-datagrid-header-panel .dx-texteditor .dx-texteditor-input {
+    border-radius: 0;
+    background: rgba(0, 0, 0, 0);
+    border: none;
+    height: 40px;
+    padding-left: 50px;
+    font-size: 24px;
+    color: rgb(128, 128, 128);
+}
+
+.dx-texteditor-container {
+    height: 55px;
+}
+
+.dx-datagrid-search-panel .dx-texteditor-container .dx-placeholder {
+    top: -2px;
+    left: 15px;
+    line-height: 30px;
+    font-size: 25px;
+    color: rgba(0, 0, 0, 0.23);
+}
+
+.dx-datagrid.dx-gridbase-container {
+    padding: 0 20px;
+    background-color: transparent;
+}
+
+.form-bottom .dx-datagrid.dx-gridbase-container {
+    box-shadow: unset;
+    height: auto;
+}
+
+.dx-datagrid .dx-row.dx-data-row.dx-column-lines td {
+    transition: background cubic-bezier(.62, .28, .23, .99) 0.3s;
+}
+
+.dx-datagrid .dx-row.dx-data-row.dx-column-lines:hover td {
+    background: rgb(242, 242, 242);
+}
+
+.fn-form-header+div {
+    margin-bottom: 10px;
+}
+
+.form-holder {
+    display: flex;
+}
+
+.form-holder>div {
+    flex: 1 1;
+    max-width: 50%;
+}
+
+.fn-grid-holder {
+    margin-top: 25px;
+    margin-bottom: 50px;
+    float: left;
+    width: 100%;
+}
+
+.fn-button-holder {
+    position: relative;
+    z-index: 99999;
+    padding-left: 20px;
+    top: 23px;
+    margin-bottom: 19px;
+}
+
+.fn-button-holder button:focus+.fn-dropdown, .fn-dropdown:hover {
+    pointer-events: all;
+    opacity: 1;
+    top: 53px;
+}
+
+.fn-dropdown {
+    background: rgb(255, 255, 255);
+    box-shadow: 0 0 16px 3px rgba(0, 0, 0, 0.05);
+    padding: 15px 25px 15px 15px;
+    position: absolute;
+    pointer-events: none;
+    top: 40px;
+    min-width: 139px;
+    opacity: 0;
+    transition: all cubic-bezier(.62, .28, .23, .99) 0.3s;
+}
+
+.fn-dropdown span {
+    display: block;
+    padding: 5px 0;
+    cursor: pointer;
+}
+
+.fn-dropdown span:hover {
+    display: block;
+    padding: 5px 0;
+    cursor: pointer;
+    color: rgb(10, 141, 255);
+}
