@@ -33,6 +33,17 @@ export class FinuansposComponent implements OnInit {
   pendingItems = [];
   pendingItemDetail;
   itemsState;
+  subTotalPopup = false;
+  summary = {
+    Toplam: "0",
+    Indirim: "0",
+    AraToplam:"0",
+    KDV:"0",
+    GenelToplam: "0"
+  };
+  tempTotal;
+  payments = [];
+  paymentInputValue = "";
 
   getTabs() {
     this.service.reqGet("Pos/KategoriListesi").subscribe(x => {
@@ -63,6 +74,30 @@ export class FinuansposComponent implements OnInit {
     }
   }
 
+  calculateAll(){
+    this.summary = {
+      Toplam: "0",
+      Indirim: "0",
+      AraToplam:"0",
+      KDV:"0",
+      GenelToplam: "0"
+    };
+    this.dataSource.forEach(item => {
+      this.calculateSummary(item);
+    });
+  }
+
+  calculateSummary(e){
+    this.summary.Toplam = (parseFloat(this.summary.Toplam) + parseFloat(e.Tutar)).toFixed(2);
+    let indirim = ((e.Tutar / 100) * (this.currentCustomer ? this.currentCustomer.IndirimOrani : 0)).toFixed(2);
+    this.summary.Indirim = (parseFloat(this.summary.Indirim) + parseFloat(indirim)).toFixed(2);
+    let KDV = (((e.Tutar - parseFloat(indirim)) * e.KDV) / (100 + e.KDV)).toFixed(2);
+    this.summary.KDV = (parseFloat(this.summary.KDV) + parseFloat(KDV)).toFixed(2);
+    let AraToplam = (e.Tutar - parseFloat(indirim) - parseFloat(KDV)).toFixed(2);
+    this.summary.AraToplam = (parseFloat(this.summary.AraToplam) + parseFloat(AraToplam)).toFixed(2);
+    this.summary.GenelToplam = (parseFloat(this.summary.GenelToplam) + (parseFloat(AraToplam) + parseFloat(KDV))).toFixed(2);
+  }
+
   addSmartItem(e) {
     let indexOfStar = this.barkodValue.indexOf("*");
     this.barkodValue += "" + e.Barkod;
@@ -85,9 +120,11 @@ export class FinuansposComponent implements OnInit {
         document.querySelector(".fn-grid .dx-datagrid-rowsview tbody > tr:nth-child(" + (this.dataSource.length) + ")").classList.add("fn-selected");
         this.selectedItemIndex = this.dataSource.length - 1;
         this.neonLights = this.dataSource[this.selectedItemIndex];
+        this.calculateSummary(tempItem);
       }, 100);
     } else {
       this.seekItem = false;
+      this.neonLights = tempItem;
     }
     this.barkodValue = "";
   }
@@ -105,7 +142,7 @@ export class FinuansposComponent implements OnInit {
           Miktar: miktar,
           Urun: resItem.Adi,
           KDV: resItem.KdvOrani,
-          Fiyat: resItem.Fiyat,
+          Fiyat: resItem.Fiyat, 
           Birim: resItem.BirimAdi,
           Tutar: (resItem.Fiyat * miktar),
           Barkod: barkod
@@ -116,9 +153,11 @@ export class FinuansposComponent implements OnInit {
             document.querySelector(".fn-grid .dx-datagrid-rowsview tbody > tr:nth-child(" + (this.dataSource.length) + ")").classList.add("fn-selected");
             this.selectedItemIndex = this.dataSource.length - 1;
             this.neonLights = this.dataSource[this.selectedItemIndex];
+            this.calculateSummary(tempItem);
           }, 100);
         } else {
           this.seekItem = false;
+          this.neonLights = tempItem;
         }
         this.barkodValue = "";
       },
@@ -170,6 +209,7 @@ export class FinuansposComponent implements OnInit {
         setTimeout(() => {
           document.querySelector(".fn-grid .dx-datagrid-rowsview tbody > tr:nth-child(" + (this.selectedItemIndex + 1) + ")").classList.add("fn-selected");
           this.neonLights = this.dataSource[this.selectedItemIndex];
+          this.calculateAll();
         }, 100);
       }
       this.popupVisible = false;
@@ -219,6 +259,7 @@ export class FinuansposComponent implements OnInit {
     } else {
       if (this.filterSelectedItem) {
         this.currentCustomer = Object.assign(this.filterSelectedItem);
+        this.calculateAll();
         this.itemsListPopup = false;
         this.filterSelectedItem = undefined;
         this.filterValue = "";
@@ -227,9 +268,11 @@ export class FinuansposComponent implements OnInit {
     }
   }
 
-  takePaymentTypes() {
+  subtotal() {
     this.service.reqGet("Pos/OdemeTipleri").subscribe(resPaymentTypes => {
       this.paymentTypes = resPaymentTypes;
+      this.subTotalPopup = true;
+      this.tempTotal = Object.assign({}, this.summary);
     })
   }
 
@@ -329,11 +372,7 @@ export class FinuansposComponent implements OnInit {
       this.popupButton = true;
       this.popupText = "Belgeyi iptal etmek istediğinizden emin misiniz?";
       this.pendingAction = () => {
-        this.dataSource = [];
-        this.neonLights = undefined;
-        this.currentCustomer = undefined;
-        this.popupVisible = false;
-        this.popupText = "";
+        this.clearAll();
         // this.service.reqPost("Pos/BelgeIptal", ).subscribe(x => {
         //   debugger;
         //   this.popupVisible = false;
@@ -359,15 +398,54 @@ export class FinuansposComponent implements OnInit {
     }
   }
 
+  onBarkodChange(e){
+    if(e){
+      this.barkodValue = e.currentTarget.value;
+    }
+    this.addBarkodItem();
+  }
+
+  syncing(e){
+    if(e){
+      this.barkodValue = e.currentTarget.value;
+    }
+  }
+
+  clearAll() {
+    this.dataSource = [];
+    this.neonLights = undefined;
+    this.currentCustomer = undefined;
+    this.popupVisible = false;
+    this.popupText = "";
+    this.summary = {
+      Toplam: "0",
+      Indirim: "0",
+      AraToplam:"0",
+      KDV:"0",
+      GenelToplam: "0"
+    };
+  }
+
   closePOS() {
     localStorage.setItem("POSActivated", "false");
+  }
+
+  paymentInput(e) { 
+    if (this.paymentInputValue) {
+      this.paymentInputValue += "" + e;
+    } else {
+      this.paymentInputValue = e;
+    }
+  }
+
+  removeLastCharFromPayment() {
+    this.paymentInputValue = this.paymentInputValue.slice(0, -1);
   }
 
   constructor(private service: POSService) { }
 
   ngOnInit() {
     this.getTabs();
-    this.takePaymentTypes();
   }
 
 }

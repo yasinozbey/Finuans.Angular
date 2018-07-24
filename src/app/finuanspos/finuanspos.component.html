@@ -1,7 +1,8 @@
 <div class="main">
   <div id="invoice" class="col-lg-3">
     <div class="invoice-head">
-      <input #barkodInput type="text" class="barcodeInput" placeholder="Barkod" [(value)]="barkodValue" autofocus>
+      <input #barkodInput type="text" class="barcodeInput" placeholder="Barkod" [(value)]="barkodValue" autofocus (input)="syncing($event)"
+        (keydown.Enter)="onBarkodChange( $event, 'Enter' )">
       <span>FİŞ</span>
     </div>
     <dx-data-grid #invoiceTable id="gridContainer" class="fn-grid" [dataSource]="dataSource" [rowAlternationEnabled]="true" noDataText="  ">
@@ -12,6 +13,29 @@
       <dxi-column dataField="Fiyat" caption="Fiyat"></dxi-column>
       <dxi-column dataField="Tutar" caption="Tutar"></dxi-column>
     </dx-data-grid>
+
+    <table id="summaries">
+      <tr>
+        <td>Toplam:</td>
+        <td>{{summary.Toplam}}</td>
+      </tr>
+      <tr>
+        <td>İndirim:</td>
+        <td>{{summary.Indirim}}</td>
+      </tr>
+      <tr>
+        <td>Ara Toplam:</td>
+        <td>{{summary.AraToplam}}</td>
+      </tr>
+      <tr>
+        <td>KDV:</td>
+        <td>{{summary.KDV}}</td>
+      </tr>
+      <tr>
+        <td>Genel Toplam:</td>
+        <td>{{summary.GenelToplam}}</td>
+      </tr>
+    </table>
   </div>
 
   <div class="col-lg-9 fn-pos-right">
@@ -51,11 +75,11 @@
         <br>Listesi</button>
       <button (click)="itemsListPopup = true;filterValue=''; filterTitle = 'Ürün Listesi'">Ürün
         <br>Listesi</button>
-      <button (click)="seekItem = true">Fiyat
-        <br>Gör</button>
       <button (click)="moveDown()">
         <i class="anticon anticon-down-circle"></i>
       </button>
+      <button (click)="seekItem = true">Fiyat
+        <br>Gör</button>
       <button (click)="addToPendings()">Askıya
         <br>Al</button>
       <button (click)="showItems('')">Belge
@@ -78,13 +102,13 @@
         <br>Tekrar</button>
       <button>Ödeme</button>
       <button>Tahsilat</button>
-      <button>Ara
+      <button (click)="subtotal()">Ara
         <br>Toplam</button>
       <!-- <button *ngIf="paymentTypes.length == 1"></button>
             <button *ngIf="paymentTypes.length == 1 || paymentTypes.length == 2"></button>
             <button *ngIf="paymentTypes.length == 1 || paymentTypes.length == 2 || paymentTypes.length == 3"></button>
             <button *ngIf="paymentTypes.length == 1 || paymentTypes.length == 2 || paymentTypes.length == 3 || paymentTypes.length == 4"></button> -->
-      <button *ngFor="let item of paymentTypes">{{item.Adi}}</button>
+      <!-- <button *ngFor="let item of paymentTypes">{{item.Adi}}</button> -->
     </div>
     <div id="numPad" class="col-lg-5">
       <button (click)="math('7')">7</button>
@@ -228,8 +252,8 @@
         <span class="popupHead">Askıdaki İşlemler</span>
         <ul class="popupList">
           <li *ngFor="let item of pendingItems; let i = index" [class.active]="selectedtedPendingItem == i" (click)="viewItemDetail(item.ReferansNo); selectedtedPendingItem = i;">
-            {{item.Tarih}} 
-            <span *ngIf="item.Musteri">{{" - " + item.Musteri}}</span> 
+            {{item.Tarih}}
+            <span *ngIf="item.Musteri">{{" - " + item.Musteri}}</span>
             <span *ngIf="item.ToplamSatirSayisi">{{" - Ürün Sayısı: " + item.ToplamSatirSayisi}}</span>
             <i *ngIf="selectedtedPendingItem == i" class="anticon anticon-check-circle"></i>
           </li>
@@ -239,16 +263,63 @@
         <span class="popupHead">İşlem Detayları</span>
         <ul class="popupList light">
           <li *ngFor="let item of pendingItemDetail">
-            <span style="float: left; margin-right:5px;">{{item.Barkodu}} </span> 
-            <span class="fn-dots" style="max-width:100px"> {{" " + item.UrunAdi}}</span> 
-            <span> - {{item.Miktar + " " + item.BirimAdi}}</span></li>
+            <span style="float: left; margin-right:5px;">{{item.Barkodu}} </span>
+            <span class="fn-dots" style="max-width:100px"> {{" " + item.UrunAdi}}</span>
+            <span> - {{item.Miktar + " " + item.BirimAdi}}</span>
+          </li>
         </ul>
       </div>
     </div>
     <div *ngIf="pendingItems.length < 1">
-        <span class="popupHead">Hiç askıda işlem bulunmamaktadır.</span>
+      <span class="popupHead">Hiç askıda işlem bulunmamaktadır.</span>
     </div>
     <button *ngIf="pendingItemDetail" class="actionButton" (click)="continueFromPending()">SEÇİLİ İŞLEMİ GETİR</button>
+  </div>
+</dx-popup>
+
+<dx-popup *ngIf="tempTotal" class="popup" [width]="900" (onHiding)="selectedtedPendingItem = undefined" [dragEnabled]="false"
+  title="Ödeme Yöntemleri - Kalan: {{tempTotal.GenelToplam}}TL" [closeOnOutsideClick]="true" [(visible)]="subTotalPopup">
+  <div *dxTemplate="let data of 'content'">
+    <div #state style="height: 100%;">
+      <div class="col-lg-5">
+        <input id="paymentInput" type="text" [(value)]="paymentInputValue">
+        <ul class="popupList mini">
+          <li *ngFor="let item of paymentTypes; let i = index" [class.active]="selectedtedPendingItem == i" (click)="selectedtedPendingItem = i;">
+            <span>{{item.Adi}}</span>
+            <i *ngIf="selectedtedPendingItem == i" class="anticon anticon-check-circle"></i>
+          </li>
+        </ul>
+      </div>
+      <div class="col-lg-7 paymentPopupRight">
+        <ul class="popupList light" *ngIf="selectedtedPendingItem > -1">
+          <li *ngFor="let item of payments">
+            <span style="float: left; margin-right:5px;">{{item.Barkodu}} </span>
+            <span class="fn-dots" style="max-width:100px"> {{" " + item.UrunAdi}}</span>
+            <span> - {{item.Miktar + " " + item.BirimAdi}}</span>
+          </li>
+        </ul>
+        <div class="paymentPopupButtons">
+          <button (click)="paymentInput('7')">7</button>
+          <button (click)="paymentInput('8')">8</button>
+          <button (click)="paymentInput('9')">9</button>
+          <button class="mini">Ödeme <br>İptal</button>
+          <button (click)="paymentInput('4')">4</button>
+          <button (click)="paymentInput('5')">5</button>
+          <button (click)="paymentInput('6')">6</button>
+          <button class="mini">Vazgeç</button>
+          <button (click)="paymentInput('1')">1</button>
+          <button (click)="paymentInput('2')">2</button>
+          <button (click)="paymentInput('3')">3</button>
+          <button class="mini">İndirim</button>
+          <button (click)="paymentInput('0')">0</button>
+          <button (click)="paymentInput(',')">,</button>
+          <button (click)="removeLastCharFromPayment()">
+            <i class="anticon anticon-left-circle"></i>
+          </button>
+          <button class="mini">ONAY</button>
+        </div>
+      </div>
+    </div>
   </div>
 </dx-popup>
 
