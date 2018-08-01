@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { POSService } from "../finuanspos/pos.service";
-import { $ } from '../../../node_modules/protractor';
+import { POSService } from "./pos.service";
+import { $ } from 'protractor';
 
 @Component({
   selector: 'app-finuanspos',
@@ -37,13 +37,16 @@ export class FinuansposComponent implements OnInit {
   summary = {
     Toplam: "0",
     Indirim: "0",
-    AraToplam:"0",
-    KDV:"0",
+    AraToplam: "0",
+    KDV: "0",
     GenelToplam: "0"
   };
   tempTotal;
   payments = [];
   paymentInputValue = "";
+  sellersPopup = false;
+  sellers;
+  selectedSeller;
 
   getTabs() {
     this.service.reqGet("Pos/KategoriListesi").subscribe(x => {
@@ -65,6 +68,14 @@ export class FinuansposComponent implements OnInit {
           this.barkodValue = e;
         }
       }
+    } else if (e == ",") {
+      if (this.barkodValue.indexOf(",") < 0) {
+        if (this.barkodValue) {
+          this.barkodValue += "" + e;
+        } else {
+          this.barkodValue = "0,";
+        }
+      }
     } else {
       if (this.barkodValue) {
         this.barkodValue += "" + e;
@@ -74,12 +85,12 @@ export class FinuansposComponent implements OnInit {
     }
   }
 
-  calculateAll(){
+  calculateAll() {
     this.summary = {
       Toplam: "0",
       Indirim: "0",
-      AraToplam:"0",
-      KDV:"0",
+      AraToplam: "0",
+      KDV: "0",
       GenelToplam: "0"
     };
     this.dataSource.forEach(item => {
@@ -87,7 +98,7 @@ export class FinuansposComponent implements OnInit {
     });
   }
 
-  calculateSummary(e){
+  calculateSummary(e) {
     this.summary.Toplam = (parseFloat(this.summary.Toplam) + parseFloat(e.Tutar)).toFixed(2);
     let indirim = ((e.Tutar / 100) * (this.currentCustomer ? this.currentCustomer.IndirimOrani : 0)).toFixed(2);
     this.summary.Indirim = (parseFloat(this.summary.Indirim) + parseFloat(indirim)).toFixed(2);
@@ -142,7 +153,7 @@ export class FinuansposComponent implements OnInit {
           Miktar: miktar,
           Urun: resItem.Adi,
           KDV: resItem.KdvOrani,
-          Fiyat: resItem.Fiyat, 
+          Fiyat: resItem.Fiyat,
           Birim: resItem.BirimAdi,
           Tutar: (resItem.Fiyat * miktar),
           Barkod: barkod
@@ -269,11 +280,14 @@ export class FinuansposComponent implements OnInit {
   }
 
   subtotal() {
-    this.service.reqGet("Pos/OdemeTipleri").subscribe(resPaymentTypes => {
-      this.paymentTypes = resPaymentTypes;
-      this.subTotalPopup = true;
-      this.tempTotal = Object.assign({}, this.summary);
-    })
+    if (this.dataSource.length > 0) {
+      this.service.reqGet("Pos/OdemeTipleri").subscribe(resPaymentTypes => {
+        this.paymentTypes = resPaymentTypes;
+        this.subTotalPopup = true;
+        this.payments = [];
+        this.tempTotal = Object.assign({}, this.summary);
+      })
+    }
   }
 
   keyboardAction(e) {
@@ -391,22 +405,22 @@ export class FinuansposComponent implements OnInit {
     }
   }
 
-  repeatLastItem(){
-    if(this.neonLights){
+  repeatLastItem() {
+    if (this.neonLights) {
       this.barkodValue = this.neonLights["Miktar"] + "*" + this.neonLights["Barkod"];
       this.addBarkodItem();
     }
   }
 
-  onBarkodChange(e){
-    if(e){
+  onBarkodChange(e) {
+    if (e) {
       this.barkodValue = e.currentTarget.value;
     }
     this.addBarkodItem();
   }
 
-  syncing(e){
-    if(e){
+  syncing(e) {
+    if (e) {
       this.barkodValue = e.currentTarget.value;
     }
   }
@@ -415,13 +429,21 @@ export class FinuansposComponent implements OnInit {
     this.dataSource = [];
     this.neonLights = undefined;
     this.currentCustomer = undefined;
+    this.selectedSeller = undefined;
     this.popupVisible = false;
     this.popupText = "";
     this.summary = {
       Toplam: "0",
       Indirim: "0",
-      AraToplam:"0",
-      KDV:"0",
+      AraToplam: "0",
+      KDV: "0",
+      GenelToplam: "0"
+    };
+    this.tempTotal = {
+      Toplam: "0",
+      Indirim: "0",
+      AraToplam: "0",
+      KDV: "0",
       GenelToplam: "0"
     };
   }
@@ -430,7 +452,7 @@ export class FinuansposComponent implements OnInit {
     localStorage.setItem("POSActivated", "false");
   }
 
-  paymentInput(e) { 
+  paymentInput(e) {
     if (this.paymentInputValue) {
       this.paymentInputValue += "" + e;
     } else {
@@ -440,6 +462,60 @@ export class FinuansposComponent implements OnInit {
 
   removeLastCharFromPayment() {
     this.paymentInputValue = this.paymentInputValue.slice(0, -1);
+  }
+
+  shoSellerPopupw() {
+    this.service.reqGet("Calisan/Get").subscribe(x => {
+      this.sellersPopup = true;
+      this.sellers = x;
+    })
+  }
+
+  selectSeller(e) {
+    this.selectedSeller = e;
+    this.sellersPopup = false;
+  }
+
+  acceptPayment(e) {
+    if(!this.paymentInputValue) {
+      this.payments.push({
+        Tutar: this.tempTotal.GenelToplam,
+        OdemeTipID: e.ID
+      });
+      let lines = [];
+      this.dataSource.forEach(x => {
+        let indirimOran = (this.currentCustomer ? this.currentCustomer.IndirimOrani : 0);
+        let IndirimTL = (x.Tutar / 100) * indirimOran;
+        let KdvTutari = ((x.Tutar - IndirimTL) * x.KDV) / (100 + x.KDV);
+        let tempLine = {
+          "Barkodu": x.Barkod,
+          "Miktar":x.Miktar,
+          "Fiyat":x.Fiyat,
+          "BirimAdi": x.Birim,
+          "IndirimOran": indirimOran,
+          "IndirimTL": IndirimTL,
+          "KdvOrani": x.KDV,
+          "KdvTutari": KdvTutari,
+          "AraToplam": x.Tutar - IndirimTL - KdvTutari,
+          "GenelToplam": x.Tutar - IndirimTL
+        };
+        lines.push(tempLine);
+      })
+
+      let reqData = {
+        FirmaID: 1,
+        KullaniciID: 1,
+        SaticiID: this.selectedSeller ? this.selectedSeller.ID : 0,
+        CariID: this.currentCustomer ? this.currentCustomer.ID : 0,
+        Paraustu: 0,
+        Odemeler: this.payments,
+        Lines: lines
+      }
+      this.service.reqPost("Pos/FisEkle", reqData).subscribe(x => {
+        this.clearAll();
+        this.subTotalPopup = false;
+      })
+    }
   }
 
   constructor(private service: POSService) { }

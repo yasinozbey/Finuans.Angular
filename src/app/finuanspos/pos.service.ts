@@ -22,6 +22,7 @@ export class POSService {
   reqGet(url): Observable<any> {
     return this.http.get(this.apiUrl + url, this.requestconfigs);
   }
+  
   reqPost(url, reqData): Observable<any> {
     return this.http.post(this.apiUrl + url, reqData, this.requestconfigs);
   }

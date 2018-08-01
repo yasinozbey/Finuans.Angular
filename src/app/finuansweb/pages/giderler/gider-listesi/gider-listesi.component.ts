@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MainService } from '../../../shared/main.service';
+import { MainService } from '../../../../shared/main.service';
 
 @Component({
   selector: 'app-gider-listesi',
   templateUrl: './gider-listesi.component.html',
-  styleUrls: ['./gider-listesi.component.css'],
+  styleUrls: [],
   providers: [MainService]
 })
 export class GiderListesiComponent implements OnInit {

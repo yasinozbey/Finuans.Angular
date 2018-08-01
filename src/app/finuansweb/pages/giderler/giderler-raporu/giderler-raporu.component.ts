@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-giderler-raporu',
   templateUrl: './giderler-raporu.component.html',
-  styleUrls: ['./giderler-raporu.component.css']
+  styleUrls: []
 })
 export class GiderlerRaporuComponent implements OnInit {
 

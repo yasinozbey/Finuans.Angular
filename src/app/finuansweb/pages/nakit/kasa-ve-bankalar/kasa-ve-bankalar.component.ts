@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MainService } from '../../../shared/main.service';
+import { MainService } from '../../../../shared/main.service';
 
 @Component({
   selector: 'app-kasa-ve-bankalar',
   templateUrl: './kasa-ve-bankalar.component.html',
-  styleUrls: ['./kasa-ve-bankalar.component.css'],
+  styleUrls: [],
   providers: [MainService]
 })
 export class KasaVeBankalarComponent implements OnInit {

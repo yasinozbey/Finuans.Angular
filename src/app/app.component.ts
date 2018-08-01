@@ -10,9 +10,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     if (localStorage.getItem("POSActivated")) {
-      this.state = 1;
-    } else{
-      this.state = 0;
+      localStorage.removeItem("POSActivated");
     }
     setInterval(() => {
       if (localStorage.getItem("POSActivated") == "true") {

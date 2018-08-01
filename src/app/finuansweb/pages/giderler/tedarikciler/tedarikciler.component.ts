@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MainService } from '../../../shared/main.service';
+import { MainService } from '../../../../shared/main.service';
 
 @Component({
   selector: 'app-tedarikciler',
   templateUrl: './tedarikciler.component.html',
-  styleUrls: ['./tedarikciler.component.css'],
+  styleUrls: [],
   providers: [MainService]
 })
 export class TedarikcilerComponent implements OnInit {

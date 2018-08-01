@@ -33,7 +33,7 @@ import { NakitAkisiRaporuComponent } from './finuansweb/pages/nakit/nakit-akisi-
 import { HizmetVeUrunlerComponent } from './finuansweb/pages/stok/hizmet-ve-urunler/hizmet-ve-urunler.component';
 import { StokGecmisiComponent } from './finuansweb/pages/stok/stok-gecmisi/stok-gecmisi.component';
 import { StoktakiUrunlerRaporuComponent } from './finuansweb/pages/stok/stoktaki-urunler-raporu/stoktaki-urunler-raporu.component';
-import { FnGridComponent } from './finuansweb/shared/fn-grid/fn-grid.component';
+import { FnGridComponent } from './finuansweb/layout-helpers/fn-grid/fn-grid.component';
 
 const appRoutes: Routes = [
   { path: 'GuncelDurum', component: GuncelDurumComponent },

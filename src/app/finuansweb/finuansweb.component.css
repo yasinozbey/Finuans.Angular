@@ -1,22 +1,6 @@
-:host{
+:host {
     display: inline-block;
-    background: rgb(255, 255, 255);
+    background: rgba(184, 197, 205, 0.43);
     width: 100vw;
     height: 100vh;
-}
-
-#menu{
-    float: left;
-    width: 290px;
-    background: rgb(37,40,52);
-    height: 100%;
-    border-right: 1px solid rgba(0, 0, 0, 0.3);
-    position: relative;
-    z-index: 1;
-}
-
-#pages{
-    float:left;
-    width: calc(100vw - 290px);
-    height: 100%;
 }

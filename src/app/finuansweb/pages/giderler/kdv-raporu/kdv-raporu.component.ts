@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-kdv-raporu',
   templateUrl: './kdv-raporu.component.html',
-  styleUrls: ['./kdv-raporu.component.css']
+  styleUrls: []
 })
 export class KdvRaporuComponent implements OnInit {
 
