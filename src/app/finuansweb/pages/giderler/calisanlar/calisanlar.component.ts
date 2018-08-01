@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MainService } from '../../../shared/main.service';
+import { MainService } from '../../../../shared/main.service';
 
 @Component({
   selector: 'app-calisanlar',
   templateUrl: './calisanlar.component.html',
-  styleUrls: ['./calisanlar.component.css'],
+  styleUrls: [],
   providers: [MainService]
 })
 export class CalisanlarComponent implements OnInit {
@@ -24,25 +24,8 @@ export class CalisanlarComponent implements OnInit {
 
   constructor(private main: MainService) { }
 
-  getList() {
-    this.main.reqGet("Calisan/List").subscribe(res => {
-      this.dataSource = res;
-      this.state = 0;
-    });
-    this.main.reqGet("Kategori/Get").subscribe(res => {
-      this.categories = res;
-    });
-  }
-
-  handleItem(e) {
-    this.main.reqGet("Calisan/GetbyId/" + e.data.ID).subscribe(res => {
-      this.selectedItem = res;
-      this.state = 2;
-    });
-    this.main.reqGet("Calisan/IslemGecmisi/" + e.data.ID).subscribe(resIslem => {
-      this.info = resIslem;
-    });
-  }
+  getList = this.main.getList.bind(this, "Calisan/List");
+  handleItem = this.main.handleItem.bind(this, "Calisan/GetbyId/", "Calisan/IslemGecmisi/");
 
   newItem() {
     this.selectedItem = new Object();
@@ -68,5 +51,8 @@ export class CalisanlarComponent implements OnInit {
 
   ngOnInit(): void {
     this.getList();
+    this.main.reqGet("Kategori/Get").subscribe(res => {
+      this.categories = res;
+    });
   }
 }

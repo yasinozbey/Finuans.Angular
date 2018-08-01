@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-odemeler-raporu',
   templateUrl: './odemeler-raporu.component.html',
-  styleUrls: ['./odemeler-raporu.component.css']
+  styleUrls: []
 })
 export class OdemelerRaporuComponent implements OnInit {
 

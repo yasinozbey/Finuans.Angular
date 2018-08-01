@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-guncel-durum',
   templateUrl: './guncel-durum.component.html',
-  styleUrls: ['./guncel-durum.component.css']
+  styleUrls: []
 })
 export class GuncelDurumComponent implements OnInit {
 

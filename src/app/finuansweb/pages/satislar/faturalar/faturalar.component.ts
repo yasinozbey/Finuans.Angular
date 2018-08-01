@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MainService } from '../../../shared/main.service';
+import { MainService } from '../../../../shared/main.service';
 
 @Component({
   selector: 'app-faturalar',
   templateUrl: './faturalar.component.html',
-  styleUrls: ['./faturalar.component.css'],
+  styleUrls: [],
   providers: [MainService]
 })
 export class FaturalarComponent implements OnInit {

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { POSService } from "../finuanspos/pos.service";
-import { $ } from '../../../node_modules/protractor';
+import { POSService } from "./pos.service";
+import { $ } from 'protractor';
 
 @Component({
   selector: 'app-finuanspos',

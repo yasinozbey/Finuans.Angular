@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MainService } from '../../../shared/main.service';
+import { MainService } from '../../../../shared/main.service';
 
 @Component({
   selector: 'app-hizmet-ve-urunler',
   templateUrl: './hizmet-ve-urunler.component.html',
-  styleUrls: ['./hizmet-ve-urunler.component.css'],
+  styleUrls: [],
   providers: [ MainService ]
 })
 export class HizmetVeUrunlerComponent implements OnInit {

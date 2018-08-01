@@ -17,10 +17,6 @@
     animation-iteration-count: 1;
 }
 
-:host /deep/ *:not(i) {
-    font-family: sans-serif !important;
-}
-
 :host /deep/ .dx-datagrid.dx-gridbase-container {
     padding: 0;
 }
@@ -72,11 +68,11 @@
     margin-right: 0;
 }
 
-/deep/ .dx-popup-title.dx-toolbar{
-    height:48px !important;
+/deep/ .dx-popup-title.dx-toolbar {
+    height: 48px !important;
 }
 
-/deep/ .dx-overlay-modal .dx-popup-content{
+/deep/ .dx-overlay-modal .dx-popup-content {
     height: calc(100% - 48px) !important;
 }
 
@@ -549,4 +545,89 @@
 
 /deep/ .paymentPopupButtons button.mini {
     font-size: 19px;
+}
+
+@media(max-width: 1601px) {
+    /deep/ .dx-tabpanel {
+        margin-top: 30px;
+    }
+    #numPad button {
+        font-size: 30px;
+    }
+    #invoice {
+        width: 33%;
+        float: left;
+    }
+    .fn-pos-right {
+        width: 67%;
+        float: left;
+    }
+}
+
+@media(max-width: 1381px) {
+    /deep/ .dx-tabpanel {
+        margin-top: 15px;
+    }
+    #smartItems {
+        padding: 0;
+        margin-bottom: 15px;
+    }
+    #actions {
+        padding-left: 0;
+    }
+    #smartItems .product {
+        height: 80px;
+    }
+    /deep/ .dx-tabpanel .dx-multiview-wrapper {
+        min-height: 250px;
+    }
+    #actions button {
+        height: 84px;
+    }
+    #numPad button {
+        height: 67.2px;
+    }
+}
+
+@media(max-width: 1030px) {
+    #actions {
+        float: left;
+        padding-left: 0;
+        padding-right: 0;
+        width: 60%;
+    }
+    #numPad {
+        float: left;
+        padding-right: 0;
+        width: 40%;
+    }
+    #actions button {
+        font-size: 16px;
+    }
+    #numPad button {
+        font-size: 20px;
+    }
+    #smartItems .product {
+        padding: 5px;
+    }
+    #smartItems .product {
+        height: 80px;
+        width: calc(20% - 3px)
+    }
+    .dx-tabpanel .dx-multiview-wrapper {
+        min-height: 250px;
+    }
+    #header {
+        height: 44px;
+        line-height: 44px;
+        padding: 0 15px;
+        font-size: 20px;
+    }
+    .closePOS {
+        height: 44px;
+    }
+    .fn-pos-footer{
+        float: left;
+        width:100%;
+    }
 }
