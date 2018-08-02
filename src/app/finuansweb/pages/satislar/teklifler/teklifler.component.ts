@@ -25,11 +25,19 @@ export class TekliflerComponent implements OnInit {
   selectedItem;
   state = 0;
   products;
+  selectedRow = 0;
+  totalDiscount = 0;
+  totalOiv = 0;
+  totalOtv = 0;
   taxes = [
     { Name: "0%", Value: 0 },
     { Name: "1%", Value: 1 },
     { Name: "8%", Value: 8 },
     { Name: "18%", Value: 18 },
+  ]
+  discountTypes = [
+    { ID: 0, Name: "Oran (%)" },
+    { ID: 1, Name: "Tutar" }
   ]
 
   getList() {
@@ -39,7 +47,7 @@ export class TekliflerComponent implements OnInit {
     });
     this.main.reqGet("CariHesap/List").subscribe(res => {
       this.customers = res;
-    });
+    })
     this.main.reqGet("Doviz/Get").subscribe(res => {
       this.currencies = res;
     });
@@ -76,7 +84,9 @@ export class TekliflerComponent implements OnInit {
     });
     this.selectedItem["AraToplam"] = AraToplam;
     this.selectedItem["KdvToplam"] = KDVToplam;
-    this.selectedItem["İndirim"] = 0;
+    this.selectedItem["IndirimToplam"] = this.totalDiscount;
+    this.selectedItem["OivTutari"] = this.totalOiv;
+    this.selectedItem["OtvTutari"] = this.totalOtv;
     this.selectedItem["DovizCinsi"] = 1;
     this.selectedItem["DovizKuru"] = 1;
     this.selectedItem["GenelToplam"] = GenelToplam;
@@ -90,41 +100,68 @@ export class TekliflerComponent implements OnInit {
     });
   }
 
-  getCustomers() {
-    this.main.reqGet("CariHesap/Get").subscribe(res => {
-      this.customers = res;
-    })
-  }
-
   addRow() {
-    this.dataSource2.push({ StokID: 0, Miktar: 1, Birim: "", BirimFiyat: 0, VergiOran: 0, Tutar: 0, TeklifID: this.selectedItem.ID });
+    this.dataSource2.push({
+      ID: 0,
+      StokID: 0,
+      Miktar: 1,
+      Birim: "",
+      BirimFiyat: 0,
+      VergiOran: 0,
+      Tutar: 0,
+      TeklifID: this.selectedItem.ID,
+      BarkodID: 0,
+      IndirimTipi: 0,
+      IndirimOranTutar: 0,
+      OtvOrani: 0,
+      OivOrani: 0,
+      Aciklama: ""
+    });
   }
 
-  calculateSum(e) {
-    let updatedDatas = this.detailGrid.instance.getVisibleRows();
+  calculateSum() {
+    let updatedDatas = this.detailGrid.instance.getDataSource()._items;
     let tempData = [];
+    this.totalDiscount = 0;
+    this.totalOiv = 0;
+    this.totalOtv = 0;
     updatedDatas.forEach(item => {
-      item.data.Tutar = (item.data.Miktar * item.data.BirimFiyat) * ((100 + item.data.VergiOran) / 100);
-      tempData.push(item.data);
+      let araToplam = item.Miktar * item.BirimFiyat;
+      let indirim = item.IndirimTipi == 0 ? ((araToplam / 100) * item.IndirimOranTutar) : item.IndirimOranTutar;
+      let oiv = ((araToplam - indirim) / 100) * item.OivOrani;
+      let otvMatrahi = (araToplam - indirim) + (((araToplam - indirim) / 100) * item.VergiOran) + oiv;
+      let otv = otvMatrahi / 100 * item.OtvOrani;
+      item.Tutar = (araToplam - indirim + otv) + (((araToplam - indirim) / 100) * item.VergiOran) + oiv;
+      this.totalDiscount += indirim;
+      this.totalOiv += oiv;
+      this.totalOtv += otv;
+      tempData.push(item);
     });
     this.dataSource2 = tempData;
   }
 
-  valueChange(rowData, value) {
-    debugger;
-    this["lookup"].dataSource.forEach(element => {
-      if (element.ID == value) {
-        debugger;
+  valueChange(e, value) {
+    this.products.forEach(item => {
+      if (item.ID == value) {
+        this.dataSource2[this.selectedRow].StokID = value;
+        this.dataSource2[this.selectedRow].BirimFiyat = item.SatisFiyati;
+        this.dataSource2[this.selectedRow].Birim = item.Birim1Adi;
+        this.dataSource2[this.selectedRow].VergiOran = item.SatisKdvOrani;
       }
     });
+    this["calculateSum"]();
   }
 
-  constructor(private main: MainService) { 
+  onClickCell(e) {
+    this.selectedRow = e.rowIndex;
+  }
+
+  constructor(private main: MainService) {
     this.valueChange = this.valueChange.bind(this);
+    this.calculateSum = this.calculateSum.bind(this);
   }
 
   ngOnInit(): void {
     this.getList();
-    this.getCustomers();
   }
 }

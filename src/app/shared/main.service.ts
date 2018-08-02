@@ -39,6 +39,7 @@ export class MainService {
   newItem(_self = this) {
     _self["dataSource2"] = [];
     _self["selectedItem"] = new Object();
+    _self["selectedItem"].ID = 0;
     _self["state"] = 1;
   }
 

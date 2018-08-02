@@ -66,6 +66,19 @@ body {
     margin-top: 0;
 }
 
+.dx-datagrid-rowsview .dx-row > td.dx-master-detail-cell{
+    padding: 0;
+}
+
+.form-element.inline{
+    padding: 15px 30px 15px 0;
+    background: rgba(255, 255, 255, 0);
+}
+
+.form-element.inline .dx-layout-manager .dx-field-item{
+    padding-top: 5px;
+}
+
 .fn-container .form-element .dx-form-group-with-caption.dx-form-group {
     background: rgb(244, 244, 244);
     padding: 20px;
