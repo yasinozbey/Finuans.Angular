@@ -24,8 +24,19 @@ export class CalisanlarComponent implements OnInit {
 
   constructor(private main: MainService) { }
 
-  getList = this.main.getList.bind(this, "Calisan/List");
-  handleItem = this.main.handleItem.bind(this, "Calisan/GetbyId/", "Calisan/IslemGecmisi/");
+  getList() {
+    this.main.reqGet("Calisan/List").subscribe(res => {
+      this.dataSource = res;
+      this.state = 0;
+    });
+  }
+
+  handleItem(e) {
+    this.main.reqGet("Calisan/GetbyId/" + e.data.ID).subscribe(res => {
+      this.selectedItem = res;
+      this.state = 2;
+    });
+  }
 
   newItem() {
     this.selectedItem = new Object();

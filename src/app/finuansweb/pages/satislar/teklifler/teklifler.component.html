@@ -37,7 +37,6 @@
             <button class="fn-ok" (click)="saveItem()">Kaydet</button>
           </div>
         </div>
-
         <div class="form-holder">
           <div class="col-lg-6">
             <dx-form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="4">
@@ -49,17 +48,29 @@
             </dx-form>
           </div>
           <div class="fn-grid-holder">
-            <dx-data-grid id="gridContainer" #detailGrid [dataSource]="dataSource2" noDataText="Kayıt Bulunamadı" (onRowUpdated)="calculateSum($event)">
+            <dx-data-grid id="gridContainer" #detailGrid [dataSource]="dataSource2" noDataText="Kayıt Bulunamadı" (onCellClick)="onClickCell($event)"
+              [masterDetail]="{ enabled: true, template: 'detail' }">
+              <dxo-selection mode="single"></dxo-selection>
               <dxo-editing mode="cell" [allowUpdating]="true"> </dxo-editing>
               <dxi-column dataField="StokID" caption="Hizmet/Ürün" [setCellValue]="valueChange">
                 <dxo-lookup [dataSource]="products" displayExpr="Adi" valueExpr="ID"> </dxo-lookup>
               </dxi-column>
-              <dxi-column dataField="Miktar" caption="Miktar" [width]="'15%'"></dxi-column>
-              <dxi-column dataField="BirimFiyat" caption="Birim Fiyat" [width]="'15%'"></dxi-column>
-              <dxi-column dataField="VergiOran" caption="Vergi Oran" [width]="'15%'">
+              <dxi-column dataField="Birim" caption="Birim" [width]="'10%'"></dxi-column>
+              <dxi-column dataField="Miktar" caption="Miktar" [width]="'10%'"></dxi-column>
+              <dxi-column dataField="BirimFiyat" caption="Fiyat" [width]="'10%'"></dxi-column>
+              <dxi-column dataField="VergiOran" caption="KDV" [width]="'10%'">
                 <dxo-lookup [dataSource]="taxes" displayExpr="Name" valueExpr="Value"> </dxo-lookup>
               </dxi-column>
-              <dxi-column dataField="Tutar" caption="Toplam" [width]="'20%'" format="currency"></dxi-column>
+              <dxi-column dataField="Tutar" caption="Toplam" [width]="'15%'" format="#,##0.##"></dxi-column>
+              <div *dxTemplate="let item of 'detail'">
+                  <dx-form class="form-element inline" [formData]="item.data" labelLocation="left" [colCount]="2">
+                      <dxi-item dataField="Aciklama" [colSpan]="2" [label]="{text: 'Açıklama'}"></dxi-item>
+                      <dxi-item dataField="IndirimTipi" [colSpan]="1" #itemHolder [label]="{text: 'İndirim Tipi'}" editorType="dxSelectBox" [editorOptions]="{ dataSource: discountTypes, displayExpr:'Name', valueExpr:'ID', onValueChanged: calculateSum }"></dxi-item>
+                      <dxi-item dataField="IndirimOranTutar" [colSpan]="1" [label]="{text: 'İndirim'}" [editorOptions]="{onValueChanged: calculateSum}"></dxi-item>
+                      <dxi-item dataField="OivOrani" [colSpan]="1" [label]="{text: 'ÖİV'}" [editorOptions]="{onValueChanged: calculateSum}"></dxi-item>
+                      <dxi-item dataField="OtvOrani" [colSpan]="1" [label]="{text: 'ÖTV'}" [editorOptions]="{onValueChanged: calculateSum}"></dxi-item>
+                    </dx-form>
+              </div>
             </dx-data-grid>
             <div style="margin-top: 10px !important;">
               <div>
