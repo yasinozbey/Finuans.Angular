@@ -16,8 +16,8 @@ export class TekliflerComponent implements OnInit {
     { dataField: "Aciklama", caption: "Açıklama" },
     { dataField: "HesapAdi", caption: "Hesap Adı" },
     { dataField: "Fatura", caption: "Fatura" },
-    { dataField: "DuzenlenmeTarihi", caption: "Düzenleme Tarihi", dataType: "date" },
-    { dataField: "TeklifTutari", caption: "Teklif Tutarı", format: "currency" },
+    { dataField: "DuzenlenmeTarihi", caption: "Düzenleme Tarihi", dataType: "date", format: 'd.MM.y' },
+    { dataField: "TeklifTutari", caption: "Teklif Tutarı", format: { style: "currency", currency: "EUR", useGrouping: true, maximumFractionDigits: 2 } },
   ];
   info;
   customers;

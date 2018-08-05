@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
   title = 'app';
   state = 0;
+  loading = true;
 
   ngOnInit() {
     if (localStorage.getItem("POSActivated")) {
@@ -19,5 +20,8 @@ export class AppComponent implements OnInit {
         this.state = 0;
       }
     }, 300);
+    setTimeout(() => {
+      this.loading= false;
+    }, 1000);
   }
 }

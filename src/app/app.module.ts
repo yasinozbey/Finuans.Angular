@@ -4,12 +4,15 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { registerLocaleData } from '@angular/common';
+import localeTr from '@angular/common/locales/tr';
 import {
   DxSelectBoxModule, DxTextAreaModule, DxDateBoxModule, DxFormModule, DxPopupModule,
   DxDataGridModule, DxBulletModule, DxTemplateModule, DxPieChartModule, DxTabPanelModule
 } from 'devextreme-angular';
 
 import { AppComponent } from './app.component';
+import { locale } from 'devextreme/localization';
 import { FinuanswebComponent } from './finuansweb/finuansweb.component';
 import { FinuansposComponent } from './finuanspos/finuanspos.component';
 import { MenuComponent } from './finuansweb/menu/menu.component';
@@ -59,6 +62,9 @@ const appRoutes: Routes = [
   { path: '', redirectTo: '/GuncelDurum', pathMatch: 'full' },
   // { path: '**', component: PageNotFoundComponent }
 ];
+
+locale(navigator.language);
+registerLocaleData(localeTr, 'tr');
 
 @NgModule({
   declarations: [
