@@ -209,26 +209,25 @@ body {
 
 .fn-button {
     padding: 6px 20px;
-    background: rgba(0, 0, 0, 0);
     background: linear-gradient(45deg, rgb(139, 98, 255), rgb(10, 141, 255));
+    box-shadow: 0 0 20px -2px #2285ff80;
     position: relative;
     color: rgb(255, 255, 255);
     text-align: center;
     font-size: 1.2rem;
     outline: none;
     margin-right: 0;
-    border-radius: 20px;
     border: none;
     transition: all cubic-bezier(.62, .28, .23, .99) 0.3s;
 }
 
 .fn-button:hover {
-    box-shadow: 0 0 16px -9px black;
+    box-shadow: 1px 5px 20px 0px #2285ff80;
 }
 
 .fn-button i {
     position: relative;
-    top: 0;
+    top: 1px;
     margin-right: 5px;
 }
 
@@ -503,7 +502,7 @@ div.dx-searchbox .dx-icon-search {
 
 .fn-dropdown {
     background: rgb(255, 255, 255);
-    box-shadow: 0 0 16px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 0 20px -2px #2285ff80;
     padding: 15px 25px 15px 15px;
     position: absolute;
     pointer-events: none;
@@ -606,7 +605,7 @@ div.dx-searchbox .dx-icon-search {
 }
 
 #menu-area ul li.head {
-    line-height: 50px;
+    line-height: 42px;
 }
 
 #menu-area ul li:hover {
