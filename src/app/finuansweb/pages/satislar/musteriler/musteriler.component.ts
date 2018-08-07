@@ -8,7 +8,6 @@ import { MainService } from '../../../../shared/main.service';
   providers: [MainService]
 })
 export class MusterilerComponent implements OnInit {
-
   @ViewChild("detailGrid") detailGrid;
   dataSource = [];
   dataSource2 = [];
@@ -18,6 +17,9 @@ export class MusterilerComponent implements OnInit {
     { dataField: "Odenecek", caption: "Ödenecek" },
     { dataField: "TahsilEdilcek", caption: "Tahsil Edilecek" }
   ];
+  actions = [
+    {actionEvent: "new", actionName:"Yeni Müşteri"}
+  ]
   info;
   cities;
   districts;
@@ -42,7 +44,7 @@ export class MusterilerComponent implements OnInit {
     });
   }
 
-  handleItem(e) {
+  handleGridAction(e) {
     this.main.reqGet("CariHesap/GetbyId/" + e.data.ID).subscribe(res => {
       this.selectedItem = res;
       this.main.reqGet("Sehir/GetKasaba?SehirID=" + res.SehirID).subscribe(resKasaba => {
@@ -51,27 +53,31 @@ export class MusterilerComponent implements OnInit {
       this.main.reqGet("CariYetkili/Get/" + res.SehirID).subscribe(resYetkili => {
         this.dataSource2 = resYetkili;
       })
-      this.state = 2;
+      this.state = 1;
     });
     this.main.reqGet("CariHesap/IslemGecmisi/" + e.data.ID).subscribe(resIslem => {
       this.info = resIslem;
     });
   }
 
-  newItem = this.main.newItem.bind(this);
-
-  cancelOperation() {
-    this.state = 0;
-    this.selectedItem = new Object();
+  handleNewAction(e) {
+    this.selectedItem = undefined;
+    this.state = 1;
   }
 
-  saveItem() {
+  cancelForm() {
+    this.state = 0;
+    this.selectedItem = undefined;
+  }
+
+  saveForm() {
     let reqData = {
       CariHesap:this.selectedItem,
       Yetkili: this.dataSource2
     }
     this.main.reqPost("CariHesap/SaveCustomer", reqData).subscribe(res => {
       this.getList();
+      this.selectedItem = undefined;
     });
   }
 
@@ -94,5 +100,4 @@ export class MusterilerComponent implements OnInit {
   ngOnInit(): void {
     this.getList();
   }
-
 }

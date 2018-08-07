@@ -36,11 +36,12 @@ export class MainService {
     });
   }
 
-  newItem(_self = this) {
+  handleAction(paramater) {
+    let _self = this;
     _self["dataSource2"] = [];
     _self["selectedItem"] = new Object();
     _self["selectedItem"].ID = 0;
-    _self["state"] = 1;
+    _self["state"] = paramater;
   }
 
   reqGet(url): Observable<any> {

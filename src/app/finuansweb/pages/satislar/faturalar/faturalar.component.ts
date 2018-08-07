@@ -19,6 +19,9 @@ export class FaturalarComponent implements OnInit {
     {dataField: 'VadeTarihi', caption: 'Vade Tarihi'},
     {dataField: 'Meblag', caption: 'Meblağ'}
   ];
+  actions = [
+    {actionEvent: "new", actionName:"Yeni Fatura"}
+  ]
   invoiceTypes = [
     {ID: 0, Name: "Satış Faturası"},
     {ID: 1, Name: "Proforma Satış Faturası"},
@@ -57,7 +60,7 @@ export class FaturalarComponent implements OnInit {
     });
   }
 
-  handleItem(e) {
+  handleGridAction(e) {
     this.main.reqGet("Fatura/GetbyId/" + e.data.ID).subscribe(res => {
       this.selectedItem = res;
       if (res.OdemeDurumu) {
@@ -65,24 +68,24 @@ export class FaturalarComponent implements OnInit {
           this.selectedItem.Tahsilat = resPayments;
         });
       }
-      this.state = 2;
-    });
-  }
-
-  newItem() {
-    this.main.reqGet("Kategori/Get").subscribe(res => {
-      this.selectedItem = new Object();
-      this.categories = res;
       this.state = 1;
     });
   }
 
-  cancelOperation() {
-    this.state = 0;
-    this.selectedItem = new Object();
+  handleNewAction() {
+    this.selectedItem = undefined;
+    this.state = 1;
+    this.main.reqGet("Kategori/Get").subscribe(res => {
+      this.categories = res;
+    });
   }
 
-  saveItem() {
+  cancelForm() {
+    this.state = 0;
+    this.selectedItem = undefined;
+  }
+
+  saveForm() {
     let url;
     if (this.state === 1) {
       url = "Fatura/Insert";
@@ -91,6 +94,7 @@ export class FaturalarComponent implements OnInit {
     }
     this.main.reqPost(url, this.selectedItem).subscribe(res => {
       this.getList();
+      this.selectedItem = undefined;
     });
   }
 

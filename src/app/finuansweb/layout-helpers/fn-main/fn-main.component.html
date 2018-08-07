@@ -1,0 +1,23 @@
+<div class="fn-header">
+  <span class="main">
+    <b> {{title}}</b>
+  </span>
+</div>
+<div class="fn-button-holder">
+  <button class="fn-button">
+    <i class="anticon anticon-bars"></i>
+    <span>İşlemler</span>
+  </button>
+  <div class="fn-dropdown">
+    <span *ngFor="let item of actions" (click)="onAction(item.actionEvent)">{{item.actionName}}</span>
+  </div>
+</div>
+<div class="col-lg-12" style="padding: 0">
+    <dx-data-grid id="gridContainer" class="fn-grid" [dataSource]="dataSource" (onRowClick)="onRowClick($event)" noDataText="Kayıt Bulunamadı"
+    [rowAlternationEnabled]="true">
+    <dxo-search-panel [visible]="true" [width]="240" placeholder="Arama..."></dxo-search-panel>
+    <dxo-paging [pageSize]="20"></dxo-paging>
+    <dxi-column *ngFor="let item of dataFields" dataField="{{item.dataField}}" caption="{{item.caption}}" class="{{item.caption}}"
+      [width]="item.caption == 'ID' ? '55px' : 'auto'" dataType="{{item.dataType ? item.dataType : ''}}" [format]="item.format ? item.format : ''"></dxi-column>
+  </dx-data-grid>
+</div>

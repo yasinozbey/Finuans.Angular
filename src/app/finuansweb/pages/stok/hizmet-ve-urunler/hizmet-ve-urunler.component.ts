@@ -18,6 +18,9 @@ export class HizmetVeUrunlerComponent implements OnInit {
     {dataField: "AlisFiyati", caption: "Alış Fiyatı"},
     {dataField: "SatisFiyati", caption: "Satış Fiyatı"},
   ];
+  actions = [
+    {actionEvent: "new", actionName:"Yeni Hizmet/Ürün"}
+  ]
   info;
   categories;
   currencies;
@@ -31,7 +34,7 @@ export class HizmetVeUrunlerComponent implements OnInit {
     });
   }
 
-  handleItem(e) {
+  handleGridAction(e) {
     this.main.reqGet("StokHizmet/GetbyId/" + e.data.ID).subscribe(res => {
       this.selectedItem = res;
       this.main.reqGet("Kategori/Get").subscribe(resKategori => {
@@ -43,21 +46,21 @@ export class HizmetVeUrunlerComponent implements OnInit {
       this.main.reqGet("StokHizmet/IslemGecmisi/" + e.data.ID).subscribe(resIslem => {
         this.info = resIslem;
       });
-      this.state = 2;
+      this.state = 1;
     });
   }
 
-  newItem() {
+  handleNewAction(e) {
+    this.selectedItem = undefined;
     this.state = 1;
-    this.selectedItem = new Object();
   }
 
-  cancelOperation() {
+  cancelForm() {
     this.state = 0;
-    this.selectedItem = new Object();
+    this.selectedItem = undefined;
   }
 
-  saveItem() {
+  saveForm() {
     let url;
     if (this.state === 1) {
       url = "StokHizmet/Insert";

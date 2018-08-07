@@ -1,79 +1,47 @@
 <div #stateHolder>
   <div class="col-lg-12 n-p fn-container">
     <div class="col-lg-12 main-area" [hidden]="state !== 0">
-      <div class="fn-header">
-        <span class="main">Satışlar
-          <i class="anticon anticon-right"></i>
-          <b> Müşteriler</b>
-        </span>
-      </div>
-      <div class="fn-button-holder">
-        <button class="fn-button">
-          <i class="anticon anticon-bars"></i>
-          <span>İşlemler</span>
-        </button>
-        <div class="fn-dropdown">
-          <span (click)="newItem()">Yeni Müşteri</span>
-        </div>
-      </div>
-      <app-fn-grid (rowClick)="handleItem($event)" [dataSource]="dataSource" [dataFields]="dataFields"></app-fn-grid>
+      <app-fn-main title="Müşteriler" [actions]="actions" [dataFields]="dataFields" [dataSource]="dataSource" (rowClick)="handleGridAction($event)"
+        (actionClick)="handleNewAction($event)"></app-fn-main>
     </div>
 
-    <div class="col-lg-12" *ngIf="state !== 0">
-      <div class="edit-area">
-        <div class="fn-header">
-          <span class="main" *ngIf="state === 1">Satışlar
-            <i class="anticon anticon-right"></i>Müşteriler
-            <i class="anticon anticon-right"></i>
-            <b> Yeni Müşteri</b>
-          </span>
-          <span class="main" *ngIf="state === 2">Satışlar
-            <i class="anticon anticon-right"></i>Müşteriler
-            <i class="anticon anticon-right"></i>
-            <b> Müşteri Düzenle</b>
-          </span>
-          <div class="fn-form-buttons">
-            <button class="fn-close" (click)="cancelOperation()">Vazgeç</button>
-            <button class="fn-ok" (click)="saveItem()">Kaydet</button>
-          </div>
+    <div class="col-lg-12 new-area" *ngIf="state === 1">
+      <app-fn-form inheritTitle="Müşteriler" newTitle="Yeni Müşteri" editTitle="Müşteri Düzenle" [(selectedItem)]="selectedItem"
+        (onSave)="saveForm()" (onCancel)="cancelForm()">
+        <div class="col-lg-6">
+          <dx-form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="2">
+            <dxi-item dataField="Unvani" [colSpan]="2" [label]="{text: 'Firma Unvanı'}"></dxi-item>
+            <dxi-item dataField="KisaAdi" [label]="{text: 'Kısa İsim'}"></dxi-item>
+            <dxi-item dataField="KategoriID" [colSpan]="2" [label]="{text: 'Kategori'}" editorType="dxSelectBox" [editorOptions]="{ items: categories, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
+            <dxi-item dataField="EpostaAdresi" [label]="{text: 'E-posta Adresi'}"></dxi-item>
+            <dxi-item dataField="Telefon" [label]="{text: 'Telefon Numarası'}"></dxi-item>
+            <dxi-item dataField="Faks" [label]="{text: 'Faks Numarası'}"></dxi-item>
+            <dxi-item dataField="IBAN" [label]="{text: 'IBAN Numarası'}"></dxi-item>
+            <dxi-item dataField="SehirID" [label]="{text: 'İl'}" editorType="dxSelectBox" [editorOptions]="{ items: cities, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
+            <dxi-item dataField="KasabaID" [label]="{text: 'İlçe'}" editorType="dxSelectBox" [editorOptions]="{ items: districts, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
+            <dxi-item dataField="Adres" [colSpan]="2" [label]="{text: 'Adres'}" editorType="dxTextArea"></dxi-item>
+            <dxi-item dataField="Tur" [label]="{text: 'Türü'}" editorType="dxSelectBox" [editorOptions]="{ items: supplierTypes, displayExpr:'Name', valueExpr:'ID' }"></dxi-item>
+            <dxi-item dataField="VergiNo" [label]="{text: 'VKN/TCKN'}"></dxi-item>
+            <dxi-item dataField="VergiDaire" [label]="{text: 'Vergi Dairesi'}"></dxi-item>
+            <dxi-item dataField="AcilisBakiyesi" [label]="{text: 'Açılış Bakiyesi'}"></dxi-item>
+          </dx-form>
         </div>
-
-        <div class="form-holder">
-          <div class="col-lg-6">
-            <dx-form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="2">
-              <dxi-item dataField="Unvani" [colSpan]="2" [label]="{text: 'Firma Unvanı'}"></dxi-item>
-              <dxi-item dataField="KisaAdi" [label]="{text: 'Kısa İsim'}"></dxi-item>
-              <dxi-item dataField="KategoriID" [colSpan]="2" [label]="{text: 'Kategori'}" editorType="dxSelectBox" [editorOptions]="{ items: categories, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
-              <dxi-item dataField="EpostaAdresi" [label]="{text: 'E-posta Adresi'}"></dxi-item>
-              <dxi-item dataField="Telefon" [label]="{text: 'Telefon Numarası'}"></dxi-item>
-              <dxi-item dataField="Faks" [label]="{text: 'Faks Numarası'}"></dxi-item>
-              <dxi-item dataField="IBAN" [label]="{text: 'IBAN Numarası'}"></dxi-item>
-              <dxi-item dataField="SehirID" [label]="{text: 'İl'}" editorType="dxSelectBox" [editorOptions]="{ items: cities, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
-              <dxi-item dataField="KasabaID" [label]="{text: 'İlçe'}" editorType="dxSelectBox" [editorOptions]="{ items: districts, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
-              <dxi-item dataField="Adres" [colSpan]="2" [label]="{text: 'Adres'}" editorType="dxTextArea"></dxi-item>
-              <dxi-item dataField="Tur" [label]="{text: 'Türü'}" editorType="dxSelectBox" [editorOptions]="{ items: supplierTypes, displayExpr:'Name', valueExpr:'ID' }"></dxi-item>
-              <dxi-item dataField="VergiNo" [label]="{text: 'VKN/TCKN'}"></dxi-item>
-              <dxi-item dataField="VergiDaire" [label]="{text: 'Vergi Dairesi'}"></dxi-item>
-              <dxi-item dataField="AcilisBakiyesi" [label]="{text: 'Açılış Bakiyesi'}"></dxi-item>
-            </dx-form>
-          </div>
-          <div class="fn-grid-holder">
-            <dx-data-grid id="gridContainer" #detailGrid [dataSource]="dataSource2" noDataText="Kayıt Bulunamadı" (onRowUpdated)="syncDataSource($event)">
-              <dxo-editing mode="cell" [allowUpdating]="true"> </dxo-editing>
-              <dxi-column dataField="Adi" caption="Adı Soyadı"></dxi-column>
-              <dxi-column dataField="Eposta" caption="E-Posta"></dxi-column>
-              <dxi-column dataField="Telefon" caption="Telefon"></dxi-column>
-              <dxi-column dataField="Notlar" caption="Not"></dxi-column>
-            </dx-data-grid>
-            <div style="margin-top: 10px !important;">
-              <div>
-                <button (click)="addRow()" class="fn-button transparent">
-                  <i class="anticon anticon-plus-circle-o"></i>Bir Yetkili Ekle</button>
-              </div>
+        <div class="fn-grid-holder">
+          <dx-data-grid id="gridContainer" #detailGrid [dataSource]="dataSource2" noDataText="Kayıt Bulunamadı" (onRowUpdated)="syncDataSource($event)">
+            <dxo-editing mode="cell" [allowUpdating]="true"> </dxo-editing>
+            <dxi-column dataField="Adi" caption="Adı Soyadı"></dxi-column>
+            <dxi-column dataField="Eposta" caption="E-Posta"></dxi-column>
+            <dxi-column dataField="Telefon" caption="Telefon"></dxi-column>
+            <dxi-column dataField="Notlar" caption="Not"></dxi-column>
+          </dx-data-grid>
+          <div style="margin-top: 10px !important;">
+            <div>
+              <button (click)="addRow()" class="fn-button transparent">
+                <i class="anticon anticon-plus-circle-o"></i>Bir Yetkili Ekle</button>
             </div>
           </div>
         </div>
-      </div>
+      </app-fn-form>
     </div>
   </div>
 </div>
