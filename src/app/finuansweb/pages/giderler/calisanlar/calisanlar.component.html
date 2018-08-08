@@ -1,13 +1,13 @@
 <div #stateHolder>
   <div class="col-lg-12 n-p fn-container">
-    <div class="col-lg-12 main-area" [hidden]="state !== 0">
+    <div class="col-lg-12 main-area" [hidden]="state !== 0 || !dataSource">
       <app-fn-main title="Çalışanlar" [actions]="actions" [dataFields]="dataFields" [dataSource]="dataSource" (rowClick)="handleGridAction($event)"
         (actionClick)="handleNewAction($event)"></app-fn-main>
     </div>
     <div class="col-lg-12 new-area" [hidden]="state !== 1">
       <app-fn-form inheritTitle="Çalışanlar" newTitle="Yeni Çalışan" editTitle="Çalışan Düzenle" [(selectedItem)]="selectedItem" (onSave)="saveForm()" (onCancel)="cancelForm()">
           <div class="col-lg-6">
-            <dx-form class="col-lg-12 form-element" [formData]="selectedItem" labelLocation="top" [colCount]="4">
+            <dx-form class="col-lg-12 form-element" [formData]="selectedItem" labelLocation="left" [colCount]="4">
               <dxi-item dataField="Adi" [colSpan]="2" [label]="{text: 'Adı'}"></dxi-item>
               <dxi-item dataField="Soyadi" [colSpan]="2" [label]="{text: 'Soyadı'}"></dxi-item>
               <dxi-item dataField="KategoriID" [colSpan]="2" [label]="{text: 'Kategori'}" editorType="dxSelectBox" [editorOptions]="{ items: categories, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>

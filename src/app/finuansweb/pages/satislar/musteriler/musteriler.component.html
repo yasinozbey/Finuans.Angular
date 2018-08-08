@@ -1,6 +1,6 @@
 <div #stateHolder>
   <div class="col-lg-12 n-p fn-container">
-    <div class="col-lg-12 main-area" [hidden]="state !== 0">
+    <div class="col-lg-12 main-area" [hidden]="state !== 0 || !dataSource">
       <app-fn-main title="Müşteriler" [actions]="actions" [dataFields]="dataFields" [dataSource]="dataSource" (rowClick)="handleGridAction($event)"
         (actionClick)="handleNewAction($event)"></app-fn-main>
     </div>
@@ -11,19 +11,19 @@
         <div class="col-lg-6">
           <dx-form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="2">
             <dxi-item dataField="Unvani" [colSpan]="2" [label]="{text: 'Firma Unvanı'}"></dxi-item>
-            <dxi-item dataField="KisaAdi" [label]="{text: 'Kısa İsim'}"></dxi-item>
-            <dxi-item dataField="KategoriID" [colSpan]="2" [label]="{text: 'Kategori'}" editorType="dxSelectBox" [editorOptions]="{ items: categories, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
-            <dxi-item dataField="EpostaAdresi" [label]="{text: 'E-posta Adresi'}"></dxi-item>
-            <dxi-item dataField="Telefon" [label]="{text: 'Telefon Numarası'}"></dxi-item>
-            <dxi-item dataField="Faks" [label]="{text: 'Faks Numarası'}"></dxi-item>
-            <dxi-item dataField="IBAN" [label]="{text: 'IBAN Numarası'}"></dxi-item>
-            <dxi-item dataField="SehirID" [label]="{text: 'İl'}" editorType="dxSelectBox" [editorOptions]="{ items: cities, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
-            <dxi-item dataField="KasabaID" [label]="{text: 'İlçe'}" editorType="dxSelectBox" [editorOptions]="{ items: districts, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
+            <dxi-item dataField="KisaAdi" [colSpan]="1" [label]="{text: 'Kısa İsim'}"></dxi-item>
+            <dxi-item dataField="Tur" [colSpan]="1" [label]="{text: 'Türü'}" editorType="dxSelectBox" [editorOptions]="{ items: supplierTypes, displayExpr:'Name', valueExpr:'ID' }"></dxi-item>
+            <dxi-item dataField="KategoriID" [colSpan]="1" [label]="{text: 'Kategori'}" editorType="dxSelectBox" [editorOptions]="{ items: categories, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
+            <dxi-item dataField="EpostaAdresi" [colSpan]="1" [label]="{text: 'E-posta Adresi'}"></dxi-item>
+            <dxi-item dataField="Telefon" [colSpan]="1" [label]="{text: 'Telefon Numarası'}"></dxi-item>
+            <dxi-item dataField="Faks" [colSpan]="1" [label]="{text: 'Faks Numarası'}"></dxi-item>
+            <dxi-item dataField="IBAN" [colSpan]="1" [label]="{text: 'IBAN Numarası'}"></dxi-item>
+            <dxi-item dataField="AcilisBakiyesi" [colSpan]="1" [label]="{text: 'Açılış Bakiyesi'}"></dxi-item>
+            <dxi-item dataField="SehirID" [colSpan]="1" [label]="{text: 'İl'}" editorType="dxSelectBox" [editorOptions]="{ items: cities, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
+            <dxi-item dataField="KasabaID" [colSpan]="1" [label]="{text: 'İlçe'}" editorType="dxSelectBox" [editorOptions]="{ items: districts, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
             <dxi-item dataField="Adres" [colSpan]="2" [label]="{text: 'Adres'}" editorType="dxTextArea"></dxi-item>
-            <dxi-item dataField="Tur" [label]="{text: 'Türü'}" editorType="dxSelectBox" [editorOptions]="{ items: supplierTypes, displayExpr:'Name', valueExpr:'ID' }"></dxi-item>
-            <dxi-item dataField="VergiNo" [label]="{text: 'VKN/TCKN'}"></dxi-item>
-            <dxi-item dataField="VergiDaire" [label]="{text: 'Vergi Dairesi'}"></dxi-item>
-            <dxi-item dataField="AcilisBakiyesi" [label]="{text: 'Açılış Bakiyesi'}"></dxi-item>
+            <dxi-item dataField="VergiNo" [colSpan]="1" [label]="{text: 'VKN/TCKN'}"></dxi-item>
+            <dxi-item dataField="VergiDaire" [colSpan]="1" [label]="{text: 'Vergi Dairesi'}"></dxi-item>
           </dx-form>
         </div>
         <div class="fn-grid-holder">

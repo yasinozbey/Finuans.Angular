@@ -12,6 +12,7 @@ export class MusterilerComponent implements OnInit {
   dataSource = [];
   dataSource2 = [];
   dataFields = [
+    { dataField: 'ID', caption: 'ID', alignment: 'left'},
     { dataField: "Unvan", caption: "Unvan" },
     { dataField: "Bakiye", caption: "Bakiye" },
     { dataField: "Odenecek", caption: "Ödenecek" },

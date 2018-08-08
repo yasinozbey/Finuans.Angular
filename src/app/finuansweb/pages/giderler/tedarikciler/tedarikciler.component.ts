@@ -12,6 +12,7 @@ export class TedarikcilerComponent implements OnInit {
   dataSource = [];
   dataSource2 = [];
   dataFields = [
+    { dataField: 'ID', caption: 'ID', alignment: 'left'},
     { dataField: "Unvan", caption: "Unvan" },
     { dataField: "TahsilEdilecek", caption: "Tahsil Edilecek" },
     { dataField: "Odenecek", caption: "Ödenecek" },

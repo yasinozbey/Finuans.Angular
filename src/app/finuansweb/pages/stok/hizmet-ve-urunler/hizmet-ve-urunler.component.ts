@@ -12,11 +12,11 @@ export class HizmetVeUrunlerComponent implements OnInit {
   dataSource = [];
   dataSource2 = [];
   dataFields = [
-    {dataField: "ID", caption: "ID"},
-    {dataField: "Adi", caption: "Adı"},
-    {dataField: "Miktar", caption: "Miktar"},
-    {dataField: "AlisFiyati", caption: "Alış Fiyatı"},
-    {dataField: "SatisFiyati", caption: "Satış Fiyatı"},
+    { dataField: 'ID', caption: 'ID', alignment: 'left'},
+    { dataField: "Adi", caption: "Adı"},
+    { dataField: "Miktar", caption: "Miktar"},
+    { dataField: "AlisFiyati", caption: "Alış Fiyatı"},
+    { dataField: "SatisFiyati", caption: "Satış Fiyatı"},
   ];
   actions = [
     {actionEvent: "new", actionName:"Yeni Hizmet/Ürün"}

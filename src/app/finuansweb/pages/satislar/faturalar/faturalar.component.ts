@@ -11,13 +11,13 @@ export class FaturalarComponent implements OnInit {
 
   dataSource = [];
   dataFields = [
-    {dataField: 'ID', caption: 'ID'},
-    {dataField: 'FaturaTipi', caption: 'Fatura Tipi'},
-    {dataField: 'Aciklama', caption: 'Açıklama'},
-    {dataField: 'HesapAdi', caption: 'Hesap Adı'},
-    {dataField: 'DuzenlenmeTarihi', caption: 'Düzenleme Tarihi'},
-    {dataField: 'VadeTarihi', caption: 'Vade Tarihi'},
-    {dataField: 'Meblag', caption: 'Meblağ'}
+    { dataField: 'ID', caption: 'ID', alignment: 'left'},
+    { dataField: 'FaturaTipi', caption: 'Fatura Tipi'},
+    { dataField: 'Aciklama', caption: 'Açıklama'},
+    { dataField: 'HesapAdi', caption: 'Hesap Adı'},
+    { dataField: 'DuzenlenmeTarihi', caption: 'Düzenleme Tarihi'},
+    { dataField: 'VadeTarihi', caption: 'Vade Tarihi'},
+    { dataField: 'Meblag', caption: 'Meblağ'}
   ];
   actions = [
     {actionEvent: "new", actionName:"Yeni Fatura"}

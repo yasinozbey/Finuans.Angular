@@ -12,7 +12,7 @@ export class TekliflerComponent implements OnInit {
   dataSource = [];
   dataSource2 = [];
   dataFields = [
-    { dataField: "ID", caption: "ID" },
+    { dataField: 'ID', caption: 'ID', alignment: 'left'},
     { dataField: "Aciklama", caption: "Açıklama" },
     { dataField: "HesapAdi", caption: "Hesap Adı" },
     { dataField: "Fatura", caption: "Fatura" },

@@ -11,7 +11,7 @@ export class CalisanlarComponent implements OnInit {
 
   dataSource = [];
   dataFields = [
-    { dataField: "ID", caption: "ID" },
+    { dataField: 'ID', caption: 'ID', alignment: 'left'},
     { dataField: "AdSoyad", caption: "Ad Soyad" },
     { dataField: "Bakiye", caption: "Bakiye" },
     { dataField: "Avans", caption: "Avans" },

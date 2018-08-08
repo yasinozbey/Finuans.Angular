@@ -12,13 +12,13 @@ export class GiderListesiComponent implements OnInit {
   dataSource = [];
   dataSource2 = [];
   dataFields = [
-    {dataField: "ID", caption: "ID"},
-    {dataField: "Aciklama", caption: "Açıklama"},
-    {dataField: "HesapAdi", caption: "Hesap Adı"},
-    {dataField: "DuzenlemeTarihi", caption: "Düzenleme Tarihi"},
-    {dataField: "Bakiye", caption: "Bakiye"},
-    {dataField: "Odendi", caption: "Ödendi"},
-    {dataField: "Odenecek", caption: "Ödenecek"}
+    { dataField: 'ID', caption: 'ID', alignment: 'left'},
+    { dataField: "Aciklama", caption: "Açıklama"},
+    { dataField: "HesapAdi", caption: "Hesap Adı"},
+    { dataField: "DuzenlemeTarihi", caption: "Düzenleme Tarihi"},
+    { dataField: "Bakiye", caption: "Bakiye"},
+    { dataField: "Odendi", caption: "Ödendi"},
+    { dataField: "Odenecek", caption: "Ödenecek"}
   ];
   actions = [
     {actionEvent: "FIS", actionName: "Yeni Fiş/Fatura"},
