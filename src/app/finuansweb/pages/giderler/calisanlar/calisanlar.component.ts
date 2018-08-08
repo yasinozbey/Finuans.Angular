@@ -11,12 +11,15 @@ export class CalisanlarComponent implements OnInit {
 
   dataSource = [];
   dataFields = [
-    {dataField: "ID", caption: "ID"},
-    {dataField: "AdSoyad", caption: "Ad Soyad"},
-    {dataField: "Bakiye", caption: "Bakiye"},
-    {dataField: "Avans", caption: "Avans"},
-    {dataField: "Odenecek", caption: "Ödenecek"},
+    { dataField: 'ID', caption: 'ID', alignment: 'left'},
+    { dataField: "AdSoyad", caption: "Ad Soyad" },
+    { dataField: "Bakiye", caption: "Bakiye" },
+    { dataField: "Avans", caption: "Avans" },
+    { dataField: "Odenecek", caption: "Ödenecek" },
   ];
+  actions = [
+    { actionEvent: "new", actionName: "Yeni Çalışan" }
+  ]
   info;
   categories;
   selectedItem;
@@ -31,24 +34,24 @@ export class CalisanlarComponent implements OnInit {
     });
   }
 
-  handleItem(e) {
+  handleGridAction(e) {
     this.main.reqGet("Calisan/GetbyId/" + e.data.ID).subscribe(res => {
       this.selectedItem = res;
-      this.state = 2;
+      this.state = 1;
     });
   }
 
-  newItem() {
-    this.selectedItem = new Object();
+  handleNewAction(e) {
+    this.selectedItem = undefined;
     this.state = 1;
   }
 
-  cancelOperation() {
+  cancelForm() {
     this.state = 0;
     this.selectedItem = new Object();
   }
 
-  saveItem() {
+  saveForm() {
     let url;
     if (this.state === 1) {
       url = "Calisan/Insert";

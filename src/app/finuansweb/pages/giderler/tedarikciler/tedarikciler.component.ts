@@ -12,11 +12,15 @@ export class TedarikcilerComponent implements OnInit {
   dataSource = [];
   dataSource2 = [];
   dataFields = [
-    {dataField: "Unvan", caption: "Unvan"},
-    {dataField: "TahsilEdilecek", caption: "Tahsil Edilecek"},
-    {dataField: "Odenecek", caption: "Ödenecek"},
-    {dataField: "Bakiye", caption: "Bakiye"}
+    { dataField: 'ID', caption: 'ID', alignment: 'left'},
+    { dataField: "Unvan", caption: "Unvan" },
+    { dataField: "TahsilEdilecek", caption: "Tahsil Edilecek" },
+    { dataField: "Odenecek", caption: "Ödenecek" },
+    { dataField: "Bakiye", caption: "Bakiye" }
   ];
+  actions = [
+    { actionEvent: "new", actionName: "Yeni Tedarikçi" }
+  ]
   supplierTypes = [
     { ID: 0, Name: "Tüzel Kişi" },
     { ID: 1, Name: "Gerçek Kişi" },
@@ -50,27 +54,27 @@ export class TedarikcilerComponent implements OnInit {
     });
   }
 
-  handleItem(e) {
+  handleGridAction(e) {
     this.main.reqGet("CariHesap/GetbyId/" + e.data.ID).subscribe(res => {
       this.selectedItem = res;
-      this.state = 2;
+      this.state = 1;
     });
     this.main.reqGet("CariHesap/IslemGecmisi/" + e.data.ID).subscribe(islemRes => {
       this.info = islemRes;
     });
   }
 
-  newItem() {
-    this.selectedItem = new Object();
+  handleNewAction() {
+    this.selectedItem = undefined;
     this.state = 1;
   }
 
-  cancelOperation() {
+  cancelForm() {
     this.state = 0;
-    this.selectedItem = new Object();
+    this.selectedItem = undefined;
   }
 
-  saveItem() {
+  saveForm() {
     let url;
     if (this.state === 1) {
       url = "Calisan/Insert";

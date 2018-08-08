@@ -36,7 +36,9 @@ import { NakitAkisiRaporuComponent } from './finuansweb/pages/nakit/nakit-akisi-
 import { HizmetVeUrunlerComponent } from './finuansweb/pages/stok/hizmet-ve-urunler/hizmet-ve-urunler.component';
 import { StokGecmisiComponent } from './finuansweb/pages/stok/stok-gecmisi/stok-gecmisi.component';
 import { StoktakiUrunlerRaporuComponent } from './finuansweb/pages/stok/stoktaki-urunler-raporu/stoktaki-urunler-raporu.component';
-import { FnGridComponent } from './finuansweb/layout-helpers/fn-grid/fn-grid.component';
+import { FnFormGridComponent } from './finuansweb/layout-helpers/fn-form-grid/fn-form-grid.component';
+import { FnMainComponent } from './finuansweb/layout-helpers/fn-main/fn-main.component';
+import { FnFormComponent } from './finuansweb/layout-helpers/fn-form/fn-form.component';
 
 const appRoutes: Routes = [
   { path: 'GuncelDurum', component: GuncelDurumComponent },
@@ -92,7 +94,9 @@ registerLocaleData(localeTr, 'tr');
     HizmetVeUrunlerComponent,
     StokGecmisiComponent,
     StoktakiUrunlerRaporuComponent,
-    FnGridComponent
+    FnFormGridComponent,
+    FnMainComponent,
+    FnFormComponent
   ],
   imports: [
     BrowserModule,

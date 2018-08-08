@@ -1,0 +1,41 @@
+:host {
+    margin-top: 0;
+    display: inline-block;
+    background: rgb(255, 255, 255);
+    padding: 10px 30px 55px 30px;
+    border-radius: 8px;
+    width: 100%;
+    /* box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.08); */
+}
+
+:host /deep/ .dx-datagrid .dx-row > td{
+    padding: 11px 7px;
+    border-top: 1px solid rgb(232, 234, 235);
+    border-bottom: none;
+}
+
+:host /deep/ .dx-datagrid tbody tr:first-child > td{
+    border-top: none;
+}
+
+:host /deep/ .dx-datagrid tbody tr:nth-last-child(-n+2) > td{
+    border-bottom: 1px solid rgb(232, 234, 235);
+}
+
+@media(max-width: 1601px) {
+    :host {
+        margin-top: -63px;
+    }
+}
+
+@media(max-width: 1381px) {
+    :host {
+        margin-top: -46px;
+    }
+}
+
+@media(max-width: 1030px) {
+    :host {
+        padding: 10px 10px 55px 10px;
+    }
+}

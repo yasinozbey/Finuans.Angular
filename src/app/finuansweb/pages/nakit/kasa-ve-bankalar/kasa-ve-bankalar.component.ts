@@ -11,6 +11,10 @@ export class KasaVeBankalarComponent implements OnInit {
 
   dataSource = [];
   dataFields = [];
+  actions = [
+    {actionEvent: "KASA", actionName: "Yeni Kasa"},
+    {actionEvent: "BANKA", actionName: "Yeni Banka"}
+  ]
   info;
   categories;
   currencies;
@@ -31,12 +35,12 @@ export class KasaVeBankalarComponent implements OnInit {
     });
   }
 
-  handleItem(e) {
+  handleGridAction(e) {
     if (e.data.IsKasa) {
       this.main.reqGet("KasaHesabi/GetbyId/" + e.data.ID).subscribe(res => {
         this.selectedItem = res;
         this.stateType = "KASA";
-        this.state = 2;
+        this.state = 1;
       });
       this.main.reqGet("BankaHesabi/IslemGecmisi/" + e.data.ID + "?isKasa=1").subscribe(resIslem => {
         this.info = resIslem;
@@ -45,7 +49,7 @@ export class KasaVeBankalarComponent implements OnInit {
       this.main.reqGet("BankaHesabi/GetbyId/" + e.data.ID).subscribe(res => {
         this.selectedItem = res;
         this.stateType = "BANKA";
-        this.state = 2;
+        this.state = 1;
       });
       this.main.reqGet("BankaHesabi/IslemGecmisi/" + e.data.ID + "?isKasa=0").subscribe(resIslem => {
         this.info = resIslem;
@@ -53,18 +57,18 @@ export class KasaVeBankalarComponent implements OnInit {
     }
   }
 
-  newItem(e) {
-    this.selectedItem = new Object();
+  handleNewAction(e) {
+    this.selectedItem = undefined;
     this.stateType = e;
     this.state = 1;
   }
 
-  cancelOperation() {
+  cancelForm() {
     this.state = 0;
-    this.selectedItem = new Object();
+    this.selectedItem = undefined;
   }
 
-  saveItem() {
+  saveForm() {
     let url;
     if (this.state === 1) {
       if (this.stateType === 'BANKA') {
@@ -81,6 +85,7 @@ export class KasaVeBankalarComponent implements OnInit {
     }
     this.main.reqPost(url, this.selectedItem).subscribe(res => {
       this.getList();
+      this.selectedItem = undefined;
     });
   }
 

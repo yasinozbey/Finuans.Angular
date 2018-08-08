@@ -12,13 +12,16 @@ export class TekliflerComponent implements OnInit {
   dataSource = [];
   dataSource2 = [];
   dataFields = [
-    { dataField: "ID", caption: "ID" },
+    { dataField: 'ID', caption: 'ID', alignment: 'left'},
     { dataField: "Aciklama", caption: "Açıklama" },
     { dataField: "HesapAdi", caption: "Hesap Adı" },
     { dataField: "Fatura", caption: "Fatura" },
     { dataField: "DuzenlenmeTarihi", caption: "Düzenleme Tarihi", dataType: "date", format: 'd.MM.y' },
     { dataField: "TeklifTutari", caption: "Teklif Tutarı", format: { style: "currency", currency: "EUR", useGrouping: true, maximumFractionDigits: 2 } },
   ];
+  actions = [
+    { actionEvent: "new", actionName: "Yeni Teklif" }
+  ]
   info;
   customers;
   currencies;
@@ -56,24 +59,27 @@ export class TekliflerComponent implements OnInit {
     });
   }
 
-  handleItem(e) {
+  handleGridAction(e) {
     this.main.reqGet("Teklif/GetbyId/" + e.data.ID).subscribe(res => {
       this.selectedItem = res;
       this.main.reqGet("Teklif/GetDetail?teklifID=" + e.data.ID).subscribe(x => {
         this.dataSource2 = x;
-        this.state = 2;
+        this.state = 1;
       })
     });
   }
 
-  newItem = this.main.newItem.bind(this);
+  handleNewAction(e) {
+    this.selectedItem = undefined;
+    this.state = 1;
+  }
 
-  cancelOperation() {
+  cancelForm() {
     this.state = 0;
     this.selectedItem = new Object();
   }
 
-  saveItem() {
+  saveForm() {
     let AraToplam = 0;
     let KDVToplam = 0;
     let GenelToplam = 0;

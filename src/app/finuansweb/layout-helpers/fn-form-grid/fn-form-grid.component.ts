@@ -1,11 +1,11 @@
 import { Component, Input, Output, OnInit, EventEmitter } from "@angular/core";
 
 @Component({
-  selector: 'app-fn-grid',
-  templateUrl: './fn-grid.component.html',
-  styleUrls: ['./fn-grid.component.css']
+  selector: 'app-fn-form-grid',
+  templateUrl: './fn-form-grid.component.html',
+  styleUrls: ['./fn-form-grid.component.css']
 })
-export class FnGridComponent implements OnInit {
+export class FnFormGridComponent implements OnInit {
   @Input("dataSource") dataSource;
   @Input("dataFields") dataFields;
   @Output() rowClick: EventEmitter<any> = new EventEmitter();

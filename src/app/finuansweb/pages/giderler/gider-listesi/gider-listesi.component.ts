@@ -12,14 +12,20 @@ export class GiderListesiComponent implements OnInit {
   dataSource = [];
   dataSource2 = [];
   dataFields = [
-    {dataField: "ID", caption: "ID"},
-    {dataField: "Aciklama", caption: "Açıklama"},
-    {dataField: "HesapAdi", caption: "Hesap Adı"},
-    {dataField: "DuzenlemeTarihi", caption: "Düzenleme Tarihi"},
-    {dataField: "Bakiye", caption: "Bakiye"},
-    {dataField: "Odendi", caption: "Ödendi"},
-    {dataField: "Odenecek", caption: "Ödenecek"}
+    { dataField: 'ID', caption: 'ID', alignment: 'left'},
+    { dataField: "Aciklama", caption: "Açıklama"},
+    { dataField: "HesapAdi", caption: "Hesap Adı"},
+    { dataField: "DuzenlemeTarihi", caption: "Düzenleme Tarihi"},
+    { dataField: "Bakiye", caption: "Bakiye"},
+    { dataField: "Odendi", caption: "Ödendi"},
+    { dataField: "Odenecek", caption: "Ödenecek"}
   ];
+  actions = [
+    {actionEvent: "FIS", actionName: "Yeni Fiş/Fatura"},
+    {actionEvent: "MAAS", actionName: "Yeni Maaş/Prim"},
+    {actionEvent: "VERGI", actionName: "Yeni Vergi/SGK Primi"},
+    {actionEvent: "BANKA", actionName: "Yeni Banka Gideri"},
+  ]
   info;
   categories;
   currencies;
@@ -56,7 +62,7 @@ export class GiderListesiComponent implements OnInit {
     });
   }
 
-  handleItem(e) {
+  handleGridAction(e) {
     if (e.data.Tip === 0) {
       this.stateType = "MAAS";
     } else if(e.data.Tip === 1) {
@@ -73,22 +79,22 @@ export class GiderListesiComponent implements OnInit {
     }
     this.main.reqGet("Gider/GetbyId/" + e.data.ID).subscribe(res => {
       this.selectedItem = res;
-      this.state = 2;
+      this.state = 1;
     });
   }
 
-  newItem(e) {
-    this.selectedItem = new Object();
+  handleNewAction(e) {
+    this.selectedItem = undefined;
     this.stateType = e;
     this.state = 1;
   }
 
-  cancelOperation() {
+  cancelForm() {
     this.state = 0;
-    this.selectedItem = new Object();
+    this.selectedItem = undefined;
   }
 
-  saveItem() {
+  saveForm() {
     let url;
     if (this.state === 1) {
       url = "Gider/Insert";

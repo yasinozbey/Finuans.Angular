@@ -134,6 +134,9 @@ body {
 
 .fn-container .fn-grid {
     padding: 0;
+    max-width:unset !important;
+    width:100%;
+    margin-top: -59px;
 }
 
 .fn-type-holder {
@@ -209,7 +212,7 @@ body {
 
 .fn-button {
     padding: 6px 20px;
-    background: linear-gradient(45deg, rgb(139, 98, 255), rgb(10, 141, 255));
+    background:rgb(0,101,255);
     box-shadow: 0 0 20px -2px #2285ff80;
     position: relative;
     color: rgb(255, 255, 255);
@@ -328,10 +331,13 @@ body {
 }
 
 .fn-header {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
-    margin-top: 58px;
+    margin-top: 25px;
     width: 100%;
-    padding-left: 50px;
+    padding-left: 20px;
     float: left;
     position: relative;
 }
@@ -341,7 +347,7 @@ body {
 }
 
 .main-area .dx-datagrid-headers {
-    margin-top: 13px;
+    margin-top: 10px;
 }
 
 .fn-header span {
@@ -489,7 +495,7 @@ div.dx-searchbox .dx-icon-search {
     position: relative;
     z-index: 99999;
     padding-left: 20px;
-    top: 56px;
+    top: 22px;
     width: 200px;
     float: left;
 }
@@ -528,7 +534,7 @@ div.dx-searchbox .dx-icon-search {
 @keyframes topin {
     0% {
         opacity: 0;
-        top: -100vh;
+        top: -10vh;
     }
     100% {
         opacity: 1;
@@ -538,7 +544,27 @@ div.dx-searchbox .dx-icon-search {
 
 .main-area {
     position: relative;
-    animation: topin cubic-bezier(.62, .28, .23, .99) 0.5s 1;
+    animation-fill-mode: forwards;
+    animation-delay: 0.5s;
+    animation: topin cubic-bezier(.62, .28, .23, .99) 0.75s 1;
+}
+
+@keyframes bottomin {
+    0% {
+        opacity: 0;
+        bottom: -10vh;
+    }
+    100% {
+        opacity: 1;
+        bottom: 0;
+    }
+}
+
+.new-area{
+    position: relative;
+    animation-fill-mode: forwards;
+    animation-delay: 0.5s;
+    animation: bottomin cubic-bezier(.62, .28, .23, .99) 0.75s 1;
 }
 
 /* menu css */
@@ -577,7 +603,7 @@ div.dx-searchbox .dx-icon-search {
     font-size: 1.2rem;
     padding: 10px;
     border-radius: 100%;
-    color: rgb(255, 255, 255);
+    color: #fff;
     font-weight: 600;
     margin-right: -10px;
     position: relative;
@@ -590,7 +616,7 @@ div.dx-searchbox .dx-icon-search {
     padding: 0;
     list-style: none;
     font-size: 1.2rem;
-    color: white;
+    color: #fff;
     pointer-events: all;
     cursor: pointer;
     line-height: calc(100% + 15px);
@@ -606,15 +632,15 @@ div.dx-searchbox .dx-icon-search {
 
 #menu-area ul li.head {
     line-height: 42px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 #menu-area ul li:hover {
-    background: rgba(0, 0, 0, 0.3);
-    color: rgb(3, 169, 244);
+    color: rgb(0,101,255);
 }
 
 #menu-area ul li:hover i {
-    color: rgb(3, 169, 244);
+    color: rgb(0,101,255);
 }
 
 #menu-area .sub-menu {
@@ -653,7 +679,7 @@ div.dx-searchbox .dx-icon-search {
     text-shadow: 0 0 18px #000000a6;
     box-shadow: 0px 2px 11px 0 rgba(0, 0, 0, 0.35);
     outline: none;
-    background: linear-gradient(45deg, rgb(139, 98, 255), rgb(10, 141, 255));
+    background: rgb(0,101,255);
     transition: all cubic-bezier(.62, .28, .23, .99) 0.3s;
 }
 
@@ -697,30 +723,62 @@ div.dx-searchbox .dx-icon-search {
 #menu {
     float: left;
     width: 280px;
-    background: linear-gradient(45deg, rgb(31, 31, 31), rgb(37, 40, 52));
-    box-shadow: 0 0 44px 3px #00000069;
-    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.19), 6px 6px 6px rgba(0, 0, 0, 0.23);
-    height: calc(100% - 40px);
+    background: rgb(26,33,41);
+    height: calc(100%);
     border-right: 1px solid rgba(0, 0, 0, 0.3);
-    border-radius: 8px;
+    border-radius: 0;
     position: relative;
     z-index: 1;
     position: relative;
-    /* left: 10px; */
-    margin-left: 10px;
-    top: 20px;
-    -webkit-animation: leftin cubic-bezier(.62, .28, .23, .99) 0.5s 1;
-    animation: leftin cubic-bezier(.62, .28, .23, .99) 0.5s 1;
+    margin-left: 0;
+    top: 0;
+}
+
+#menu #logo-area{
+    animation: leftin cubic-bezier(.62, .28, .23, .99) 1s 1;
+    animation-fill-mode: forwards;
+    margin-left: -163px;
+}
+
+#menu li.head{
+    animation: leftin cubic-bezier(.62, .28, .23, .99) 1s 1;
+    animation-fill-mode: forwards;
+    margin-left: -163px;
+}
+
+#menu #logo-area{
+    animation-delay: 0s;
+}
+
+#menu li.head:nth-child(1){
+    animation-delay: 0.1s;
+}
+
+#menu li.head:nth-child(2){
+    animation-delay: 0.2s;
+}
+
+#menu li.head:nth-child(4){
+    animation-delay: 0.3s;
+}
+
+#menu li.head:nth-child(6){
+    animation-delay: 0.4s;
+}
+
+#menu li.head:nth-child(8){
+    animation-delay: 0.5s;
 }
 
 @keyframes leftin {
     0% {
-        opacity: 0;
-        left: -150px;
+        margin-left: -163px;
+    }
+    50% {
+        margin-left: -163px;
     }
     100% {
-        opacity: 1;
-        left: 0;
+        margin-left: 0;
     }
 }
 
@@ -734,7 +792,7 @@ div.dx-searchbox .dx-icon-search {
 .edit-area {
     float: left;
     width: 100%;
-    margin-top: 22px;
+    margin-top: 0;
     border-radius: 8px;
     padding-top: 36px;
     padding-bottom: 18px;
@@ -747,13 +805,17 @@ div.dx-searchbox .dx-icon-search {
 }
 
 .edit-area .fn-grid-holder {
-    padding: 0 35px;
+    padding: 0;
 }
 
 .edit-area .fn-header {
     margin-top: 0;
+    padding-left: 48px;
 }
 
+.fn-holder-page{
+    margin-top: 22px;
+}
 /* FinuansWeb css END */
 
 @media(max-width: 1601px) {

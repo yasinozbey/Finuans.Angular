@@ -1,41 +1,12 @@
 <div #stateHolder>
   <div class="col-lg-12 n-p fn-container">
-    <div class="col-lg-12 main-area" [hidden]="state !== 0">
-      <div class="fn-header">
-        <span class="main">Stok
-          <i class="anticon anticon-right"></i>
-          <b> Hizmet ve Ürünler</b>
-        </span>
-      </div>
-      <div class="fn-button-holder">
-        <button class="fn-button">
-          <i class="anticon anticon-bars"></i>
-          <span>İşlemler</span>
-        </button>
-        <div class="fn-dropdown">
-          <span (click)="newItem()">Yeni Hizmet/Ürün</span>
-        </div>
-      </div>
-      <app-fn-grid (rowClick)="handleItem($event)" [dataSource]="dataSource" [dataFields]="dataFields"></app-fn-grid>
+    <div class="col-lg-12 main-area" [hidden]="state !== 0 || !dataSource">
+      <app-fn-main title="Hizmet ve Ürünler" [actions]="actions" [dataFields]="dataFields" [dataSource]="dataSource" (rowClick)="handleGridAction($event)"
+        (actionClick)="handleNewAction($event)"></app-fn-main>
     </div>
-    <div class="col-lg-12" *ngIf="state !== 0">
-      <div class="fn-header">
-        <span class="main" *ngIf="state === 1">Stok
-          <i class="anticon anticon-right"></i>Hizmet ve Ürünler
-          <i class="anticon anticon-right"></i>
-          <b>Yeni Hizmet/Ürün</b>
-        </span>
-        <span class="main" *ngIf="state === 2">Stok
-          <i class="anticon anticon-right"></i>Hizmet ve Ürünler
-          <i class="anticon anticon-right"></i>
-          <b>Hizmet/Ürün Düzenle</b>
-        </span>
-        <div class="fn-form-buttons">
-          <button class="fn-close" (click)="cancelOperation()">Vazgeç</button>
-          <button class="fn-ok" (click)="saveItem()">Kaydet</button>
-        </div>
-      </div>
-      <div class="form-holder">
+    <div class="col-lg-12 new-area" [hidden]="state !== 1">
+      <app-fn-form inheritTitle="Hizmet ve Ürünler" newTitle="Yeni Hizmet/Ürün" editTitle="Hizmet/Ürün Düzenle" [(selectedItem)]="selectedItem"
+        (onSave)="saveForm()" (onCancel)="cancelForm()">
         <div class="col-lg-6">
           <dx-form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="8" [showColonAfterLabel]=false>
             <dxi-item dataField="Adi" [colSpan]="8" [label]="{text: 'Adı'}"></dxi-item>
@@ -50,36 +21,16 @@
             <dxi-item dataField="item11" [colSpan]="2" [label]="{text: 'KDV'}"></dxi-item>
           </dx-form>
         </div>
-        <div class="fn-right-side col-lg-6">
-          <div class="fn-info col-lg-12 n-p">
-            <span>Son İşlemler</span>
-            <dx-data-grid class="fn-grid" [dataSource]="info" noDataText="Kayıt Bulunamadı">
-              <dxi-column dataField="Aciklama" caption="Açıklama"></dxi-column>
-              <dxi-column dataField="IslemTuru" caption="İşlem"></dxi-column>
-              <dxi-column dataField="Meblag" caption="Meblağ"></dxi-column>
-              <dxi-column dataField="Bakiye" caption="Bakiye"></dxi-column>
-              <dxo-summary>
-                <dxi-total-item column="Bakiye" summaryType="sum" displayFormat="Toplam: {0}"></dxi-total-item>
-              </dxo-summary>
+        <app-fn-form-grid>
+            <dx-data-grid id="gridContainer" [dataSource]="dataSource2" noDataText="Kayıt Bulunamadı">
+              <dxo-editing mode="cell" [allowUpdating]="true"> </dxo-editing>
+              <dxi-column dataField="Barkod" caption="Barkod"></dxi-column>
+              <dxi-column dataField="Birim" caption="Birim"></dxi-column>
+              <dxi-column dataField="Miktar" caption="Miktar"></dxi-column>
+              <dxi-column dataField="Fiyat" caption="Fiyat"></dxi-column>
             </dx-data-grid>
-          </div>
-        </div>
-      </div>
-      <div class="fn-grid-holder">
-        <dx-data-grid id="gridContainer" [dataSource]="dataSource2" noDataText="Kayıt Bulunamadı">
-          <dxo-editing mode="cell" [allowUpdating]="true"> </dxo-editing>
-          <dxi-column dataField="Barkod" caption="Barkod"></dxi-column>
-          <dxi-column dataField="Birim" caption="Birim"></dxi-column>
-          <dxi-column dataField="Miktar" caption="Miktar"></dxi-column>
-          <dxi-column dataField="Fiyat" caption="Fiyat"></dxi-column>
-        </dx-data-grid>
-        <div style="margin-top: 10px !important;">
-          <div class="col-lg-3 n-p">
-            <button (click)="addRow()" class="fn-button transparent">
-              <i class="anticon anticon-plus-circle-o"></i>Yeni Satır Ekle</button>
-          </div>
-        </div>
-      </div>
+        </app-fn-form-grid>
+      </app-fn-form>
     </div>
   </div>
 </div>
