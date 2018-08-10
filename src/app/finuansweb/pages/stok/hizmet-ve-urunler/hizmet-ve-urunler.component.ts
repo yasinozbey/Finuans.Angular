@@ -21,6 +21,12 @@ export class HizmetVeUrunlerComponent implements OnInit {
   actions = [
     {actionEvent: "new", actionName:"Yeni Hizmet/Ürün"}
   ]
+  taxes = [
+    { Name: "0%", Value: 0 },
+    { Name: "1%", Value: 1 },
+    { Name: "8%", Value: 8 },
+    { Name: "18%", Value: 18 },
+  ]
   info;
   categories;
   currencies;

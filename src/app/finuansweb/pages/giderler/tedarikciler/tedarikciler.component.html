@@ -2,42 +2,53 @@
   <div class="col-lg-12 n-p fn-container">
     <div class="col-lg-12 main-area" [hidden]="state !== 0 || !dataSource">
       <app-fn-main title="Tedarikçiler" [actions]="actions" [dataFields]="dataFields" [dataSource]="dataSource" (rowClick)="handleGridAction($event)"
-        (actionClick)="handleNewAction($event)"></app-fn-main>
+        (actionClick)="handleNewAction()"></app-fn-main>
     </div>
 
     <div class="col-lg-12" *ngIf="state === 1">
-      <app-fn-form inheritTitle="Tedarikçiler" newTitle="Yeni Tedarikçi" editTitle="Tedarikçi Düzenle" [(selectedItem)]="selectedItem"
-        (onSave)="saveForm()" (onCancel)="cancelForm()">
+      <app-fn-form inheritTitle="Tedarikçiler" newTitle="Yeni Tedarikçi" editTitle="Tedarikçi Düzenle" (onSave)="saveForm(form)" (onCancel)="cancelForm()">
         <div class="col-lg-6">
-          <dx-form class="col-lg-12 form-element" [formData]="selectedItem" labelLocation="left" [colCount]="4">
-            <dxi-item dataField="Unvani" [colSpan]="4" [label]="{text: 'Firma Unvanı'}"></dxi-item>
-            <dxi-item dataField="KisaAdi" [colSpan]="2" [label]="{text: 'Kısa İsim'}"></dxi-item>
-            <dxi-item dataField="KategoriID" [colSpan]="2" [label]="{text: 'Kategori'}" editorType="dxSelectBox" [editorOptions]="{ items: categories, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
-            <dxi-item dataField="EpostaAdresi" [colSpan]="2" [label]="{text: 'E-posta Adresi'}"></dxi-item>
-            <dxi-item dataField="Telefon" [colSpan]="1" [label]="{text: 'Tel No'}"></dxi-item>
-            <dxi-item dataField="Faks" [colSpan]="1" [label]="{text: 'Faks No'}"></dxi-item>
-            <dxi-item dataField="IBAN" [colSpan]="2" [label]="{text: 'IBAN'}"></dxi-item>
-            <dxi-item dataField="VergiDaire" [colSpan]="1" [label]="{text: 'Vergi Dairesi'}"></dxi-item>
-            <dxi-item dataField="VergiNo" [colSpan]="1" [label]="{text: 'VKN/TCKN'}"></dxi-item>
-            <dxi-item dataField="SehirID" [colSpan]="2" [label]="{text: 'İl'}"></dxi-item>
-            <dxi-item dataField="SehirID" [colSpan]="2" [label]="{text: 'İl'}" editorType="dxSelectBox" [editorOptions]="{ items: cities, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
-            <dxi-item dataField="KasabaID" [colSpan]="2" [label]="{text: 'İlçe'}" editorType="dxSelectBox" [editorOptions]="{ items: districts, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
-            <dxi-item dataField="Adres" [colSpan]="4" [label]="{text: 'Adres'}" editorType="dxTextArea"></dxi-item>
-            <dxi-item dataField="Tur" [colSpan]="2" [label]="{text: 'Türü'}" editorType="dxSelectBox" [editorOptions]="{ items: supplierTypes, displayExpr:'Name', valueExpr:'ID' }"></dxi-item>
-            <dxi-item dataField="AcilisBakiyesi" [label]="{text: 'Açılış Bakiyesi'}"></dxi-item>
-            <dxi-item dataField="AcilisBakiyeDovizTipi.ID" [colSpan]="2" [label]="{text: 'Döviz'}" editorType="dxSelectBox" [editorOptions]="{ items: currencies, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
-          </dx-form>
+            <dx-form #form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="2">
+                <dxi-item dataField="Unvani" [colSpan]="2" [label]="{text: 'Firma Unvanı'}">
+                  <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+                </dxi-item>
+                <dxi-item dataField="KisaAdi" [colSpan]="1" [label]="{text: 'Kısa İsim'}"></dxi-item>
+                <dxi-item dataField="Tur" [colSpan]="1" [label]="{text: 'Türü'}" editorType="dxSelectBox" [editorOptions]="{ items: supplierTypes, displayExpr:'Name', valueExpr:'ID', value: 0}">
+                  <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+                </dxi-item>
+                <dxi-item dataField="SehirID" [colSpan]="1" [label]="{text: 'İl'}" editorType="dxSelectBox" [editorOptions]="{ items: cities, displayExpr:'Adi', valueExpr:'ID' }">
+                  <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+                </dxi-item>
+                <dxi-item dataField="KasabaID" [colSpan]="1" [label]="{text: 'İlçe'}" editorType="dxSelectBox" [editorOptions]="{ items: districts, displayExpr:'Adi', valueExpr:'ID' }">
+                  <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+                </dxi-item>
+                <dxi-item dataField="VergiNo" [colSpan]="1" [label]="{text: 'VKN/TCKN'}" [editorOptions]="{ mask: '00000000000', useMaskedValue: true, maskInvalidMessage: 'TC No 11 Haneli Olmalıdır'}">
+                  <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+                </dxi-item>
+                <dxi-item dataField="VergiDaire" [colSpan]="1" [label]="{text: 'Vergi Dairesi'}">
+                  <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+                </dxi-item>
+                <dxi-item dataField="Adres" [colSpan]="2" [label]="{text: 'Adres'}" editorType="dxTextArea">
+                  <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+                </dxi-item>
+                <dxi-item dataField="KategoriID" [colSpan]="1" [label]="{text: 'Kategori'}" editorType="dxSelectBox" [editorOptions]="{ items: categories, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
+                <dxi-item dataField="EpostaAdresi" [colSpan]="1" [label]="{text: 'E-posta Adresi'}"></dxi-item>
+                <dxi-item dataField="Telefon" [colSpan]="1" [label]="{text: 'Telefon Numarası'}" [editorOptions]="{ mask: '+00 (000) 000-0000',  maskInvalidMessage: 'Lütfen Formata Uygun Değer Giriniz'}"></dxi-item>
+                <dxi-item dataField="Faks" [colSpan]="1" [label]="{text: 'Faks Numarası'}" [editorOptions]="{ mask: '+00 (000) 000-0000',  maskInvalidMessage: 'Lütfen Formata Uygun Değer Giriniz'}"></dxi-item>
+                <dxi-item dataField="IBAN" [colSpan]="1" [label]="{text: 'IBAN Numarası'}" [editorOptions]="{ mask: 'TR00 0000 0000 0000 0000 0000 00',maskInvalidMessage:'Iban formatı yanlış'}"></dxi-item>
+                <dxi-item dataField="AcilisBakiyesi" [colSpan]="1" [label]="{text: 'Açılış Bakiyesi'}"></dxi-item>
+              </dx-form>
         </div>
         <div class="fn-grid-holder">
-          <dx-data-grid id="gridContainer" [dataSource]="dataSource2">
+          <dx-data-grid id="gridContainer" #detailGrid [dataSource]="dataSource2" noDataText="Kayıt Bulunamadı" (onRowUpdated)="syncDataSource($event)">
             <dxo-editing mode="cell" [allowUpdating]="true"> </dxo-editing>
-            <dxi-column dataField="Product" caption="Yetkili Kişinin Adı"></dxi-column>
-            <dxi-column dataField="Product1" caption="E-posta"></dxi-column>
-            <dxi-column dataField="Product2" caption="Telefon"></dxi-column>
-            <dxi-column dataField="Product3" caption="Not"></dxi-column>
+            <dxi-column dataField="Adi" caption="Adı Soyadı"></dxi-column>
+            <dxi-column dataField="Eposta" caption="E-Posta"></dxi-column>
+            <dxi-column dataField="Telefon" caption="Telefon"></dxi-column>
+            <dxi-column dataField="Notlar" caption="Not"></dxi-column>
           </dx-data-grid>
           <div style="margin-top: 10px !important;">
-            <div class="col-lg-3 n-p">
+            <div>
               <button (click)="addRow()" class="fn-button transparent">
                 <i class="anticon anticon-plus-circle-o"></i>Bir Yetkili Ekle</button>
             </div>

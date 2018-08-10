@@ -10,7 +10,14 @@ import { MainService } from '../../../../shared/main.service';
 export class KasaVeBankalarComponent implements OnInit {
 
   dataSource = [];
-  dataFields = [];
+  dataFields = [
+    { dataField: 'ID', caption: 'ID', alignment: 'left'},
+    { dataField: 'IsKasa', caption: 'Hesap Tipi', calculateCellValue: this.calculateCellValue},
+    { dataField: 'HesapAdi', caption: 'Hesap Adı'},
+    { dataField: 'IBAN', caption: 'IBAN'},
+    { dataField: 'Bakiye', caption: 'Bakiye', alignment: 'right'},
+    { dataField: 'DovizCinsi', caption: 'Döviz Cinsi'},
+  ];
   actions = [
     {actionEvent: "KASA", actionName: "Yeni Kasa"},
     {actionEvent: "BANKA", actionName: "Yeni Banka"}
@@ -21,6 +28,7 @@ export class KasaVeBankalarComponent implements OnInit {
   selectedItem;
   state = 0;
   stateType;
+  defaultDoviz;
 
   getList() {
     this.main.reqGet("BankaHesabi/List").subscribe(res => {
@@ -32,6 +40,13 @@ export class KasaVeBankalarComponent implements OnInit {
     });
     this.main.reqGet("Doviz/Get").subscribe(resDoviz => {
       this.currencies = resDoviz;
+      this.defaultDoviz = this.currencies.filter(x => {
+        if(x.Kod == "TL") {
+          return true;
+        } else {
+          return false;
+        }
+      })
     });
   }
 
@@ -68,7 +83,11 @@ export class KasaVeBankalarComponent implements OnInit {
     this.selectedItem = undefined;
   }
 
-  saveForm() {
+  saveForm(form) {
+    if (!form.instance.validate()["isValid"]) {
+      this.main.notifier("Lütfen zorunlu alanları doldurun.", false);
+      return false;
+    }
     let url;
     if (this.state === 1) {
       if (this.stateType === 'BANKA') {
@@ -87,6 +106,10 @@ export class KasaVeBankalarComponent implements OnInit {
       this.getList();
       this.selectedItem = undefined;
     });
+  }
+
+  calculateCellValue(data) {
+      return data.IsKasa ? "Kasa" : "Banka";
   }
 
   constructor(private main: MainService) { }

@@ -14,9 +14,9 @@ export class MusterilerComponent implements OnInit {
   dataFields = [
     { dataField: 'ID', caption: 'ID', alignment: 'left'},
     { dataField: "Unvan", caption: "Unvan" },
-    { dataField: "Bakiye", caption: "Bakiye" },
-    { dataField: "Odenecek", caption: "Ödenecek" },
-    { dataField: "TahsilEdilcek", caption: "Tahsil Edilecek" }
+    { dataField: "Bakiye", caption: "Bakiye", format: '#0.00', alignment: 'right' },
+    { dataField: "Odenecek", caption: "Ödenecek", format: '#0.00', alignment: 'right' },
+    { dataField: "TahsilEdilcek", caption: "Tahsil Edilecek", format: '#0.00', alignment: 'right' }
   ];
   actions = [
     {actionEvent: "new", actionName:"Yeni Müşteri"}
@@ -71,7 +71,11 @@ export class MusterilerComponent implements OnInit {
     this.selectedItem = undefined;
   }
 
-  saveForm() {
+  saveForm(form) {
+    if(!form.instance.validate()["isValid"]){
+      this.main.notifier("Lütfen zorunlu alanları doldurun.", false);
+      return false;
+    }
     let reqData = {
       CariHesap:this.selectedItem,
       Yetkili: this.dataSource2

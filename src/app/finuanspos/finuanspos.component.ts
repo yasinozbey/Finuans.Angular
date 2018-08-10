@@ -47,6 +47,7 @@ export class FinuansposComponent implements OnInit {
   sellersPopup = false;
   sellers;
   selectedSeller;
+  selectedtedPendingItem;
 
   getTabs() {
     this.service.reqGet("Pos/KategoriListesi").subscribe(x => {
@@ -388,7 +389,6 @@ export class FinuansposComponent implements OnInit {
       this.pendingAction = () => {
         this.clearAll();
         // this.service.reqPost("Pos/BelgeIptal", ).subscribe(x => {
-        //   debugger;
         //   this.popupVisible = false;
         //   this.popupText = "";
         // })

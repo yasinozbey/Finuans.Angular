@@ -1,18 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
+import notify from 'devextreme/ui/notify';
 
 @Injectable()
 export class MainService {
+  token = localStorage.getItem("token");
 
   constructor(private http: HttpClient) { }
 
-  apiUrl = "http://api.finuans.com/api/";
+  apiUrl = "/api/";
   reqConfs = {
     "async": true,
     "dataType": "application/json",
     "crossDomain": true,
     "headers": new HttpHeaders({
+      "Authorization": "Basic " + this.token,
       "Cache-Control": "no-cache",
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json"
@@ -42,6 +45,11 @@ export class MainService {
     _self["selectedItem"] = new Object();
     _self["selectedItem"].ID = 0;
     _self["state"] = paramater;
+  }
+
+  notifier(text, type){
+    let notifyType = type ? "success" : "error";
+    notify(text, notifyType, 3000);
   }
 
   reqGet(url): Observable<any> {

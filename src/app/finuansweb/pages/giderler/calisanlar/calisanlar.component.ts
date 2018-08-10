@@ -13,9 +13,9 @@ export class CalisanlarComponent implements OnInit {
   dataFields = [
     { dataField: 'ID', caption: 'ID', alignment: 'left'},
     { dataField: "AdSoyad", caption: "Ad Soyad" },
-    { dataField: "Bakiye", caption: "Bakiye" },
-    { dataField: "Avans", caption: "Avans" },
-    { dataField: "Odenecek", caption: "Ödenecek" },
+    { dataField: "Bakiye", caption: "Bakiye", format: '#0.00', alignment: 'right' },
+    { dataField: "Avans", caption: "Avans", format: '#0.00', alignment: 'right' },
+    { dataField: "Odenecek", caption: "Ödenecek", format: '#0.00', alignment: 'right' },
   ];
   actions = [
     { actionEvent: "new", actionName: "Yeni Çalışan" }
@@ -59,6 +59,11 @@ export class CalisanlarComponent implements OnInit {
       url = "Calisan/Update";
     }
     this.main.reqPost(url, this.selectedItem).subscribe(res => {
+      if (this.state === 1) {
+        this.main.notifier("Çalışan başarıyla eklendi", true);
+      } else {
+        this.main.notifier("Çalışan başarıyla güncellendi", true);
+      }
       this.getList();
     });
   }

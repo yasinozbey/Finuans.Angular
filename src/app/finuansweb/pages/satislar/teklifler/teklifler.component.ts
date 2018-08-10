@@ -16,8 +16,8 @@ export class TekliflerComponent implements OnInit {
     { dataField: "Aciklama", caption: "Açıklama" },
     { dataField: "HesapAdi", caption: "Hesap Adı" },
     { dataField: "Fatura", caption: "Fatura" },
-    { dataField: "DuzenlenmeTarihi", caption: "Düzenleme Tarihi", dataType: "date", format: 'd.MM.y' },
-    { dataField: "TeklifTutari", caption: "Teklif Tutarı", format: { style: "currency", currency: "EUR", useGrouping: true, maximumFractionDigits: 2 } },
+    { dataField: "DuzenlenmeTarihi", caption: "Düzenleme Tarihi", dataType: "date", format: 'dd.MM.y' },
+    { dataField: "TeklifTutari", caption: "Teklif Tutarı", format: '#0.00', alignment: 'right' },
   ];
   actions = [
     { actionEvent: "new", actionName: "Yeni Teklif" }
@@ -42,6 +42,7 @@ export class TekliflerComponent implements OnInit {
     { ID: 0, Name: "Oran (%)" },
     { ID: 1, Name: "Tutar" }
   ]
+  defaultDate = new Date();
 
   getList() {
     this.main.reqGet("Teklif/List").subscribe(res => {
@@ -79,7 +80,15 @@ export class TekliflerComponent implements OnInit {
     this.selectedItem = new Object();
   }
 
-  saveForm() {
+  saveForm(form) {
+    if(!form.instance.validate()["isValid"]){
+      this.main.notifier("Lütfen zorunlu alanları doldurun.", false);
+      return false;
+    }
+    if(!this.selectedItem){
+      this.main.notifier("Lütfen bir Hizmet/Ürün ekleyin.", false);
+      return false;
+    }
     let AraToplam = 0;
     let KDVToplam = 0;
     let GenelToplam = 0;
@@ -88,14 +97,14 @@ export class TekliflerComponent implements OnInit {
       KDVToplam += ((item.BirimFiyat * item.Miktar) / 100) * item.VergiOran;
       GenelToplam += item.Tutar;
     });
-    this.selectedItem["AraToplam"] = AraToplam;
-    this.selectedItem["KdvToplam"] = KDVToplam;
-    this.selectedItem["IndirimToplam"] = this.totalDiscount;
-    this.selectedItem["OivTutari"] = this.totalOiv;
-    this.selectedItem["OtvTutari"] = this.totalOtv;
-    this.selectedItem["DovizCinsi"] = 1;
-    this.selectedItem["DovizKuru"] = 1;
-    this.selectedItem["GenelToplam"] = GenelToplam;
+    this.selectedItem && (this.selectedItem["AraToplam"] = AraToplam);
+    this.selectedItem && (this.selectedItem["KdvToplam"] = KDVToplam);
+    this.selectedItem && (this.selectedItem["IndirimToplam"] = this.totalDiscount);
+    this.selectedItem && (this.selectedItem["OivTutari"] = this.totalOiv);
+    this.selectedItem && (this.selectedItem["OtvTutari"] = this.totalOtv);
+    this.selectedItem && (this.selectedItem["DovizCinsi"] = 1);
+    this.selectedItem && (this.selectedItem["DovizKuru"] = 1);
+    this.selectedItem && (this.selectedItem["GenelToplam"] = GenelToplam);
 
     let reqData = {
       Teklif: this.selectedItem,
@@ -109,7 +118,7 @@ export class TekliflerComponent implements OnInit {
   addRow() {
     this.dataSource2.push({
       ID: 0,
-      StokID: 0,
+      StokID: 1,
       Miktar: 1,
       Birim: "",
       BirimFiyat: 0,

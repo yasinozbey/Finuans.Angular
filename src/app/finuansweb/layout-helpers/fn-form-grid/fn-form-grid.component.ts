@@ -8,6 +8,7 @@ import { Component, Input, Output, OnInit, EventEmitter } from "@angular/core";
 export class FnFormGridComponent implements OnInit {
   @Input("dataSource") dataSource;
   @Input("dataFields") dataFields;
+  @Input("selectedItem") selectedItem;
   @Output() rowClick: EventEmitter<any> = new EventEmitter();
 
   onRowClick(e) {

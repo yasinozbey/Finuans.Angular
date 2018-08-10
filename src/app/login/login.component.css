@@ -1,0 +1,71 @@
+.fn-login-holder {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 99;
+    background: linear-gradient(135deg, rgb(69, 73, 88), rgb(26, 33, 41));
+}
+
+.fn-login-holder:after {
+    content:"";
+    background: url("/assets/pattern-white.svg") top left/auto repeat;
+    position: relative;
+    z-index: -1;
+    opacity: 0.03;
+    display: inline-block;
+    width: 100vw;
+    height: 100vh;
+}
+
+.fn-login-form {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 450px;
+    height: 600px;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px 40px;
+    border-radius: 8px;
+    box-shadow: 6px 5px 20px 3px rgba(0, 0, 0, 0.38);
+}
+
+.fn-login-form .fn-login-logo {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.fn-login-form .fn-login-logo .fn-finuans {
+    font-size: 31px;
+    font-weight: 900;
+}
+
+.fn-login-form .fn-welcome-text {
+    text-align: left;
+    font-size: 25px;
+    font-weight: 900;
+    margin-bottom: 60px;
+}
+
+.fn-login-form .fn-welcome-text .fn-bottom-text {
+    opacity: 0.8;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+dx-text-box {
+    margin-bottom: 20px;
+}
+
+.fn-login-button {
+    background: rgb(239, 239, 247);
+    border: none;
+    border-radius: 30px;
+    padding: 10px 30px 10px 20px;
+    font-size: 20px;
+    margin-top: 40px;
+    margin-left: 50%;
+    transform: translate(-50%);
+}

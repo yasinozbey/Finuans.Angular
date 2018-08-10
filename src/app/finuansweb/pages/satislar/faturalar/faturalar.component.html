@@ -2,18 +2,24 @@
     <div class="col-lg-12 n-p fn-container">
         <div class="col-lg-12 main-area" [hidden]="state !== 0 || !dataSource">
             <app-fn-main title="Faturalar" [actions]="actions" [dataFields]="dataFields" [dataSource]="dataSource" (rowClick)="handleGridAction($event)"
-                (actionClick)="handleNewAction($event)"></app-fn-main>
+                (actionClick)="handleNewAction()"></app-fn-main>
         </div>
         <div class="col-lg-12 new-area" *ngIf="state === 1">
-            <app-fn-form inheritTitle="Faturalar" newTitle="Yeni Fatura" editTitle="Fatura Düzenle" [(selectedItem)]="selectedItem" (onSave)="saveForm()"
+            <app-fn-form inheritTitle="Faturalar" newTitle="Yeni Fatura" editTitle="Fatura Düzenle" [(selectedItem)]="selectedItem" (onSave)="saveForm(form)"
                 (onCancel)="cancelForm()">
                 <div class="col-lg-6">
-                    <dx-form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="4">
-                        <dxi-item dataField="Aciklama" [colSpan]="4" [label]="{text: 'Açıklama'}"></dxi-item>
-                        <dxi-item dataField="CariHesapID" [colSpan]="4" [label]="{text: 'Müşteri'}" editorType="dxSelectBox" [editorOptions]="{ items: customers, displayExpr:'Unvan', valueExpr:'ID' }"></dxi-item>
-                        <dxi-item dataField="BelgeNo" [colSpan]="4" [label]="{text: 'Fatura No'}"></dxi-item>
-                        <dxi-item dataField="OdemeDurumu" [colSpan]="2" [label]="{text: 'Tahsilat Durumu'}" editorType="dxSelectBox" [editorOptions]="{ items: paymentStates, displayExpr:'Name', valueExpr:'ID' }"></dxi-item>
-                        <dxi-item dataField="VadeTarihi" [colSpan]="2" [label]="{text: 'Vade Tarihi'}" editorType="dxDateBox" [editorOptions]="{ width: '100%'}"></dxi-item>
+                    <dx-form #form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="4">
+                        <dxi-item dataField="Aciklama" [colSpan]="4" [label]="{text: 'Açıklama'}">
+                            <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+                        </dxi-item>
+                        <dxi-item dataField="CariHesapID" [colSpan]="4" [label]="{text: 'Müşteri'}" editorType="dxSelectBox" [editorOptions]="{ items: customers, displayExpr:'Unvan', valueExpr:'ID' }">
+                            <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+                        </dxi-item>
+                        <dxi-item dataField="BelgeNo" [colSpan]="4" [label]="{text: 'Fatura No'}">
+                            <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+                        </dxi-item>
+                        <dxi-item dataField="OdemeDurumu" [colSpan]="2" [label]="{text: 'Tahsilat Durumu'}" editorType="dxSelectBox" [editorOptions]="{ items: paymentStates, displayExpr:'Name', valueExpr:'ID', value:0 }"></dxi-item>
+                        <dxi-item dataField="VadeTarihi" [colSpan]="2" [label]="{text: 'Vade Tarihi'}" editorType="dxDateBox" [editorOptions]="{ width: '100%', value:defaultDate}"></dxi-item>
                         <dxi-item itemType="group" caption="Tahsilat Bilgileri" [colSpan]="4" [colCount]="2" *ngIf="selectedItem && selectedItem.OdemeDurumu">
                             <dxi-item dataField="Tahsilat.HesapID" [label]="{text: 'Hesap'}" editorType="dxSelectBox" [editorOptions]="{ items: accounts, displayExpr:'HesapAdi', valueExpr:'ID' }"></dxi-item>
                             <dxi-item dataField="Tahsilat.EvrakTarihi" [label]="{text: 'Tahsilat Tarihi'}" editorType="dxDateBox" [editorOptions]="{ width: '100%'}"></dxi-item>
@@ -23,35 +29,37 @@
                     </dx-form>
                 </div>
                 <div class="fn-grid-holder">
-                    <dx-data-grid id="gridContainer" [dataSource]="dataSource2" noDataText="Kayıt Bulunamadı">
-                        <dxo-editing mode="cell" [allowUpdating]="true"> </dxo-editing>
-                        <dxi-column dataField="Product" caption="Hizmet/Ürün"></dxi-column>
-                        <dxi-column dataField="Product1" caption="Miktar"></dxi-column>
-                        <dxi-column dataField="Product2" caption="Br. Fiyat"></dxi-column>
-                        <dxi-column dataField="Product3" caption="Vergi"></dxi-column>
-                        <dxi-column dataField="Product4" caption="Toplam"></dxi-column>
+                    <dx-data-grid id="gridContainer" #detailGrid [dataSource]="dataSource2" noDataText="Kayıt Bulunamadı" (onCellClick)="onClickCell($event)"
+                      [masterDetail]="{ enabled: true, template: 'detail' }">
+                      <dxo-selection mode="single"></dxo-selection>
+                      <dxo-editing mode="cell" [allowUpdating]="true"> </dxo-editing>
+                      <dxi-column dataField="StokID" caption="Hizmet/Ürün" [setCellValue]="valueChange">
+                        <dxo-lookup [dataSource]="products" displayExpr="Adi" valueExpr="ID"> </dxo-lookup>
+                      </dxi-column>
+                      <dxi-column dataField="Birim" caption="Birim" [width]="'10%'"></dxi-column>
+                      <dxi-column dataField="Miktar" caption="Miktar" [width]="'10%'"></dxi-column>
+                      <dxi-column dataField="BirimFiyat" caption="Fiyat" [width]="'10%'"></dxi-column>
+                      <dxi-column dataField="VergiOran" caption="KDV" [width]="'10%'">
+                        <dxo-lookup [dataSource]="taxes" displayExpr="Name" valueExpr="Value"> </dxo-lookup>
+                      </dxi-column>
+                      <dxi-column dataField="Tutar" caption="Toplam" [width]="'15%'" format="#,##0.##"></dxi-column>
+                      <div *dxTemplate="let item of 'detail'">
+                        <dx-form class="form-element inline" [formData]="item.data" labelLocation="left" [colCount]="2">
+                          <dxi-item dataField="Aciklama" [colSpan]="2" [label]="{text: 'Açıklama'}"></dxi-item>
+                          <dxi-item dataField="IndirimTipi" [colSpan]="1" #itemHolder [label]="{text: 'İndirim Tipi'}" editorType="dxSelectBox" [editorOptions]="{ dataSource: discountTypes, displayExpr:'Name', valueExpr:'ID', onValueChanged: calculateSum }"></dxi-item>
+                          <dxi-item dataField="IndirimOranTutar" [colSpan]="1" [label]="{text: 'İndirim'}" [editorOptions]="{onValueChanged: calculateSum}"></dxi-item>
+                          <dxi-item dataField="OivOrani" [colSpan]="1" [label]="{text: 'ÖİV'}" [editorOptions]="{onValueChanged: calculateSum}"></dxi-item>
+                          <dxi-item dataField="OtvOrani" [colSpan]="1" [label]="{text: 'ÖTV'}" [editorOptions]="{onValueChanged: calculateSum}"></dxi-item>
+                        </dx-form>
+                      </div>
                     </dx-data-grid>
                     <div style="margin-top: 10px !important;">
-                        <div class="col-lg-3 n-p">
-                            <button (click)="addRow()" class="fn-button transparent">
-                                <i class="anticon anticon-plus-circle-o"></i>Yeni Satır Ekle</button>
-                        </div>
-                        <div class="col-lg-4 col-lg-offset-5 fn-bill">
-                            <div class="col-lg-12 n-p">
-                                <span class="col-lg-8 n-p">Ara Toplam</span>
-                                <span class="col-lg-4">0,00TL</span>
-                            </div>
-                            <div class="col-lg-12 n-p">
-                                <span class="col-lg-8 n-p">Toplam KDV</span>
-                                <span class="col-lg-4">0,00TL</span>
-                            </div>
-                            <div class="col-lg-12 n-p">
-                                <span class="col-lg-8 n-p">Genel Toplam</span>
-                                <span class="col-lg-4">0,00TL</span>
-                            </div>
-                        </div>
+                      <div>
+                        <button (click)="addRow()" class="fn-button transparent">
+                          <i class="anticon anticon-plus-circle-o"></i>Bir Hizmet/Ürün Ekle</button>
+                      </div>
                     </div>
-                </div>
+                  </div>
             </app-fn-form>
         </div>
     </div>
