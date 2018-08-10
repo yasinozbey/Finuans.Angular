@@ -9,7 +9,7 @@ export class MainService {
 
   constructor(private http: HttpClient) { }
 
-  apiUrl = "/api/";
+  apiUrl = " http://api.finuans.com/api/";
   reqConfs = {
     "async": true,
     "dataType": "application/json",

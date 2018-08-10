@@ -124,7 +124,7 @@ export class TekliflerComponent implements OnInit {
       BirimFiyat: 0,
       VergiOran: 0,
       Tutar: 0,
-      TeklifID: this.selectedItem.ID,
+      TeklifID: this.selectedItem ? this.selectedItem.ID : 0,
       BarkodID: 0,
       IndirimTipi: 0,
       IndirimOranTutar: 0,
