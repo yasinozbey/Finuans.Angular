@@ -2,7 +2,7 @@
   <div id="invoice" class="col-lg-3">
     <div class="invoice-head">
       <input #barkodInput type="text" class="barcodeInput" placeholder="Barkod" [(value)]="barkodValue" autofocus (input)="syncing($event)"
-        (keydown.Enter)="onBarkodChange( $event, 'Enter' )">
+        (keydown.Enter)="onBarkodChange( $event )">
       <span>FİŞ</span>
     </div>
     <dx-data-grid #invoiceTable id="gridContainer" class="fn-grid" [dataSource]="dataSource" [rowAlternationEnabled]="true" noDataText="  ">

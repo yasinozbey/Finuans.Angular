@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MainService } from '../../../../shared/main.service';
 
 @Component({
@@ -8,15 +8,15 @@ import { MainService } from '../../../../shared/main.service';
   providers: [MainService]
 })
 export class TedarikcilerComponent implements OnInit {
-
+  @ViewChild("detailGrid") detailGrid;
   dataSource = [];
   dataSource2 = [];
   dataFields = [
     { dataField: 'ID', caption: 'ID', alignment: 'left'},
     { dataField: "Unvan", caption: "Unvan" },
-    { dataField: "TahsilEdilecek", caption: "Tahsil Edilecek" },
-    { dataField: "Odenecek", caption: "Ödenecek" },
-    { dataField: "Bakiye", caption: "Bakiye" }
+    { dataField: "TahsilEdilecek", caption: "Tahsil Edilecek", format: '#0.00', alignment: 'right' },
+    { dataField: "Odenecek", caption: "Ödenecek", format: '#0.00', alignment: 'right' },
+    { dataField: "Bakiye", caption: "Bakiye", format: '#0.00', alignment: 'right' }
   ];
   actions = [
     { actionEvent: "new", actionName: "Yeni Tedarikçi" }
@@ -74,20 +74,33 @@ export class TedarikcilerComponent implements OnInit {
     this.selectedItem = undefined;
   }
 
-  saveForm() {
-    let url;
-    if (this.state === 1) {
-      url = "Calisan/Insert";
-    } else {
-      url = "Calisan/Update";
+  saveForm(form) {
+    if(!form.instance.validate()["isValid"]){
+      this.main.notifier("Lütfen zorunlu alanları doldurun.", false);
+      return false;
     }
-    this.main.reqPost(url, this.selectedItem).subscribe(res => {
+    let reqData = {
+      CariHesap:this.selectedItem,
+      Yetkili: this.dataSource2
+    }
+    this.main.reqPost("CariHesap/SaveCustomer", reqData).subscribe(res => {
       this.getList();
+      this.selectedItem = undefined;
     });
   }
 
-  addRow() {
-    this.dataSource2.push({});
+  addRow(){
+    this.dataSource2.push({Adi:"",Eposta:"",Telefon:"",Notlar:""});
+  }
+
+  syncDataSource(e){
+    let updatedDatas = this.detailGrid.instance.getVisibleRows();
+    let tempData = [];
+    updatedDatas.forEach(item => {
+      item.data.CariID = this.selectedItem.ID;
+      tempData.push(item.data);
+    });
+    this.dataSource2 = tempData;
   }
 
   ngOnInit(): void {

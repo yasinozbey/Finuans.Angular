@@ -5,32 +5,50 @@
         (actionClick)="handleNewAction($event)"></app-fn-main>
     </div>
     <div class="col-lg-12 new-area" [hidden]="state !== 1">
-      <app-fn-form *ngIf="stateType == 'BANKA'" inheritTitle="Kasa ve Bankalar" newTitle="Yeni Banka" editTitle="Banka Düzenle" [(selectedItem)]="selectedItem"
-        (onSave)="saveForm()" (onCancel)="cancelForm()">
-        <div class="col-lg-6">
-          <dx-form class="form-element" *ngIf="stateType == 'BANKA'" [formData]="selectedItem" labelLocation="left" [colCount]="4">
-            <dxi-item dataField="HesapAdi" [colSpan]="2" [label]="{text: 'Hesap Adı'}"></dxi-item>
+      <app-fn-form *ngIf="stateType == 'BANKA'" inheritTitle="Kasa ve Bankalar" newTitle="Yeni Banka" editTitle="Banka Düzenle"
+        [(selectedItem)]="selectedItem" (onSave)="saveForm(form)" (onCancel)="cancelForm()">
+        <div class="col-lg-12">
+          <dx-form #form class="form-element" *ngIf="stateType == 'BANKA'" [formData]="selectedItem" labelLocation="top" [colCount]="4">
+            <dxi-item dataField="HesapAdi" [colSpan]="4" [label]="{text: 'Hesap Adı'}">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="BankaAdi" [colSpan]="2" [label]="{text: 'Banka Adı'}">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="SubeAdi" [colSpan]="2" [label]="{text: 'Şube Adı'}">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="HesapNumarasi" [colSpan]="2" [label]="{text: 'Hesap Numarası'}">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="IBAN" [colSpan]="2" [label]="{text: 'IBAN'}" [editorOptions]="{ mask: 'TR00 0000 0000 0000 0000 0000 00',maskInvalidMessage:'Iban formatı yanlış'}">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="AcilisBakiye" [colSpan]="2" [label]="{text: 'Açılış Bakiyesi'}"></dxi-item>
+            <dxi-item dataField="AcilisTarihi" [colSpan]="2" [label]="{text: 'Açılış Bakiyesi Tarihi'}" editorType="dxDateBox" [editorOptions]="{ width: '100%'}">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="DovizCinsi.ID" [colSpan]="2" [label]="{text: 'Döviz'}" editorType="dxSelectBox" [editorOptions]="{ items: currencies, displayExpr:'Adi', valueExpr:'ID', value: defaultDoviz[0].ID }">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
             <dxi-item dataField="KategoriID" [colSpan]="2" [label]="{text: 'Kategori'}" editorType="dxSelectBox" [editorOptions]="{ items: categories, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
-            <dxi-item dataField="AcilisBakiye" [colSpan]="1" [label]="{text: 'Açılış Bakiyesi'}"></dxi-item>
-            <dxi-item dataField="DovizCinsi.ID" [colSpan]="1" [label]="{text: 'Döviz'}" editorType="dxSelectBox" [editorOptions]="{ items: currencies, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
-            <dxi-item dataField="AcilisTarihi" [colSpan]="2" [label]="{text: 'Açılış Bakiyesi Tarihi'}" editorType="dxDateBox" [editorOptions]="{ width: '100%'}"></dxi-item>
-            <dxi-item dataField="BankaAdi" [colSpan]="2" [label]="{text: 'Banka Adı'}"></dxi-item>
-            <dxi-item dataField="SubeAdi" [colSpan]="2" [label]="{text: 'Şube Adı'}"></dxi-item>
-            <dxi-item dataField="HesapNumarasi" [colSpan]="2" [label]="{text: 'Hesap Numarası'}"></dxi-item>
-            <dxi-item dataField="IBAN" [colSpan]="2" [label]="{text: 'IBAN'}"></dxi-item>
           </dx-form>
         </div>
       </app-fn-form>
 
-      <app-fn-form *ngIf="stateType == 'KASA'" inheritTitle="Kasa ve Bankalar" newTitle="Yeni Kasa" editTitle="Kasa Düzenle" [(selectedItem)]="selectedItem"
-        (onSave)="saveForm()" (onCancel)="cancelForm()">
-        <div class="col-lg-6">
-          <dx-form class="form-element" *ngIf="stateType == 'KASA'" [formData]="selectedItem" labelLocation="top" [colCount]="4">
-            <dxi-item dataField="HesapAdi" [colSpan]="2" [label]="{text: 'Hesap Adı'}"></dxi-item>
-            <dxi-item dataField="KategoriID" [colSpan]="2" [label]="{text: 'Kategori'}" editorType="dxSelectBox" [editorOptions]="{ items: categories, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
-            <dxi-item dataField="AcilisBakiyesi" [colSpan]="1" [label]="{text: 'Açılış Bakiyesi'}"></dxi-item>
-            <dxi-item dataField="DovizCinsi.ID" [colSpan]="1" [label]="{text: 'Döviz'}" editorType="dxSelectBox" [editorOptions]="{ items: currencies, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
+      <app-fn-form *ngIf="stateType == 'KASA'" inheritTitle="Kasa ve Bankalar" newTitle="Yeni Kasa" editTitle="Kasa Düzenle"
+        (onSave)="saveForm(form)" (onCancel)="cancelForm()">
+        <div class="col-lg-12">
+          <dx-form #form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="4">
+            <dxi-item dataField="HesapAdi" [colSpan]="4" [label]="{text: 'Hesap Adı'}">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="AcilisBakiyesi" [colSpan]="2" [label]="{text: 'Açılış Bakiyesi'}"></dxi-item>
             <dxi-item dataField="AcilisTarihi" [colSpan]="2" [label]="{text: 'Açılış Tarihi'}" editorType="dxDateBox" [editorOptions]="{ width: '100%'}"></dxi-item>
+            <dxi-item dataField="DovizCinsi.ID" [colSpan]="2" [label]="{text: 'Döviz'}" editorType="dxSelectBox" [editorOptions]="{ items: currencies, displayExpr:'Adi', valueExpr:'ID', value: defaultDoviz[0].ID }">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="KategoriID" [colSpan]="2" [label]="{text: 'Kategori'}" editorType="dxSelectBox" [editorOptions]="{ items: categories, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
           </dx-form>
         </div>
       </app-fn-form>

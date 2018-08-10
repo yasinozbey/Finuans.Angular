@@ -8,28 +8,52 @@
       <app-fn-form inheritTitle="Hizmet ve Ürünler" newTitle="Yeni Hizmet/Ürün" editTitle="Hizmet/Ürün Düzenle" [(selectedItem)]="selectedItem"
         (onSave)="saveForm()" (onCancel)="cancelForm()">
         <div class="col-lg-6">
-          <dx-form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="8" [showColonAfterLabel]=false>
-            <dxi-item dataField="Adi" [colSpan]="8" [label]="{text: 'Adı'}"></dxi-item>
-            <dxi-item dataField="Kodu" [colSpan]="4" [label]="{text: 'Ürün / Stok Kodu'}"></dxi-item>
-            <dxi-item dataField="KategoriID" [colSpan]="4" [label]="{text: 'Kategori'}" editorType="dxSelectBox" [editorOptions]="{ items: categories, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
+          <dx-form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="4" [showColonAfterLabel]=false>
+            <dxi-item dataField="Adi" [colSpan]="4" [label]="{text: 'Adı'}">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="Kodu" [colSpan]="2" [label]="{text: 'Ürün / Stok Kodu'}">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="AcilisStokMiktari" [colSpan]="1" [label]="{text: 'Açılış Stok'}"></dxi-item>
+            <dxi-item dataField="StokTakibiYapisin" [colSpan]="1" editorType="dxCheckBox" [label]="{text: 'Stok Takibi'}"></dxi-item>
             <dxi-item dataField="AlisFiyati" [colSpan]="2" [label]="{text: 'Alış Fiyatı'}"></dxi-item>
             <dxi-item dataField="AlisFiyatiDovizTipi" [colSpan]="2" [label]="{text: 'Döviz'}" editorType="dxSelectBox" [editorOptions]="{ items: currencies, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
             <dxi-item dataField="SatisFiyati" [colSpan]="2" [label]="{text: 'Satış Fiyatı'}"></dxi-item>
             <dxi-item dataField="SatisFiyatiDovizTipi" [colSpan]="2" [label]="{text: 'Döviz'}" editorType="dxSelectBox" [editorOptions]="{ items: currencies, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
-            <dxi-item dataField="AcilisStokMiktari" [colSpan]="2" [label]="{text: 'Açılış Stok'}"></dxi-item>
-            <dxi-item dataField="StokTakibiYapisin" [colSpan]="2" editorType="dxCheckBox" [label]="{text: 'Stok Takibi'}"></dxi-item>
-            <dxi-item dataField="item11" [colSpan]="2" [label]="{text: 'KDV'}"></dxi-item>
+            <dxi-item dataField="AlisKdvOrani" [colSpan]="2" [label]="{text: 'Alış KDV'}" editorType="dxSelectBox" [editorOptions]="{ items: taxes, displayExpr:'Name', valueExpr:'Value', value:0 }">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="SatisKdvOrani" [colSpan]="2" [label]="{text: 'Satış KDV'}" editorType="dxSelectBox" [editorOptions]="{ items: taxes, displayExpr:'Name', valueExpr:'Value', value:0 }">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="AlisOtvOrani" [colSpan]="2" [label]="{text: 'Alış ÖTV'}" editorType="dxNumberBox" [editorOptions]="{format:'#0%', step:0.1, value:0}">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="SatisOtvOrani" [colSpan]="2" [label]="{text: 'Satış ÖTV'}" editorType="dxNumberBox" [editorOptions]="{format:'#0%', step:0.1, value:0}">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="OivOrani" [colSpan]="2" [label]="{text: 'ÖİV'}" editorType="dxNumberBox" [editorOptions]="{format:'#0%', step:0.1, value:0}">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="KategoriID" [colSpan]="2" [label]="{text: 'Kategori'}" editorType="dxSelectBox" [editorOptions]="{ items: categories, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
           </dx-form>
         </div>
-        <app-fn-form-grid>
-            <dx-data-grid id="gridContainer" [dataSource]="dataSource2" noDataText="Kayıt Bulunamadı">
-              <dxo-editing mode="cell" [allowUpdating]="true"> </dxo-editing>
-              <dxi-column dataField="Barkod" caption="Barkod"></dxi-column>
-              <dxi-column dataField="Birim" caption="Birim"></dxi-column>
-              <dxi-column dataField="Miktar" caption="Miktar"></dxi-column>
-              <dxi-column dataField="Fiyat" caption="Fiyat"></dxi-column>
-            </dx-data-grid>
-        </app-fn-form-grid>
+        <div class="fn-grid-holder">
+          <dx-data-grid id="gridContainer" [dataSource]="dataSource2" noDataText="Kayıt Bulunamadı">
+            <dxo-editing mode="cell" [allowUpdating]="true"> </dxo-editing>
+            <dxi-column dataField="Barkod" caption="Barkod"></dxi-column>
+            <dxi-column dataField="Birim" caption="Birim"></dxi-column>
+            <dxi-column dataField="Miktar" caption="Miktar"></dxi-column>
+            <dxi-column dataField="Fiyat" caption="Fiyat"></dxi-column>
+          </dx-data-grid>
+          <div style="margin-top: 10px !important;">
+            <div>
+              <button (click)="addRow()" class="fn-button transparent">
+                <i class="anticon anticon-plus-circle-o"></i>Bir Barkod Ekle</button>
+            </div>
+          </div>
+        </div>
       </app-fn-form>
     </div>
   </div>

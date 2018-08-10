@@ -2,13 +2,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, CanActivate  } from '@angular/router';
+import { AuthGuardService as AuthGuard } from './shared/auth-gurad.service';
 import { HttpClientModule } from '@angular/common/http';
 import { registerLocaleData } from '@angular/common';
 import localeTr from '@angular/common/locales/tr';
 import {
   DxSelectBoxModule, DxTextAreaModule, DxDateBoxModule, DxFormModule, DxPopupModule,
-  DxDataGridModule, DxBulletModule, DxTemplateModule, DxPieChartModule, DxTabPanelModule
+  DxDataGridModule, DxBulletModule, DxTemplateModule, DxPieChartModule, DxTabPanelModule, DxTextBoxModule
 } from 'devextreme-angular';
 
 import { AppComponent } from './app.component';
@@ -39,30 +40,31 @@ import { StoktakiUrunlerRaporuComponent } from './finuansweb/pages/stok/stoktaki
 import { FnFormGridComponent } from './finuansweb/layout-helpers/fn-form-grid/fn-form-grid.component';
 import { FnMainComponent } from './finuansweb/layout-helpers/fn-main/fn-main.component';
 import { FnFormComponent } from './finuansweb/layout-helpers/fn-form/fn-form.component';
+import { LoginComponent } from './login/login.component';
 
 const appRoutes: Routes = [
-  { path: 'GuncelDurum', component: GuncelDurumComponent },
-  { path: 'Teklifler', component: TekliflerComponent },
-  { path: 'Faturalar', component: FaturalarComponent },
-  { path: 'Musteriler', component: MusterilerComponent },
-  { path: 'SatislarRaporu', component: SatislarRaporuComponent },
-  { path: 'TahsilatlarRaporu', component: TahsilatlarRaporuComponent },
-  { path: 'GelirGiderRaporu', component: GelirGiderRaporuComponent },
-  { path: 'GiderListesi', component: GiderListesiComponent },
-  { path: 'Tedarikciler', component: TedarikcilerComponent },
-  { path: 'Calisanlar', component: CalisanlarComponent },
-  { path: 'GiderlerRaporu', component: GiderlerRaporuComponent },
-  { path: 'OdemelerRaporu', component: OdemelerRaporuComponent },
-  { path: 'KDVRaporu', component: KdvRaporuComponent },
-  { path: 'KasaVeBankalar', component: KasaVeBankalarComponent },
-  { path: 'Cekler', component: CeklerComponent },
-  { path: 'KasaBankaRaporu', component: KasaBankaRaporuComponent },
-  { path: 'NakitAkisiRaporu', component: NakitAkisiRaporuComponent },
-  { path: 'HizmetVeUrunler', component: HizmetVeUrunlerComponent },
-  { path: 'StokGecmisi', component: StokGecmisiComponent },
-  { path: 'StoktakiUrunlerRaporu', component: StoktakiUrunlerRaporuComponent },
-  { path: '', redirectTo: '/GuncelDurum', pathMatch: 'full' },
-  // { path: '**', component: PageNotFoundComponent }
+  { path: 'GuncelDurum', component: GuncelDurumComponent, canActivate: [AuthGuard]  },
+  { path: 'Teklifler', component: TekliflerComponent, canActivate: [AuthGuard]  },
+  { path: 'Faturalar', component: FaturalarComponent, canActivate: [AuthGuard]  },
+  { path: 'Musteriler', component: MusterilerComponent, canActivate: [AuthGuard]  },
+  { path: 'SatislarRaporu', component: SatislarRaporuComponent, canActivate: [AuthGuard]  },
+  { path: 'TahsilatlarRaporu', component: TahsilatlarRaporuComponent, canActivate: [AuthGuard]  },
+  { path: 'GelirGiderRaporu', component: GelirGiderRaporuComponent, canActivate: [AuthGuard]  },
+  { path: 'GiderListesi', component: GiderListesiComponent, canActivate: [AuthGuard]  },
+  { path: 'Tedarikciler', component: TedarikcilerComponent, canActivate: [AuthGuard]  },
+  { path: 'Calisanlar', component: CalisanlarComponent, canActivate: [AuthGuard]  },
+  { path: 'GiderlerRaporu', component: GiderlerRaporuComponent, canActivate: [AuthGuard]  },
+  { path: 'OdemelerRaporu', component: OdemelerRaporuComponent, canActivate: [AuthGuard]  },
+  { path: 'KDVRaporu', component: KdvRaporuComponent, canActivate: [AuthGuard]  },
+  { path: 'KasaVeBankalar', component: KasaVeBankalarComponent, canActivate: [AuthGuard]  },
+  { path: 'Cekler', component: CeklerComponent, canActivate: [AuthGuard]  },
+  { path: 'KasaBankaRaporu', component: KasaBankaRaporuComponent, canActivate: [AuthGuard]  },
+  { path: 'NakitAkisiRaporu', component: NakitAkisiRaporuComponent, canActivate: [AuthGuard]  },
+  { path: 'HizmetVeUrunler', component: HizmetVeUrunlerComponent, canActivate: [AuthGuard]  },
+  { path: 'StokGecmisi', component: StokGecmisiComponent, canActivate: [AuthGuard]  },
+  { path: 'StoktakiUrunlerRaporu', component: StoktakiUrunlerRaporuComponent, canActivate: [AuthGuard]  },
+  { path: 'login', component: LoginComponent },
+  { path: '', redirectTo: '/GuncelDurum', pathMatch: 'full', canActivate: [AuthGuard]  }
 ];
 
 locale(navigator.language);
@@ -96,17 +98,18 @@ registerLocaleData(localeTr, 'tr');
     StoktakiUrunlerRaporuComponent,
     FnFormGridComponent,
     FnMainComponent,
-    FnFormComponent
+    FnFormComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    DxSelectBoxModule, DxTextAreaModule, DxDateBoxModule, DxFormModule, DxDataGridModule, DxBulletModule, DxTemplateModule, DxPieChartModule, DxPopupModule, DxTabPanelModule,
+    DxSelectBoxModule, DxTextAreaModule, DxDateBoxModule, DxFormModule, DxDataGridModule, DxBulletModule, DxTemplateModule, DxPieChartModule, DxPopupModule, DxTabPanelModule,DxTextBoxModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
