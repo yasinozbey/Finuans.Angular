@@ -23,6 +23,7 @@ export class GiderListesiComponent implements OnInit {
   actions = [
     { actionEvent: "FIS", actionName: "Yeni Fiş/Fatura" },
     { actionEvent: "MAAS", actionName: "Yeni Maaş/Prim" },
+    { actionEvent: "AVANS", actionName: "Yeni Avans" },
     { actionEvent: "VERGI", actionName: "Yeni Vergi/SGK Primi" },
     { actionEvent: "BANKA", actionName: "Yeni Banka Gideri" },
   ]
@@ -30,6 +31,7 @@ export class GiderListesiComponent implements OnInit {
   categories;
   currencies;
   accounts;
+  accountsFiltered;
   tags;
   accountTypes = [
     { ID: 0, Name: "Banka" },
@@ -43,12 +45,14 @@ export class GiderListesiComponent implements OnInit {
   state = 0;
   stateType;
   products;
+  customers;
   selectedRow = 0;
   totalDiscount = 0;
   totalOiv = 0;
   totalOtv = 0;
   defaultDate = new Date();
   defaultDoviz;
+  odemeDurumuState = 0;
 
   getList() {
     this.main.reqGet("Gider/List").subscribe(res => {
@@ -58,7 +62,7 @@ export class GiderListesiComponent implements OnInit {
     this.main.reqGet("Doviz/Get").subscribe(resDoviz => {
       this.currencies = resDoviz;
       this.defaultDoviz = this.currencies.filter(x => {
-        if(x.Kod == "TL") {
+        if (x.Kod == "TL") {
           return true;
         } else {
           return false;
@@ -77,31 +81,55 @@ export class GiderListesiComponent implements OnInit {
     this.main.reqGet("StokHizmet/Get").subscribe(res => {
       this.products = res;
     });
+    this.main.reqGet("CariHesap/List").subscribe(res => {
+      this.customers = res;
+    })
   }
 
   handleGridAction(e) {
-    if (e.data.Tip === 0) {
-      this.stateType = "MAAS";
-    } else if (e.data.Tip === 1) {
-      this.stateType = "VERGI";
-    } else if (e.data.Tip === 2) {
-      this.stateType = "BANKA";
-    } else if (e.data.Tip === 3) {
-      this.stateType = "AVANS";
-    } else if (e.data.Tip === 4) {
+    if(e.data.Tip === 4) {
       this.stateType = "FIS";
+      this.main.reqGet("Fatura/GetbyId/" + e.data.ID).subscribe(res => {
+        debugger;
+        if (res.OdemeDurumu) {
+          this.selectedItem = {};
+          this.main.reqGet("CariHesapHareket/GetbyId/" + res.TahsilatID).subscribe(resPayments => {
+            this.selectedItem["Tahsilat"] = resPayments;
+            Object.assign(this.selectedItem, res);
+          });
+        } else {
+          this.selectedItem = res;
+        }
+        this.odemeDurumuState = res.OdemeDurumu;
+        this.state = 1;
+      });
       this.main.reqGet("Fatura/GetDetail?faturaID=" + e.data.ID).subscribe(res => {
         this.dataSource2 = res;
       });
+    } else{
+      if (e.data.Tip === 0) {
+        this.stateType = "MAAS";
+      } else if (e.data.Tip === 1) {
+        this.stateType = "VERGI";
+      } else if (e.data.Tip === 2) {
+        this.stateType = "BANKA";
+      } else if (e.data.Tip === 3) {
+        this.stateType = "AVANS";
+      }
+      this.main.reqGet("Gider/GetbyId/" + e.data.ID).subscribe(res => {
+        this.selectedItem = res;
+        this.getAccountsFiltered();
+        this.state = 1;
+      });
     }
-    this.main.reqGet("Gider/GetbyId/" + e.data.ID).subscribe(res => {
-      this.selectedItem = res;
-      this.state = 1;
-    });
   }
 
   handleNewAction(e) {
-    this.selectedItem = undefined;
+    this.selectedItem = {
+      OdemeDurumu: 0,
+      VadeTarihi:this.defaultDate,
+      BelgeTarihi:this.defaultDate,
+    };
     this.stateType = e;
     this.state = 1;
   }
@@ -116,26 +144,26 @@ export class GiderListesiComponent implements OnInit {
       this.main.notifier("Lütfen zorunlu alanları doldurun.", false);
       return false;
     }
-    if (this.stateType == 'FIS' && !this.dataSource2) {
-      this.main.notifier("Lütfen bir Hizmet/Ürün ekleyin.", false);
-      return false;
-    }
     if (this.stateType == 'FIS') {
-      this.faturaInsert();
+      this.faturaInsert(form);
     } else {
       let url;
-      if (this.state === 1) {
-        url = "Gider/Insert";
-      } else {
+      if (this.selectedItem.ID) {
         url = "Gider/Update";
+      } else {
+        url = "Gider/Insert";
       }
-      this.main.reqPost(url, this.selectedItem).subscribe(res => {
+      this.main.reqPost(url, form.formData).subscribe(res => {
         this.getList();
       });
     }
   }
 
-  faturaInsert() {
+  faturaInsert(form) {
+    if (this.dataSource2.length < 1) {
+      this.main.notifier("Lütfen bir Hizmet/Ürün ekleyin.", false);
+      return false;
+    }
     let AraToplam = 0;
     let KDVToplam = 0;
     let GenelToplam = 0;
@@ -144,20 +172,24 @@ export class GiderListesiComponent implements OnInit {
       KDVToplam += ((item.BirimFiyat * item.Miktar) / 100) * item.VergiOran;
       GenelToplam += item.Tutar;
     });
-    this.selectedItem && (this.selectedItem["AraToplam"] = AraToplam);
-    this.selectedItem && (this.selectedItem["KdvToplam"] = KDVToplam);
-    this.selectedItem && (this.selectedItem["IndirimToplam"] = this.totalDiscount);
-    this.selectedItem && (this.selectedItem["OivTutari"] = this.totalOiv);
-    this.selectedItem && (this.selectedItem["OtvTutari"] = this.totalOtv);
-    this.selectedItem && (this.selectedItem["DovizCinsi"] = 1);
-    this.selectedItem && (this.selectedItem["DovizKuru"] = 1);
-    this.selectedItem && (this.selectedItem["GenelToplam"] = GenelToplam);
-
+    form.formData["AraToplam"] = AraToplam;
+    form.formData["KdvToplam"] = KDVToplam;
+    form.formData["IndirimToplam"] = this.totalDiscount;
+    form.formData["OivTutari"] = this.totalOiv;
+    form.formData["OtvTutari"] = this.totalOtv;
+    form.formData["DovizCinsi"] = 1;
+    form.formData["DovizKuru"] = 1;
+    form.formData["GenelToplam"] = GenelToplam;
+    form.formData["FaturaTipi"] = 1;
+    
     let reqData = {
-      Teklif: this.selectedItem,
-      Detay: this.dataSource2
+      Fatura: form.formData,
+      Detay: this.dataSource2,
+      HesapID: form.formData.OdemeDurumu ? this.selectedItem["Tahsilat"].HesapID : 0,
+      IsKasa: form.formData.OdemeDurumu ? this.accounts.filter(x => {return this.selectedItem["Tahsilat"].HesapID == x.ID})[0].IsKasa : false,
+      TahsilatTarihi: form.formData.OdemeDurumu ? this.selectedItem["Tahsilat"].EvrakTarihi : new Date()
     }
-    this.main.reqPost("Fatura/Insert", reqData).subscribe(res => {
+    this.main.reqPost("Fatura/SaveFatura", reqData).subscribe(res => {
       this.getList();
     });
   }
@@ -219,9 +251,27 @@ export class GiderListesiComponent implements OnInit {
     this.selectedRow = e.rowIndex;
   }
 
+  getAccountsFiltered(val = undefined) {
+    if(val){
+      this.accountsFiltered = this.accounts.filter(x => {
+        return x.IsKasa == val.value;
+      })
+    } else{
+      this.accountsFiltered = this.accounts.filter(x => {
+        return x.IsKasa == this.selectedItem.HesapTipi;
+      })
+    }
+  }
+
+  changeOdemeDurumu(e) {
+    this.odemeDurumuState = e.value;
+  }
+
   constructor(private main: MainService) {
     this.valueChange = this.valueChange.bind(this);
     this.calculateSum = this.calculateSum.bind(this);
+    this.getAccountsFiltered = this.getAccountsFiltered.bind(this);
+    this.changeOdemeDurumu = this.changeOdemeDurumu.bind(this);
   }
 
   ngOnInit(): void {

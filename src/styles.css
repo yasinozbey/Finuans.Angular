@@ -58,6 +58,7 @@ body {
     padding: 0 !important;
     overflow: hidden;
     border-radius: 0;
+    height:100vh;
 }
 
 .fn-container .form-element {
@@ -66,16 +67,16 @@ body {
     margin-top: 0;
 }
 
-.dx-datagrid-rowsview .dx-row > td.dx-master-detail-cell{
+.dx-datagrid-rowsview .dx-row>td.dx-master-detail-cell {
     padding: 0;
 }
 
-.form-element.inline{
+.form-element.inline {
     padding: 15px 30px 15px 0;
     background: rgba(255, 255, 255, 0);
 }
 
-.form-element.inline .dx-layout-manager .dx-field-item{
+.form-element.inline .dx-layout-manager .dx-field-item {
     padding-top: 5px;
 }
 
@@ -134,8 +135,8 @@ body {
 
 .fn-container .fn-grid {
     padding: 0;
-    max-width:unset !important;
-    width:100%;
+    max-width: unset !important;
+    width: 100%;
     margin-top: -59px;
 }
 
@@ -172,22 +173,6 @@ body {
     box-shadow: 0 0 16px -9px black;
 }
 
-.fn-info .dx-datagrid {
-    color: rgb(37, 40, 52);
-}
-
-.fn-info .dx-datagrid-headers.dx-datagrid-nowrap {
-    color: rgb(37, 40, 52);
-}
-
-.fn-info .dx-datagrid-summary-item {
-    color: rgb(37, 40, 52);
-}
-
-.fn-info .dx-datagrid-total-footer .dx-datagrid-content.dx-datagrid-scroll-container td {
-    border-bottom: none;
-}
-
 .dx-datagrid-headers.dx-datagrid-nowrap {
     border-bottom: none;
     font-size: 1rem;
@@ -212,7 +197,7 @@ body {
 
 .fn-button {
     padding: 6px 20px;
-    background:rgb(0,101,255);
+    background: rgb(0, 101, 255);
     box-shadow: 0 0 20px -2px #2285ff80;
     position: relative;
     color: rgb(255, 255, 255);
@@ -243,7 +228,7 @@ body {
     box-shadow: none;
     border: none;
     background: rgba(0, 0, 0, 0);
-    color: rgb(33, 150, 243);
+    color: rgb(0, 101, 255);
     font-weight: 500;
     text-align: left;
     margin-left: 20px;
@@ -313,22 +298,6 @@ body {
     padding-top: 0;
 }
 
-.fn-info {
-    background: rgb(250, 250, 250);
-    white-space: 1px solid rgb(232, 234, 235);
-    padding: 16px 10px !important;
-    border-radius: 0;
-    height: 100%;
-}
-
-.fn-info>span {
-    font-size: 1.5rem;
-    margin-left: 30px;
-    font-weight: 700;
-    margin-bottom: 17px;
-    display: inline-block;
-    color: rgb(37, 40, 52);
-}
 
 .fn-header {
     -webkit-user-select: none;
@@ -560,7 +529,7 @@ div.dx-searchbox .dx-icon-search {
     }
 }
 
-.new-area{
+.new-area {
     position: relative;
     animation-fill-mode: forwards;
     animation-delay: 0.1s;
@@ -636,11 +605,11 @@ div.dx-searchbox .dx-icon-search {
 }
 
 #menu-area ul li:hover {
-    color: rgb(0,101,255);
+    color: rgb(0, 101, 255);
 }
 
 #menu-area ul li:hover i {
-    color: rgb(0,101,255);
+    color: rgb(0, 101, 255);
 }
 
 #menu-area .sub-menu {
@@ -679,7 +648,7 @@ div.dx-searchbox .dx-icon-search {
     text-shadow: 0 0 18px #000000a6;
     box-shadow: 0px 2px 11px 0 rgba(0, 0, 0, 0.35);
     outline: none;
-    background: rgb(0,101,255);
+    background: rgb(0, 101, 255);
     transition: all cubic-bezier(.62, .28, .23, .99) 0.15s;
 }
 
@@ -730,11 +699,11 @@ div.dx-searchbox .dx-icon-search {
     border: 1px solid rgb(209, 213, 215);
 }
 
-.dx-checkbox-container .dx-checkbox-icon{
+.dx-checkbox-container .dx-checkbox-icon {
     border: 1px solid rgb(209, 213, 215);
 }
 
-.dx-widget.dx-texteditor:not(.dx-searchbox){
+.dx-widget.dx-texteditor:not(.dx-searchbox) {
     border: 1px solid rgb(209, 213, 215);
 }
 
@@ -746,25 +715,31 @@ div.dx-searchbox .dx-icon-search {
     border: 1px solid rgb(0, 101, 255);
 }
 
-.dx-checkbox-indeterminate .dx-checkbox-container .dx-checkbox-icon:before{
+.dx-checkbox-indeterminate .dx-checkbox-container .dx-checkbox-icon:before {
     background-color: rgb(0, 101, 255);
 }
 
-.dx-checkbox-checked .dx-checkbox-container .dx-checkbox-icon{
-    color:rgb(0, 101, 255);
+.dx-checkbox-checked .dx-checkbox-container .dx-checkbox-icon {
+    color: rgb(0, 101, 255);
 }
 
-.dx-invalid-message > .dx-overlay-content.dx-resizable{
-    background: linear-gradient(to right, rgb(233, 30, 99),rgb(244, 67, 54));
+.dx-datagrid .dx-link.dx-link-delete {
+    color: rgb(255, 255, 255);
+    background: linear-gradient(to right, rgb(233, 30, 99), rgb(244, 67, 54));
+    padding: 5px 15px;
+    text-decoration: unset;
+}
+
+.dx-invalid-message>.dx-overlay-content.dx-resizable {
+    background: linear-gradient(to right, rgb(233, 30, 99), rgb(244, 67, 54));
     border-radius: 0;
 }
 
-.dx-invalid.dx-texteditor.dx-textbox .dx-texteditor-container:after{
-    background: linear-gradient(to right, rgb(233, 30, 99),rgb(244, 67, 54));
+.dx-invalid.dx-texteditor.dx-textbox .dx-texteditor-container:after {
+    background: linear-gradient(to right, rgb(233, 30, 99), rgb(244, 67, 54));
 }
 
-.dx-toast-error {
-    background: linear-gradient(to right, rgb(233, 30, 99),rgb(244, 67, 54));
+.dx-toast-content{
     position: fixed !important;
     top: 22px !important;
     right: 98px !important;
@@ -780,10 +755,18 @@ div.dx-searchbox .dx-icon-search {
     padding-right: 50px !important;
 }
 
+.dx-toast-success{
+    background: linear-gradient(to left, rgb(76, 175, 80),rgb(0, 150, 136));
+}
+
+.dx-toast-error {
+    background: linear-gradient(to right, rgb(233, 30, 99), rgb(244, 67, 54));
+}
+
 #menu {
     float: left;
     width: 280px;
-    background: rgb(26,33,41);
+    background: rgb(26, 33, 41);
     height: calc(100%);
     border-right: 1px solid rgba(0, 0, 0, 0.3);
     border-radius: 0;
@@ -794,39 +777,39 @@ div.dx-searchbox .dx-icon-search {
     top: 0;
 }
 
-#menu #logo-area{
+#menu #logo-area {
     animation: leftin cubic-bezier(.62, .28, .23, .99) 1s 1;
     animation-fill-mode: forwards;
     margin-left: -163px;
 }
 
-#menu li.head{
+#menu li.head {
     animation: leftin cubic-bezier(.62, .28, .23, .99) 1s 1;
     animation-fill-mode: forwards;
     margin-left: -163px;
 }
 
-#menu #logo-area{
+#menu #logo-area {
     animation-delay: 0s;
 }
 
-#menu li.head:nth-child(1){
+#menu li.head:nth-child(1) {
     animation-delay: 0.1s;
 }
 
-#menu li.head:nth-child(2){
+#menu li.head:nth-child(2) {
     animation-delay: 0.2s;
 }
 
-#menu li.head:nth-child(4){
+#menu li.head:nth-child(4) {
     animation-delay: 0.3s;
 }
 
-#menu li.head:nth-child(6){
+#menu li.head:nth-child(6) {
     animation-delay: 0.4s;
 }
 
-#menu li.head:nth-child(8){
+#menu li.head:nth-child(8) {
     animation-delay: 0.5s;
 }
 
@@ -862,7 +845,7 @@ div.dx-searchbox .dx-icon-search {
 .edit-area .form-holder {
     float: left;
     padding: 0 35px;
-    width:100%;
+    width: 100%;
     margin-top: 20px;
 }
 
@@ -875,9 +858,10 @@ div.dx-searchbox .dx-icon-search {
     padding-left: 48px;
 }
 
-.fn-holder-page{
+.fn-holder-page {
     margin-top: 22px;
 }
+
 /* FinuansWeb css END */
 
 @media(max-width: 1601px) {

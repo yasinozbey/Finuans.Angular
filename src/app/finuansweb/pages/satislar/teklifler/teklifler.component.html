@@ -6,13 +6,16 @@
     </div>
     <div class="col-lg-12 new-area" [hidden]="state !== 1">
       <app-fn-form inheritTitle="Teklifler" newTitle="Yeni Teklif" editTitle="Teklif Düzenle" [(selectedItem)]="selectedItem" (onSave)="saveForm(form)"
-        (onCancel)="cancelForm()">
+        (onCancel)="cancelForm()" [(selectedItem)]="selectedItem">
         <div class="col-lg-6">
           <dx-form #form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="4">
             <dxi-item dataField="Aciklama" [colSpan]="4" [label]="{text: 'Teklif açıklaması'}">
               <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
             </dxi-item>
-            <dxi-item dataField="CariHesapID" [colSpan]="4" #itemHolder [label]="{text: 'Müşteri'}" editorType="dxSelectBox" [editorOptions]="{ dataSource: customers, displayExpr:'Unvan', valueExpr:'ID' }">
+            <dxi-item dataField="CariHesapID" [colSpan]="2" #itemHolder [label]="{text: 'Müşteri'}" editorType="dxSelectBox" [editorOptions]="{ dataSource: customers, displayExpr:'Unvan', valueExpr:'ID' }">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="BelgeNo" [colSpan]="2" #itemHolder [label]="{text: 'Belge No'}">
               <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
             </dxi-item>
             <dxi-item dataField="BelgeTarihi" [colSpan]="2" [label]="{text: 'Düzenleme Tarihi'}" editorType="dxDateBox" [editorOptions]="{ width: '100%', value:defaultDate}">

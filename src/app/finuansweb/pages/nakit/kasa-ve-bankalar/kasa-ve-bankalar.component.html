@@ -6,8 +6,8 @@
     </div>
     <div class="col-lg-12 new-area" [hidden]="state !== 1">
       <app-fn-form *ngIf="stateType == 'BANKA'" inheritTitle="Kasa ve Bankalar" newTitle="Yeni Banka" editTitle="Banka Düzenle"
-        [(selectedItem)]="selectedItem" (onSave)="saveForm(form)" (onCancel)="cancelForm()">
-        <div class="col-lg-12">
+        [(selectedItem)]="selectedItem" (onSave)="saveForm(form)" (onCancel)="cancelForm()" >
+        <div class="col-lg-6">
           <dx-form #form class="form-element" *ngIf="stateType == 'BANKA'" [formData]="selectedItem" labelLocation="top" [colCount]="4">
             <dxi-item dataField="HesapAdi" [colSpan]="4" [label]="{text: 'Hesap Adı'}">
               <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
@@ -34,11 +34,13 @@
             <dxi-item dataField="KategoriID" [colSpan]="2" [label]="{text: 'Kategori'}" editorType="dxSelectBox" [editorOptions]="{ items: categories, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
           </dx-form>
         </div>
+        <div class="col-lg-6">
+          <app-fn-info [dataSource]="dataSource3" *ngIf="info"></app-fn-info>
+        </div>
       </app-fn-form>
 
-      <app-fn-form *ngIf="stateType == 'KASA'" inheritTitle="Kasa ve Bankalar" newTitle="Yeni Kasa" editTitle="Kasa Düzenle"
-        (onSave)="saveForm(form)" (onCancel)="cancelForm()">
-        <div class="col-lg-12">
+      <app-fn-form *ngIf="stateType == 'KASA'" inheritTitle="Kasa ve Bankalar" newTitle="Yeni Kasa" editTitle="Kasa Düzenle" (onSave)="saveForm(form)" (onCancel)="cancelForm()" [(selectedItem)]="selectedItem">
+        <div class="col-lg-6">
           <dx-form #form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="4">
             <dxi-item dataField="HesapAdi" [colSpan]="4" [label]="{text: 'Hesap Adı'}">
               <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
@@ -50,6 +52,9 @@
             </dxi-item>
             <dxi-item dataField="KategoriID" [colSpan]="2" [label]="{text: 'Kategori'}" editorType="dxSelectBox" [editorOptions]="{ items: categories, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
           </dx-form>
+        </div>
+        <div class="col-lg-6">
+          <app-fn-info [dataSource]="dataSource3" *ngIf="info"></app-fn-info>
         </div>
       </app-fn-form>
     </div>

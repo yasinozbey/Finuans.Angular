@@ -10,6 +10,7 @@ import { MainService } from '../../../../shared/main.service';
 export class CalisanlarComponent implements OnInit {
 
   dataSource = [];
+  dataSource3 = [];
   dataFields = [
     { dataField: 'ID', caption: 'ID', alignment: 'left'},
     { dataField: "AdSoyad", caption: "Ad Soyad" },
@@ -20,7 +21,7 @@ export class CalisanlarComponent implements OnInit {
   actions = [
     { actionEvent: "new", actionName: "Yeni Çalışan" }
   ]
-  info;
+  info = false;
   categories;
   selectedItem;
   state = 0;
@@ -38,12 +39,17 @@ export class CalisanlarComponent implements OnInit {
     this.main.reqGet("Calisan/GetbyId/" + e.data.ID).subscribe(res => {
       this.selectedItem = res;
       this.state = 1;
+      this.info = true;
+    });
+    this.main.reqGet("Calisan/IslemGecmisi/" + e.data.ID).subscribe(islemRes => {
+      this.dataSource3 = islemRes;
     });
   }
 
   handleNewAction(e) {
     this.selectedItem = undefined;
     this.state = 1;
+    this.info = false;
   }
 
   cancelForm() {
@@ -51,14 +57,14 @@ export class CalisanlarComponent implements OnInit {
     this.selectedItem = new Object();
   }
 
-  saveForm() {
+  saveForm(form) {
     let url;
     if (this.state === 1) {
       url = "Calisan/Insert";
     } else {
       url = "Calisan/Update";
     }
-    this.main.reqPost(url, this.selectedItem).subscribe(res => {
+    this.main.reqPost(url, form.formData).subscribe(res => {
       if (this.state === 1) {
         this.main.notifier("Çalışan başarıyla eklendi", true);
       } else {

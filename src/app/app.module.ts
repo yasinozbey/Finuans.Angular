@@ -41,6 +41,7 @@ import { FnFormGridComponent } from './finuansweb/layout-helpers/fn-form-grid/fn
 import { FnMainComponent } from './finuansweb/layout-helpers/fn-main/fn-main.component';
 import { FnFormComponent } from './finuansweb/layout-helpers/fn-form/fn-form.component';
 import { LoginComponent } from './login/login.component';
+import { FnInfoComponent } from './finuansweb/layout-helpers/fn-info/fn-info.component';
 
 const appRoutes: Routes = [
   { path: 'GuncelDurum', component: GuncelDurumComponent, canActivate: [AuthGuard]  },
@@ -99,7 +100,8 @@ registerLocaleData(localeTr, 'tr');
     FnFormGridComponent,
     FnMainComponent,
     FnFormComponent,
-    LoginComponent
+    LoginComponent,
+    FnInfoComponent
   ],
   imports: [
     BrowserModule,

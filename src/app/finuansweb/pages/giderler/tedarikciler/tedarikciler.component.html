@@ -6,7 +6,7 @@
     </div>
 
     <div class="col-lg-12" *ngIf="state === 1">
-      <app-fn-form inheritTitle="Tedarikçiler" newTitle="Yeni Tedarikçi" editTitle="Tedarikçi Düzenle" (onSave)="saveForm(form)" (onCancel)="cancelForm()">
+      <app-fn-form inheritTitle="Tedarikçiler" newTitle="Yeni Tedarikçi" editTitle="Tedarikçi Düzenle" (onSave)="saveForm(form)" (onCancel)="cancelForm()" [(selectedItem)]="selectedItem">
         <div class="col-lg-6">
             <dx-form #form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="2">
                 <dxi-item dataField="Unvani" [colSpan]="2" [label]="{text: 'Firma Unvanı'}">
@@ -40,8 +40,8 @@
               </dx-form>
         </div>
         <div class="fn-grid-holder">
-          <dx-data-grid id="gridContainer" #detailGrid [dataSource]="dataSource2" noDataText="Kayıt Bulunamadı" (onRowUpdated)="syncDataSource($event)">
-            <dxo-editing mode="cell" [allowUpdating]="true"> </dxo-editing>
+          <dx-data-grid id="gridContainer" #detailGrid [dataSource]="dataSource2" noDataText="Kayıt Bulunamadı" (onRowUpdated)="syncDataSource($event)" [editing]="{texts: {confirmDeleteMessage:'Bu yetkiliyi silmek istediğinize emin misiniz?', deleteRow: 'Sil'}}">
+            <dxo-editing mode="cell" [allowUpdating]="true" [allowDeleting]="true"> </dxo-editing>
             <dxi-column dataField="Adi" caption="Adı Soyadı"></dxi-column>
             <dxi-column dataField="Eposta" caption="E-Posta"></dxi-column>
             <dxi-column dataField="Telefon" caption="Telefon"></dxi-column>

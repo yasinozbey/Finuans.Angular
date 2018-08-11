@@ -80,7 +80,7 @@ export class TedarikcilerComponent implements OnInit {
       return false;
     }
     let reqData = {
-      CariHesap:this.selectedItem,
+      CariHesap: form.formData,
       Yetkili: this.dataSource2
     }
     this.main.reqPost("CariHesap/SaveCustomer", reqData).subscribe(res => {

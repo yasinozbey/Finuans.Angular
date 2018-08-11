@@ -6,9 +6,9 @@
     </div>
     <div class="col-lg-12 new-area" [hidden]="state !== 1">
       <app-fn-form inheritTitle="Hizmet ve Ürünler" newTitle="Yeni Hizmet/Ürün" editTitle="Hizmet/Ürün Düzenle" [(selectedItem)]="selectedItem"
-        (onSave)="saveForm()" (onCancel)="cancelForm()">
+        (onSave)="saveForm(form)" (onCancel)="cancelForm()">
         <div class="col-lg-6">
-          <dx-form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="4" [showColonAfterLabel]=false>
+          <dx-form #form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="4" [showColonAfterLabel]=false>
             <dxi-item dataField="Adi" [colSpan]="4" [label]="{text: 'Adı'}">
               <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
             </dxi-item>
@@ -40,8 +40,8 @@
           </dx-form>
         </div>
         <div class="fn-grid-holder">
-          <dx-data-grid id="gridContainer" [dataSource]="dataSource2" noDataText="Kayıt Bulunamadı">
-            <dxo-editing mode="cell" [allowUpdating]="true"> </dxo-editing>
+          <dx-data-grid id="gridContainer" [dataSource]="dataSource2" noDataText="Kayıt Bulunamadı" [editing]="{texts: {confirmDeleteMessage:'Bu barkodu silmek istediğinize emin misiniz?', deleteRow: 'Sil'}}">
+            <dxo-editing mode="cell" [allowUpdating]="true" [allowDeleting]="true"> </dxo-editing>
             <dxi-column dataField="Barkod" caption="Barkod"></dxi-column>
             <dxi-column dataField="Birim" caption="Birim"></dxi-column>
             <dxi-column dataField="Miktar" caption="Miktar"></dxi-column>
@@ -53,6 +53,7 @@
                 <i class="anticon anticon-plus-circle-o"></i>Bir Barkod Ekle</button>
             </div>
           </div>
+          <app-fn-info [dataSource]="dataSource3" *ngIf="info"></app-fn-info>
         </div>
       </app-fn-form>
     </div>
