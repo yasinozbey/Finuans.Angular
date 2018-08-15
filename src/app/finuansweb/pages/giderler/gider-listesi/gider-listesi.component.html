@@ -5,8 +5,8 @@
         (actionClick)="handleNewAction($event)"></app-fn-main>
     </div>
 
-    <div class="col-lg-12" *ngIf="state === 1">
-      <app-fn-form *ngIf="stateType == 'FIS'" inheritTitle="Giderler" newTitle="Yeni Fatura/Fiş" editTitle="Fatura/Fiş Düzenle"
+    <div class="col-lg-12" *ngIf="state !== 0">
+      <app-fn-form *ngIf="stateType == 'FIS'" [state]="state" inheritTitle="Giderler" newTitle="Yeni Fatura/Fiş" editTitle="Fatura/Fiş Düzenle"
         (onSave)="saveForm(form)" (onCancel)="cancelForm()" [(selectedItem)]="selectedItem">
         <div class="col-lg-6">
           <dx-form #form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="4">
@@ -19,19 +19,25 @@
             <dxi-item dataField="BelgeNo" [colSpan]="2" [label]="{text: 'Fatura No'}">
               <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
             </dxi-item>
-            <dxi-item dataField="FaturaTarihi" [colSpan]="2" [label]="{text: 'Belge Tarihi' }" editorType="dxDateBox" [editorOptions]="{ width: '100%'}">
-              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
-            </dxi-item>
-            <dxi-item dataField="VadeTarihi" [colSpan]="2" [label]="{text: 'Vade Tarihi'}" editorType="dxDateBox" [editorOptions]="{ width: '100%'}">
+            <dxi-item dataField="FaturaTarihi" [colSpan]="2" [label]="{text: 'Fatura Tarihi'}" editorType="dxDateBox" [editorOptions]="{ width: '100%'}">
               <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
             </dxi-item>
             <dxi-item dataField="OdemeDurumu" [colSpan]="2" [label]="{text: 'Ödeme Durumu'}" editorType="dxSelectBox" [editorOptions]="{ items: paymentStates, displayExpr:'Name', valueExpr:'ID', onValueChanged: changeOdemeDurumu }">
               <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
             </dxi-item>
-            <dxi-item [colSpan]="2"></dxi-item>
+
+            <dxi-item dataField="VadeTarihi" *ngIf="odemeDurumuState === 0" [colSpan]="2" [label]="{text: 'Ödeneceği Tarih' }" editorType="dxDateBox"
+              [editorOptions]="{ width: '100%'}">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
+
+            <dxi-item *ngIf="odemeDurumuState === 0" [colSpan]="2"></dxi-item>
             <dxi-item itemType="group" caption="Tahsilat Bilgileri" [colSpan]="4" [colCount]="2" *ngIf="odemeDurumuState > 0">
-              <dxi-item dataField="Tahsilat.HesapID" [label]="{text: 'Hesap'}" editorType="dxSelectBox" [editorOptions]="{ items: accounts, displayExpr:'HesapAdi', valueExpr:'ID', value:accounts[0].ID }"></dxi-item>
-              <dxi-item dataField="Tahsilat.EvrakTarihi" [label]="{text: 'Tahsilat Tarihi'}" editorType="dxDateBox" [editorOptions]="{ width: '100%'}"></dxi-item>
+              <dxi-item dataField="Tahsilat.HesapID" [label]="{text: 'Hesap'}" editorType="dxSelectBox" [editorOptions]="{ items: accounts, displayExpr:'HesapAdi', valueExpr:'ID' }"></dxi-item>
+              <dxi-item dataField="Tahsilat.EvrakTarihi" [colSpan]="2" [label]="{text: 'Ödendiği Tarih' }" editorType="dxDateBox" [editorOptions]="{ width: '100%'}">
+                <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+              </dxi-item>
+              <!-- <dxi-item dataField="Tahsilat.EvrakTarihi" [label]="{text: 'Tahsilat Tarihi'}" editorType="dxDateBox" [editorOptions]="{ width: '100%'}"></dxi-item> -->
             </dxi-item>
             <dxi-item dataField="KategoriID" [colSpan]="2" [label]="{text: 'Kategori'}" editorType="dxSelectBox" [editorOptions]="{ items: categories, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
             <dxi-item dataField="EtiketID" [colSpan]="2" [label]="{text: 'Etiket'}" editorType="dxSelectBox" [editorOptions]="{ items: tags, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
@@ -42,13 +48,13 @@
             [masterDetail]="{ enabled: true, template: 'detail' }">
             <dxo-selection mode="single"></dxo-selection>
             <dxo-editing mode="cell" [allowUpdating]="true"> </dxo-editing>
-            <dxi-column dataField="StokID" caption="Hizmet/Ürün" [setCellValue]="valueChange">
+            <dxi-column dataField="StokID" caption="Hizmet/Ürün" [setCellValue]="productChange">
               <dxo-lookup [dataSource]="products" displayExpr="Adi" valueExpr="ID"> </dxo-lookup>
             </dxi-column>
             <dxi-column dataField="Birim" caption="Birim" [width]="'10%'"></dxi-column>
-            <dxi-column dataField="Miktar" caption="Miktar" [width]="'10%'"></dxi-column>
-            <dxi-column dataField="BirimFiyat" caption="Fiyat" [width]="'10%'"></dxi-column>
-            <dxi-column dataField="VergiOran" caption="KDV" [width]="'10%'">
+            <dxi-column dataField="Miktar" caption="Miktar" [width]="'10%'" [setCellValue]="miktarChange"></dxi-column>
+            <dxi-column dataField="BirimFiyat" caption="Fiyat" [width]="'10%'" [setCellValue]="fiyatChange"></dxi-column>
+            <dxi-column dataField="VergiOran" caption="KDV" [width]="'10%'" [setCellValue]="vergiOranChange">
               <dxo-lookup [dataSource]="taxes" displayExpr="Name" valueExpr="Value"> </dxo-lookup>
             </dxi-column>
             <dxi-column dataField="Tutar" caption="Toplam" [width]="'15%'" format="#,##0.##"></dxi-column>
@@ -71,46 +77,7 @@
         </div>
       </app-fn-form>
 
-      <app-fn-form *ngIf="stateType == 'VERGI'" inheritTitle="Giderler" newTitle="Yeni Vergi" editTitle="Vergi Düzenle" (onSave)="saveForm(form)"
-        (onCancel)="cancelForm()" [(selectedItem)]="selectedItem">
-        <div class="col-lg-12">
-          <dx-form #form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="4">
-            <dxi-item dataField="Aciklama" [colSpan]="4" [label]="{text: 'Açıklama'}">
-              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
-            </dxi-item>
-            <dxi-item dataField="HesapTipi" [colSpan]="2" [label]="{text: 'Hesap Tipi'}" editorType="dxSelectBox" [editorOptions]="{ items: accountTypes, displayExpr:'Name', valueExpr:'ID', onValueChanged: getAccountsFiltered }">
-              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
-            </dxi-item>
-            <dxi-item dataField="HesapID" [colSpan]="2" [label]="{text: 'Hesap'}" editorType="dxSelectBox" [editorOptions]="{ items: accountsFiltered, displayExpr:'HesapAdi', valueExpr:'ID' }">
-              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
-            </dxi-item>
-            <dxi-item dataField="Tutar" [colSpan]="2" [label]="{text: 'Tutar'}" format="#,##0.##">
-              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
-            </dxi-item>
-            <dxi-item dataField="DovizCinsi" [colSpan]="2" [label]="{text: 'Döviz'}" editorType="dxSelectBox" [editorOptions]="{ items: currencies, displayExpr:'Adi', valueExpr:'ID', value:defaultDoviz[0].ID }">
-              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
-            </dxi-item>
-            <dxi-item dataField="BelgeTarihi" [colSpan]="2" [label]="{text: 'Belge Tarihi' }" editorType="dxDateBox" [editorOptions]="{ width: '100%'}">
-              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
-            </dxi-item>
-            <dxi-item dataField="OdemeDurumu" [colSpan]="1" [label]="{text: 'Ödeme Durumu'}" editorType="dxSelectBox" [editorOptions]="{ items: paymentStates, displayExpr:'Name', valueExpr:'ID', onValueChanged: changeOdemeDurumu }">
-              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
-            </dxi-item>
-            <dxi-item dataField="OdemeTarihi" [colSpan]="1" [label]="{text: odemeDurumuState ? 'Ödendiği Tarih' : 'Ödeneceği Tarih' }"
-              editorType="dxDateBox" [editorOptions]="{ width: '100%', value:defaultDate}">
-              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
-            </dxi-item>
-            <dxi-item dataField="VergiTarihi" [colSpan]="2" [label]="{text: 'Vergi Dönemi'}" editorType="dxDateBox" [editorOptions]="{ width: '100%',displayFormat:'MM/yyyy', maxZoomLevel:'year', minZoomLevel:'year', value:defaultDate}">
-              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
-            </dxi-item>
-            <dxi-item [colSpan]="2"></dxi-item>
-            <dxi-item dataField="KategoriID" [colSpan]="2" [label]="{text: 'Kategori'}" editorType="dxSelectBox" [editorOptions]="{ items: categories, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
-            <dxi-item dataField="EtiketID" [colSpan]="2" [label]="{text: 'Etiket'}" editorType="dxSelectBox" [editorOptions]="{ items: tags, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
-          </dx-form>
-        </div>
-      </app-fn-form>
-
-      <app-fn-form *ngIf="stateType == 'BANKA'" inheritTitle="Giderler" newTitle="Yeni Banka Gideri" editTitle="Banka Gideri Düzenle"
+      <app-fn-form *ngIf="stateType == 'VERGI'" [state]="state" inheritTitle="Giderler" newTitle="Yeni Vergi" editTitle="Vergi Düzenle"
         (onSave)="saveForm(form)" (onCancel)="cancelForm()" [(selectedItem)]="selectedItem">
         <div class="col-lg-12">
           <dx-form #form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="4">
@@ -136,7 +103,46 @@
               <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
             </dxi-item>
             <dxi-item dataField="OdemeTarihi" [colSpan]="1" [label]="{text: odemeDurumuState ? 'Ödendiği Tarih' : 'Ödeneceği Tarih' }"
-              editorType="dxDateBox" [editorOptions]="{ width: '100%', value:defaultDate}">
+              editorType="dxDateBox" [editorOptions]="{ width: '100%'}">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="VergiTarihi" [colSpan]="2" [label]="{text: 'Vergi Dönemi'}" editorType="dxDateBox" [editorOptions]="{ width: '100%',displayFormat:'yyyy MMMM', maxZoomLevel:'year', minZoomLevel:'year'}">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item [colSpan]="2"></dxi-item>
+            <dxi-item dataField="KategoriID" [colSpan]="2" [label]="{text: 'Kategori'}" editorType="dxSelectBox" [editorOptions]="{ items: categories, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
+            <dxi-item dataField="EtiketID" [colSpan]="2" [label]="{text: 'Etiket'}" editorType="dxSelectBox" [editorOptions]="{ items: tags, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
+          </dx-form>
+        </div>
+      </app-fn-form>
+
+      <app-fn-form *ngIf="stateType == 'BANKA'" [state]="state" inheritTitle="Giderler" newTitle="Yeni Banka Gideri" editTitle="Banka Gideri Düzenle"
+        (onSave)="saveForm(form)" (onCancel)="cancelForm()" [(selectedItem)]="selectedItem">
+        <div class="col-lg-12">
+          <dx-form #form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="4">
+            <dxi-item dataField="Aciklama" [colSpan]="4" [label]="{text: 'Açıklama'}">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="HesapTipi" [colSpan]="2" [label]="{text: 'Hesap Tipi'}" editorType="dxSelectBox" [editorOptions]="{ items: accountTypes, displayExpr:'Name', valueExpr:'ID', onValueChanged: getAccountsFiltered }">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="HesapID" [colSpan]="2" [label]="{text: 'Hesap'}" editorType="dxSelectBox" [editorOptions]="{ items: accountsFiltered, displayExpr:'HesapAdi', valueExpr:'ID' }">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="Tutar" [colSpan]="2" [label]="{text: 'Tutar'}" format="#,##0.##">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="DovizCinsi" [colSpan]="2" [label]="{text: 'Döviz'}" editorType="dxSelectBox" [editorOptions]="{ items: currencies, displayExpr:'Adi', valueExpr:'ID', value:defaultDoviz[0].ID }">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="BelgeTarihi" [colSpan]="2" [label]="{text: 'Belge Tarihi' }" editorType="dxDateBox" [editorOptions]="{ width: '100%'}">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="OdemeDurumu" [colSpan]="1" [label]="{text: 'Ödeme Durumu'}" editorType="dxSelectBox" [editorOptions]="{ items: paymentStates, displayExpr:'Name', valueExpr:'ID', onValueChanged: changeOdemeDurumu }">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="OdemeTarihi" [colSpan]="1" [label]="{text: odemeDurumuState ? 'Ödendiği Tarih' : 'Ödeneceği Tarih' }"
+              editorType="dxDateBox" [editorOptions]="{ width: '100%'}">
               <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
             </dxi-item>
             <dxi-item dataField="KategoriID" [colSpan]="2" [label]="{text: 'Kategori'}" editorType="dxSelectBox" [editorOptions]="{ items: categories, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
@@ -145,8 +151,8 @@
         </div>
       </app-fn-form>
 
-      <app-fn-form *ngIf="stateType == 'MAAS'" inheritTitle="Giderler" newTitle="Yeni Maaş" editTitle="Maaş Düzenle" (onSave)="saveForm(form)"
-        (onCancel)="cancelForm()">
+      <app-fn-form *ngIf="stateType == 'MAAS'" [state]="state" inheritTitle="Giderler" newTitle="Yeni Maaş" editTitle="Maaş Düzenle"
+        (onSave)="saveForm(form)" (onCancel)="cancelForm()">
         <div class="col-lg-12">
           <dx-form #form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="4">
             <dxi-item dataField="Aciklama" [colSpan]="4" [label]="{text: 'Açıklama'}">
@@ -171,7 +177,7 @@
               <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
             </dxi-item>
             <dxi-item dataField="OdemeTarihi" [colSpan]="1" [label]="{text: odemeDurumuState ? 'Ödendiği Tarih' : 'Ödeneceği Tarih' }"
-              editorType="dxDateBox" [editorOptions]="{ width: '100%', value:defaultDate}">
+              editorType="dxDateBox" [editorOptions]="{ width: '100%'}">
               <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
             </dxi-item>
             <dxi-item dataField="KategoriID" [colSpan]="2" [label]="{text: 'Kategori'}" editorType="dxSelectBox" [editorOptions]="{ items: categories, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
@@ -180,8 +186,8 @@
         </div>
       </app-fn-form>
 
-      <app-fn-form *ngIf="stateType == 'AVANS'" inheritTitle="Giderler" newTitle="Yeni Avans" editTitle="Avans Düzenle" (onSave)="saveForm(form)"
-        (onCancel)="cancelForm()" [(selectedItem)]="selectedItem">
+      <app-fn-form *ngIf="stateType == 'AVANS'" [state]="state" inheritTitle="Giderler" newTitle="Yeni Avans" editTitle="Avans Düzenle"
+        (onSave)="saveForm(form)" (onCancel)="cancelForm()" [(selectedItem)]="selectedItem">
         <div class="col-lg-12">
           <dx-form #form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="4">
             <dxi-item dataField="Aciklama" [colSpan]="4" [label]="{text: 'Açıklama'}">
@@ -199,14 +205,14 @@
             <dxi-item dataField="DovizCinsi" [colSpan]="2" [label]="{text: 'Döviz'}" editorType="dxSelectBox" [editorOptions]="{ items: currencies, displayExpr:'Adi', valueExpr:'ID' }">
               <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
             </dxi-item>
-            <dxi-item dataField="BelgeTarihi" [colSpan]="2" [label]="{text: 'Belge Tarihi' }" editorType="dxDateBox" [editorOptions]="{ width: '100%', value:defaultDate}">
+            <dxi-item dataField="BelgeTarihi" [colSpan]="2" [label]="{text: 'Belge Tarihi' }" editorType="dxDateBox" [editorOptions]="{ width: '100%'}">
               <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
             </dxi-item>
             <dxi-item dataField="OdemeDurumu" [colSpan]="1" [label]="{text: 'Ödeme Durumu'}" editorType="dxSelectBox" [editorOptions]="{ items: paymentStates, displayExpr:'Name', valueExpr:'ID', onValueChanged: changeOdemeDurumu }">
               <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
             </dxi-item>
             <dxi-item dataField="OdemeTarihi" [colSpan]="1" [label]="{text: odemeDurumuState ? 'Ödendiği Tarih' : 'Ödeneceği Tarih' }"
-              editorType="dxDateBox" [editorOptions]="{ width: '100%', value:defaultDate}">
+              editorType="dxDateBox" [editorOptions]="{ width: '100%'}">
               <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
             </dxi-item>
             <dxi-item dataField="KategoriID" [colSpan]="2" [label]="{text: 'Kategori'}" editorType="dxSelectBox" [editorOptions]="{ items: categories, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>

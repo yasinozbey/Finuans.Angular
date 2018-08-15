@@ -13,10 +13,10 @@ export class KasaVeBankalarComponent implements OnInit {
   dataSource3 = [];
   dataFields = [
     { dataField: 'ID', caption: 'ID', alignment: 'left'},
-    { dataField: 'IsKasa', caption: 'Hesap Tipi', calculateCellValue: this.calculateCellValue},
+    { dataField: 'HesapTipi', caption: 'Hesap Tipi'},
     { dataField: 'HesapAdi', caption: 'Hesap Adı'},
     { dataField: 'IBAN', caption: 'IBAN'},
-    { dataField: 'Bakiye', caption: 'Bakiye', alignment: 'right'},
+    { dataField: 'Bakiye', caption: 'Bakiye', alignment: 'right', format: '#0.00' },
     { dataField: 'DovizCinsi', caption: 'Döviz Cinsi'},
   ];
   actions = [
@@ -78,7 +78,7 @@ export class KasaVeBankalarComponent implements OnInit {
   handleNewAction(e) {
     this.selectedItem = undefined;
     this.stateType = e;
-    this.state = 1;
+    this.state = 2;
     this.info = false;
   }
 

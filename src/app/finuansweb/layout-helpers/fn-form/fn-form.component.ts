@@ -13,6 +13,7 @@ export class FnFormComponent implements OnInit {
   @Input("newTitle") newTitle = "";
   @Input("editTitle") editTitle = "";
   @Input("selectedItem") selectedItem;
+  @Input("state") state;
 
   saveItem() {
     this.onSave.emit("save");

@@ -5,8 +5,8 @@
         (actionClick)="handleNewAction($event)"></app-fn-main>
     </div>
 
-    <div class="col-lg-12 new-area" *ngIf="state === 1">
-      <app-fn-form inheritTitle="Müşteriler" newTitle="Yeni Müşteri" editTitle="Müşteri Düzenle" [(selectedItem)]="selectedItem"
+    <div class="col-lg-12 new-area" *ngIf="state !== 0">
+      <app-fn-form inheritTitle="Müşteriler" [state]="state" newTitle="Yeni Müşteri" editTitle="Müşteri Düzenle" [(selectedItem)]="selectedItem"
         (onSave)="saveForm(form)" (onCancel)="cancelForm()" [(selectedItem)]="selectedItem">
         <div class="col-lg-6">
           <dx-form #form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="2">
@@ -23,8 +23,10 @@
             <dxi-item dataField="KasabaID" [colSpan]="1" [label]="{text: 'İlçe'}" editorType="dxSelectBox" [editorOptions]="{ items: districts, displayExpr:'Adi', valueExpr:'ID' }">
               <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
             </dxi-item>
-            <dxi-item dataField="VergiNo" [colSpan]="1" [label]="{text: 'VKN/TCKN'}" [editorOptions]="{ mask: '00000000000', useMaskedValue: true, maskInvalidMessage: 'TC No 11 Haneli Olmalıdır'}">
+            <dxi-item dataField="VergiNo" [colSpan]="1" [label]="{text: 'VKN/TCKN'}">
               <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+              <dxi-validation-rule *ngIf="form.formData.Tur === 1" type="stringLength" [max]="11" [min]="11" message="Lütfen 11 Karakter Giriniz"></dxi-validation-rule>
+              <dxi-validation-rule *ngIf="form.formData.Tur === 0" type="stringLength" [max]="10" [min]="10" message="Lütfen 10 Karakter Giriniz"></dxi-validation-rule>
             </dxi-item>
             <dxi-item dataField="VergiDaire" [colSpan]="1" [label]="{text: 'Vergi Dairesi'}">
               <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
@@ -41,7 +43,8 @@
           </dx-form>
         </div>
         <div class="fn-grid-holder">
-          <dx-data-grid id="gridContainer" #detailGrid [dataSource]="dataSource2" noDataText="Kayıt Bulunamadı" (onRowUpdated)="syncDataSource($event)" [editing]="{texts: {confirmDeleteMessage:'Bu yetkiliyi silmek istediğinize emin misiniz?', deleteRow: 'Sil'}}">
+          <dx-data-grid id="gridContainer" #detailGrid [dataSource]="dataSource2" noDataText="Kayıt Bulunamadı" (onRowUpdated)="syncDataSource($event)"
+            [editing]="{texts: {confirmDeleteMessage:'Bu yetkiliyi silmek istediğinize emin misiniz?', deleteRow: 'Sil'}}">
             <dxo-editing mode="cell" [allowUpdating]="true" [allowDeleting]="true"> </dxo-editing>
             <dxi-column dataField="Adi" caption="Adı Soyadı"></dxi-column>
             <dxi-column dataField="Eposta" caption="E-Posta"></dxi-column>
@@ -54,7 +57,7 @@
                 <i class="anticon anticon-plus-circle-o"></i>Bir Yetkili Ekle</button>
             </div>
           </div>
-          <app-fn-info [dataSource]="dataSource3" *ngIf="info"></app-fn-info>
+          <app-fn-info [dataSource]="datasource3" *ngIf="info"></app-fn-info>
         </div>
       </app-fn-form>
     </div>

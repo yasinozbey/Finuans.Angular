@@ -57,7 +57,7 @@ export class HizmetVeUrunlerComponent implements OnInit {
   handleNewAction(e) {
     this.selectboxHandler();
     this.selectedItem = undefined;
-    this.state = 1;
+    this.state = 2;
     this.info = false;
     this.dataSource2 = [];
   }

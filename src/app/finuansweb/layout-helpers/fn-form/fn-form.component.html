@@ -1,12 +1,12 @@
 <div class="edit-area">
   <div class="fn-header">
-    <span class="main" *ngIf="!selectedItem">{{inheritTitle}}
-      <i class="anticon anticon-right"></i>
-      <b> {{newTitle}}</b>
-    </span>
-    <span class="main" *ngIf="selectedItem">{{inheritTitle}}
+    <span class="main" *ngIf="state == 1">{{inheritTitle}}
       <i class="anticon anticon-right"></i>
       <b> {{editTitle}}</b>
+    </span>
+    <span class="main" *ngIf="state == 2">{{inheritTitle}}
+      <i class="anticon anticon-right"></i>
+      <b> {{newTitle}}</b>
     </span>
     <div class="fn-form-buttons">
       <button class="fn-close" (click)="cancelItem()">Vazgeç</button>

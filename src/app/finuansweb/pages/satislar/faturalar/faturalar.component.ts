@@ -63,29 +63,15 @@ export class FaturalarComponent implements OnInit {
       this.dataSource = res;
       this.state = 0;
     });
-    this.main.reqGet("CariHesap/List").subscribe(res => {
-      this.customers = res;
-      this.state = 0;
-    });
-    this.main.reqGet("Kategori/Get").subscribe(resKategori => {
-      this.categories = resKategori;
-    });
-    this.main.reqGet("Etiket/Get").subscribe(resTags => {
-      this.tags = resTags;
-    });
-    this.main.reqGet("KasaHesabi/List").subscribe(resAccounts => {
-      this.accounts = resAccounts;
-    });
-    this.main.reqGet("StokHizmet/Get").subscribe(res => {
-      this.products = res;
-    });
   }
 
   handleGridAction(e) {
     this.main.reqGet("Fatura/GetbyId/" + e.data.ID).subscribe(res => {
+      this.selectboxHandler();
       if (res.OdemeDurumu) {
         this.selectedItem = {};
         this.main.reqGet("CariHesapHareket/GetbyId/" + res.TahsilatID).subscribe(resPayments => {
+          debugger;
           this.selectedItem["Tahsilat"] = resPayments;
           Object.assign(this.selectedItem, res);
         });
@@ -102,10 +88,8 @@ export class FaturalarComponent implements OnInit {
 
   handleNewAction() {
     this.selectedItem = undefined;
-    this.state = 1;
-    this.main.reqGet("Kategori/Get").subscribe(res => {
-      this.categories = res;
-    });
+    this.state = 2;
+    this.selectboxHandler();
   }
 
   cancelForm() {
@@ -139,15 +123,19 @@ export class FaturalarComponent implements OnInit {
     form.formData["DovizKuru"] = 1;
     form.formData["GenelToplam"] = GenelToplam;
     form.formData["FaturaTipi"] = 0;
+    if(form.formData["OdemeDurumu"] == 1){
+      form.formData["VadeTarihi"] = this.selectedItem["Tahsilat"].TahsilatTarihi;
+    }
 
     let reqData = {
       Fatura: form.formData,
       Detay: this.dataSource2,
-      HesapID: this.selectedItem["Tahsilat"].HesapID,
-      IsKasa: this.accounts.filter(x => {return this.selectedItem["Tahsilat"].HesapID == x.ID})[0].IsKasa,
-      TahsilatTarihi: this.selectedItem["Tahsilat"].EvrakTarihi
+      HesapID: form.formData["Tahsilat"] && form.formData["Tahsilat"].HesapID,
+      IsKasa: form.formData["Tahsilat"] && this.accounts.filter(x => {return form.formData["Tahsilat"].HesapID == x.ID})[0].IsKasa,
+      TahsilatTarihi: form.formData["Tahsilat"] && form.formData["Tahsilat"].EvrakTarihi
     }
     this.main.reqPost("Fatura/SaveFatura", reqData).subscribe(res => {
+      this.main.notifier("Fatura başarıyla kaydedildi", true);
       this.getList();
     });
   }
@@ -157,7 +145,7 @@ export class FaturalarComponent implements OnInit {
       ID: 0,
       StokID: 1,
       Miktar: 1,
-      Birim: "",
+      Birim: "Adet",
       BirimFiyat: 0,
       VergiOran: 0,
       Tutar: 0,
@@ -192,7 +180,7 @@ export class FaturalarComponent implements OnInit {
     this.dataSource2 = tempData;
   }
 
-  valueChange(e, value) {
+  productChange(e, value) {
     this.products.forEach(item => {
       if (item.ID == value) {
         this.dataSource2[this.selectedRow].StokID = value;
@@ -204,6 +192,21 @@ export class FaturalarComponent implements OnInit {
     this["calculateSum"]();
   }
 
+  miktarChange(e, value) {
+    this.dataSource2[this.selectedRow].Miktar = value;
+    this["calculateSum"]();
+  }
+
+  fiyatChange(e, value) {
+    this.dataSource2[this.selectedRow].BirimFiyat = value;
+    this["calculateSum"]();
+  }
+
+  vergiOranChange(e, value) {
+    this.dataSource2[this.selectedRow].VergiOran = value;
+    this["calculateSum"]();
+  }
+
   onClickCell(e) {
     this.selectedRow = e.rowIndex;
   }
@@ -212,8 +215,30 @@ export class FaturalarComponent implements OnInit {
     this.odemeDurumuState = e.value;
   }
 
+  selectboxHandler(){
+    this.main.reqGet("CariHesap/List").subscribe(res => {
+      this.customers = res;
+      this.state = 0;
+    });
+    this.main.reqGet("Kategori/Get").subscribe(resKategori => {
+      this.categories = resKategori;
+    });
+    this.main.reqGet("Etiket/Get").subscribe(resTags => {
+      this.tags = resTags;
+    });
+    this.main.reqGet("KasaHesabi/List").subscribe(resAccounts => {
+      this.accounts = resAccounts;
+    });
+    this.main.reqGet("StokHizmet/Get").subscribe(res => {
+      this.products = res;
+    });
+  }
+
   constructor(private main: MainService) {
-    this.valueChange = this.valueChange.bind(this);
+    this.productChange = this.productChange.bind(this);
+    this.miktarChange = this.miktarChange.bind(this);
+    this.fiyatChange = this.fiyatChange.bind(this);
+    this.vergiOranChange = this.vergiOranChange.bind(this);
     this.calculateSum = this.calculateSum.bind(this);
     this.changeOdemeDurumu = this.changeOdemeDurumu.bind(this);
   }

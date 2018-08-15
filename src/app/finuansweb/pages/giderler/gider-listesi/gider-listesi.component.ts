@@ -14,6 +14,7 @@ export class GiderListesiComponent implements OnInit {
   dataFields = [
     { dataField: 'ID', caption: 'ID', alignment: 'left' },
     { dataField: "Aciklama", caption: "Açıklama" },
+    { dataField: "EvrakTipi", caption: "Evrak Tipi" },
     { dataField: "HesapAdi", caption: "Hesap Adı" },
     { dataField: "DuzenlemeTarihi", caption: "Düzenleme Tarihi", dataType: "date", format: 'dd.MM.y' },
     { dataField: "Bakiye", caption: "Bakiye", format: '#0.00', alignment: 'right' },
@@ -53,6 +54,12 @@ export class GiderListesiComponent implements OnInit {
   defaultDate = new Date();
   defaultDoviz;
   odemeDurumuState = 0;
+  taxes = [
+    { Name: "0%", Value: 0 },
+    { Name: "1%", Value: 1 },
+    { Name: "8%", Value: 8 },
+    { Name: "18%", Value: 18 },
+  ];
 
   getList() {
     this.main.reqGet("Gider/List").subscribe(res => {
@@ -90,7 +97,6 @@ export class GiderListesiComponent implements OnInit {
     if(e.data.Tip === 4) {
       this.stateType = "FIS";
       this.main.reqGet("Fatura/GetbyId/" + e.data.ID).subscribe(res => {
-        debugger;
         if (res.OdemeDurumu) {
           this.selectedItem = {};
           this.main.reqGet("CariHesapHareket/GetbyId/" + res.TahsilatID).subscribe(resPayments => {
@@ -131,7 +137,7 @@ export class GiderListesiComponent implements OnInit {
       BelgeTarihi:this.defaultDate,
     };
     this.stateType = e;
-    this.state = 1;
+    this.state = 2;
   }
 
   cancelForm() {
@@ -153,6 +159,18 @@ export class GiderListesiComponent implements OnInit {
       } else {
         url = "Gider/Insert";
       }
+      this.stateType 
+      
+      if (this.stateType == "MAAS") {
+        form.formData["GiderTipi"] = 0;
+      } else if (this.stateType == "VERGI") {
+        form.formData["GiderTipi"] = 1;
+      } else if (this.stateType == "BANKA") {
+        form.formData["GiderTipi"] = 2;
+      } else if (this.stateType == "AVANS") {
+        form.formData["GiderTipi"] = 3;
+      }
+      
       this.main.reqPost(url, form.formData).subscribe(res => {
         this.getList();
       });
@@ -181,15 +199,20 @@ export class GiderListesiComponent implements OnInit {
     form.formData["DovizKuru"] = 1;
     form.formData["GenelToplam"] = GenelToplam;
     form.formData["FaturaTipi"] = 1;
-    
+    if(form.formData["OdemeDurumu"] == 1){
+      form.formData["VadeTarihi"] = this.selectedItem["Tahsilat"].TahsilatTarihi;
+    }
+
     let reqData = {
       Fatura: form.formData,
       Detay: this.dataSource2,
-      HesapID: form.formData.OdemeDurumu ? this.selectedItem["Tahsilat"].HesapID : 0,
-      IsKasa: form.formData.OdemeDurumu ? this.accounts.filter(x => {return this.selectedItem["Tahsilat"].HesapID == x.ID})[0].IsKasa : false,
-      TahsilatTarihi: form.formData.OdemeDurumu ? this.selectedItem["Tahsilat"].EvrakTarihi : new Date()
+      HesapID: form.formData["Tahsilat"] && form.formData["Tahsilat"].HesapID,
+      IsKasa: form.formData["Tahsilat"] && this.accounts.filter(x => {return form.formData["Tahsilat"].HesapID == x.ID})[0].IsKasa,
+      TahsilatTarihi: form.formData["Tahsilat"] && form.formData["Tahsilat"].EvrakTarihi
     }
+
     this.main.reqPost("Fatura/SaveFatura", reqData).subscribe(res => {
+      this.main.notifier("Fatura başarıyla kaydedildi", true);
       this.getList();
     });
   }
@@ -200,7 +223,7 @@ export class GiderListesiComponent implements OnInit {
       ID: 0,
       StokID: 1,
       Miktar: 1,
-      Birim: "",
+      Birim: "Adet",
       BirimFiyat: 0,
       VergiOran: 0,
       Tutar: 0,
@@ -235,7 +258,7 @@ export class GiderListesiComponent implements OnInit {
     this.dataSource2 = tempData;
   }
 
-  valueChange(e, value) {
+  productChange(e, value) {
     this.products.forEach(item => {
       if (item.ID == value) {
         this.dataSource2[this.selectedRow].StokID = value;
@@ -244,6 +267,21 @@ export class GiderListesiComponent implements OnInit {
         this.dataSource2[this.selectedRow].VergiOran = item.SatisKdvOrani;
       }
     });
+    this["calculateSum"]();
+  }
+
+  miktarChange(e, value) {
+    this.dataSource2[this.selectedRow].Miktar = value;
+    this["calculateSum"]();
+  }
+
+  fiyatChange(e, value) {
+    this.dataSource2[this.selectedRow].BirimFiyat = value;
+    this["calculateSum"]();
+  }
+
+  vergiOranChange(e, value) {
+    this.dataSource2[this.selectedRow].VergiOran = value;
     this["calculateSum"]();
   }
 
@@ -268,7 +306,10 @@ export class GiderListesiComponent implements OnInit {
   }
 
   constructor(private main: MainService) {
-    this.valueChange = this.valueChange.bind(this);
+    this.productChange = this.productChange.bind(this);
+    this.miktarChange = this.miktarChange.bind(this);
+    this.fiyatChange = this.fiyatChange.bind(this);
+    this.vergiOranChange = this.vergiOranChange.bind(this);
     this.calculateSum = this.calculateSum.bind(this);
     this.getAccountsFiltered = this.getAccountsFiltered.bind(this);
     this.changeOdemeDurumu = this.changeOdemeDurumu.bind(this);

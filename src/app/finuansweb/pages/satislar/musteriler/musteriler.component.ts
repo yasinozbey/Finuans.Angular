@@ -17,7 +17,7 @@ export class MusterilerComponent implements OnInit {
     { dataField: "Unvan", caption: "Unvan" },
     { dataField: "Bakiye", caption: "Bakiye", format: '#0.00', alignment: 'right' },
     { dataField: "Odenecek", caption: "Ödenecek", format: '#0.00', alignment: 'right' },
-    { dataField: "TahsilEdilcek", caption: "Tahsil Edilecek", format: '#0.00', alignment: 'right' }
+    { dataField: "TahsilEdilecek", caption: "Tahsil Edilecek", format: '#0.00', alignment: 'right' }
   ];
   actions = [
     { actionEvent: "new", actionName: "Yeni Müşteri" }
@@ -38,17 +38,12 @@ export class MusterilerComponent implements OnInit {
       this.dataSource = res;
       this.state = 0;
     });
-    this.main.reqGet("Sehir/Get").subscribe(resSehir => {
-      this.cities = resSehir;
-    });
-    this.main.reqGet("Kategori/Get").subscribe(resKategori => {
-      this.categories = resKategori;
-    });
   }
 
   handleGridAction(e) {
     this.main.reqGet("CariHesap/GetbyId/" + e.data.ID).subscribe(res => {
       this.selectedItem = res;
+      this.selectboxHandler();
       this.getKasaba();
       this.main.reqGet("CariYetkili/Get/" + res.SehirID).subscribe(resYetkili => {
         this.dataSource2 = resYetkili;
@@ -64,7 +59,7 @@ export class MusterilerComponent implements OnInit {
   handleNewAction(e) {
     this.info = false;
     this.selectedItem = undefined;
-    this.state = 1;
+    this.state = 2;
   }
 
   cancelForm() {
@@ -109,6 +104,15 @@ export class MusterilerComponent implements OnInit {
   getKasaba() {
     this.main.reqGet("Sehir/GetKasaba?SehirID=" + this.selectedItem.SehirID).subscribe(resKasaba => {
       this.districts = resKasaba;
+    });
+  }
+
+  selectboxHandler() {
+    this.main.reqGet("Sehir/Get").subscribe(resSehir => {
+      this.cities = resSehir;
+    });
+    this.main.reqGet("Kategori/Get").subscribe(resKategori => {
+      this.categories = resKategori;
     });
   }
 

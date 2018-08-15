@@ -5,8 +5,8 @@
         (actionClick)="handleNewAction()"></app-fn-main>
     </div>
 
-    <div class="col-lg-12" *ngIf="state === 1">
-      <app-fn-form inheritTitle="Tedarikçiler" newTitle="Yeni Tedarikçi" editTitle="Tedarikçi Düzenle" (onSave)="saveForm(form)" (onCancel)="cancelForm()" [(selectedItem)]="selectedItem">
+    <div class="col-lg-12" *ngIf="state !== 0">
+      <app-fn-form inheritTitle="Tedarikçiler" [state]="state" newTitle="Yeni Tedarikçi" editTitle="Tedarikçi Düzenle" (onSave)="saveForm(form)" (onCancel)="cancelForm()" [(selectedItem)]="selectedItem">
         <div class="col-lg-6">
             <dx-form #form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="2">
                 <dxi-item dataField="Unvani" [colSpan]="2" [label]="{text: 'Firma Unvanı'}">
@@ -16,7 +16,7 @@
                 <dxi-item dataField="Tur" [colSpan]="1" [label]="{text: 'Türü'}" editorType="dxSelectBox" [editorOptions]="{ items: supplierTypes, displayExpr:'Name', valueExpr:'ID', value: 0}">
                   <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
                 </dxi-item>
-                <dxi-item dataField="SehirID" [colSpan]="1" [label]="{text: 'İl'}" editorType="dxSelectBox" [editorOptions]="{ items: cities, displayExpr:'Adi', valueExpr:'ID' }">
+                <dxi-item dataField="SehirID" [colSpan]="1" [label]="{text: 'İl'}" editorType="dxSelectBox" [editorOptions]="{ items: cities, displayExpr:'Adi', valueExpr:'ID', onValueChanged: getKasaba }">
                   <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
                 </dxi-item>
                 <dxi-item dataField="KasabaID" [colSpan]="1" [label]="{text: 'İlçe'}" editorType="dxSelectBox" [editorOptions]="{ items: districts, displayExpr:'Adi', valueExpr:'ID' }">
@@ -53,6 +53,7 @@
                 <i class="anticon anticon-plus-circle-o"></i>Bir Yetkili Ekle</button>
             </div>
           </div>
+          <app-fn-info [dataSource]="info" *ngIf="info"></app-fn-info>
         </div>
       </app-fn-form>
     </div>

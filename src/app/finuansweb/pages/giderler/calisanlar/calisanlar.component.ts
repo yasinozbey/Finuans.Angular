@@ -48,7 +48,7 @@ export class CalisanlarComponent implements OnInit {
 
   handleNewAction(e) {
     this.selectedItem = undefined;
-    this.state = 1;
+    this.state = 2;
     this.info = false;
   }
 
@@ -59,14 +59,14 @@ export class CalisanlarComponent implements OnInit {
 
   saveForm(form) {
     let url;
-    if (this.state === 1) {
+    if (this.state === 2) {
       url = "Calisan/Insert";
     } else {
       url = "Calisan/Update";
     }
     this.main.reqPost(url, form.formData).subscribe(res => {
-      if (this.state === 1) {
-        this.main.notifier("Çalışan başarıyla eklendi", true);
+      if (this.state === 2) {
+        this.main.notifier("Yeni çalışan başarıyla eklendi", true);
       } else {
         this.main.notifier("Çalışan başarıyla güncellendi", true);
       }

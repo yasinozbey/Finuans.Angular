@@ -4,8 +4,8 @@
       <app-fn-main title="Kasa ve Bankalar" [actions]="actions" [dataFields]="dataFields" [dataSource]="dataSource" (rowClick)="handleGridAction($event)"
         (actionClick)="handleNewAction($event)"></app-fn-main>
     </div>
-    <div class="col-lg-12 new-area" [hidden]="state !== 1">
-      <app-fn-form *ngIf="stateType == 'BANKA'" inheritTitle="Kasa ve Bankalar" newTitle="Yeni Banka" editTitle="Banka Düzenle"
+    <div class="col-lg-12 new-area" *ngIf="state !== 0">
+      <app-fn-form *ngIf="stateType == 'BANKA'" [state]="state" inheritTitle="Kasa ve Bankalar" newTitle="Yeni Banka" editTitle="Banka Düzenle"
         [(selectedItem)]="selectedItem" (onSave)="saveForm(form)" (onCancel)="cancelForm()" >
         <div class="col-lg-6">
           <dx-form #form class="form-element" *ngIf="stateType == 'BANKA'" [formData]="selectedItem" labelLocation="top" [colCount]="4">

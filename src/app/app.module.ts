@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
-import { NgModule } from '@angular/core';
+import { NgModule,LOCALE_ID } from '@angular/core';
 import { RouterModule, Routes, CanActivate  } from '@angular/router';
 import { AuthGuardService as AuthGuard } from './shared/auth-gurad.service';
 import { HttpClientModule } from '@angular/common/http';
@@ -12,6 +12,7 @@ import {
   DxDataGridModule, DxBulletModule, DxTemplateModule, DxPieChartModule, DxTabPanelModule, DxTextBoxModule
 } from 'devextreme-angular';
 
+import 'devextreme-intl';
 import { AppComponent } from './app.component';
 import { locale } from 'devextreme/localization';
 import { FinuanswebComponent } from './finuansweb/finuansweb.component';
@@ -111,7 +112,7 @@ registerLocaleData(localeTr, 'tr');
     DxSelectBoxModule, DxTextAreaModule, DxDateBoxModule, DxFormModule, DxDataGridModule, DxBulletModule, DxTemplateModule, DxPieChartModule, DxPopupModule, DxTabPanelModule,DxTextBoxModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [AuthGuard],
+  providers: [AuthGuard, { provide: LOCALE_ID, useValue: 'tr' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

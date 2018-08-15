@@ -4,8 +4,8 @@
       <app-fn-main title="Hizmet ve Ürünler" [actions]="actions" [dataFields]="dataFields" [dataSource]="dataSource" (rowClick)="handleGridAction($event)"
         (actionClick)="handleNewAction($event)"></app-fn-main>
     </div>
-    <div class="col-lg-12 new-area" [hidden]="state !== 1">
-      <app-fn-form inheritTitle="Hizmet ve Ürünler" newTitle="Yeni Hizmet/Ürün" editTitle="Hizmet/Ürün Düzenle" [(selectedItem)]="selectedItem"
+    <div class="col-lg-12 new-area" *ngIf="state !== 0">
+      <app-fn-form inheritTitle="Hizmet ve Ürünler" [state]="state" newTitle="Yeni Hizmet/Ürün" editTitle="Hizmet/Ürün Düzenle" [(selectedItem)]="selectedItem"
         (onSave)="saveForm(form)" (onCancel)="cancelForm()">
         <div class="col-lg-6">
           <dx-form #form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="4" [showColonAfterLabel]=false>
