@@ -9,7 +9,7 @@ export class MainService {
 
   constructor(private http: HttpClient) { }
 
-  apiUrl = " http://api.finuans.com/api/";
+  apiUrl = "http://localhost:54282/api/";
   reqConfs = {
     "async": true,
     "dataType": "application/json",
@@ -21,15 +21,45 @@ export class MainService {
       "Content-Type": "application/json"
     })
   };
-  
-  getList (_self = this, uri) {
-    _self["main"].reqGet(uri).subscribe(res => {
+
+  selectboxes = {
+    CariHesap: { url: "CariHesap/List", item: "cariHesapListesi", cache: [], cachetime: 6000 },
+    Doviz: { url: "Doviz/Get", item: "dovizListesi" },
+    StokHizmet: { url: "StokHizmet/Get", item: "StokHizmetListesi" },
+  }
+
+  getList(_self, url) {
+    this.http.get(_self["main"].apiUrl + url, _self["main"].reqConfs).subscribe(res => {
       _self["dataSource"] = res;
       _self["state"] = 0;
-    });
+    },
+      err => {
+        debugger;
+      });
   };
 
-  handleItem(_self = this, uri1, uri2, e) {
+  selectBoxes(_self, selectboxes) {
+    let containedResponses = 0;
+    let allDone = false;
+    selectboxes && selectboxes.forEach(element => {
+      _self["main"].reqGet(_self["main"].selectboxes.element.url).subscribe(res => {
+        _self[selectboxes.element.item] = res;
+        _self[selectboxes.element.cache] = res;
+        setTimeout(() => {
+          _self[selectboxes.element.cache] = [];
+        }, _self[selectboxes.element.cachetime]);
+        if (containedResponses == selectboxes.length) {
+          return true;
+        } else {
+          containedResponses++
+        }
+      }, err => {
+        _self["main"].notifier("Ne yazık ki ")
+      });
+    });
+  }
+
+  handleItem(_self, uri1, uri2, e) {
     _self["main"].reqGet(uri1 + e.data.ID).subscribe(res => {
       _self["selectedItem"] = res;
       _self["state"] = 2;
@@ -47,9 +77,14 @@ export class MainService {
     _self["state"] = paramater;
   }
 
-  notifier(text, type){
+  notifier(text, type) {
+    let notifySettings = {
+      message: '',
+      closeOnClick: true
+    };
+    notifySettings.message = text;
     let notifyType = type ? "success" : "error";
-    notify(text, notifyType, 3000);
+    notify(notifySettings, notifyType, 3000);
   }
 
   reqGet(url): Observable<any> {

@@ -11,17 +11,18 @@ export class MusterilerComponent implements OnInit {
   @ViewChild("detailGrid") detailGrid;
   dataSource = [];
   dataSource2 = [];
+  datasource3 = [];
   dataFields = [
-    { dataField: 'ID', caption: 'ID', alignment: 'left'},
+    { dataField: 'ID', caption: 'ID', alignment: 'left' },
     { dataField: "Unvan", caption: "Unvan" },
     { dataField: "Bakiye", caption: "Bakiye", format: '#0.00', alignment: 'right' },
     { dataField: "Odenecek", caption: "Ödenecek", format: '#0.00', alignment: 'right' },
-    { dataField: "TahsilEdilcek", caption: "Tahsil Edilecek", format: '#0.00', alignment: 'right' }
+    { dataField: "TahsilEdilecek", caption: "Tahsil Edilecek", format: '#0.00', alignment: 'right' }
   ];
   actions = [
-    {actionEvent: "new", actionName:"Yeni Müşteri"}
+    { actionEvent: "new", actionName: "Yeni Müşteri" }
   ]
-  info;
+  info = false;
   cities;
   districts;
   categories;
@@ -37,33 +38,28 @@ export class MusterilerComponent implements OnInit {
       this.dataSource = res;
       this.state = 0;
     });
-    this.main.reqGet("Sehir/Get").subscribe(resSehir => {
-      this.cities = resSehir;
-    });
-    this.main.reqGet("Kategori/Get").subscribe(resKategori => {
-      this.categories = resKategori;
-    });
   }
 
   handleGridAction(e) {
     this.main.reqGet("CariHesap/GetbyId/" + e.data.ID).subscribe(res => {
       this.selectedItem = res;
-      this.main.reqGet("Sehir/GetKasaba?SehirID=" + res.SehirID).subscribe(resKasaba => {
-        this.districts = resKasaba;
-      });
+      this.selectboxHandler();
+      this.getKasaba();
       this.main.reqGet("CariYetkili/Get/" + res.SehirID).subscribe(resYetkili => {
         this.dataSource2 = resYetkili;
       })
       this.state = 1;
+      this.info = true;
     });
     this.main.reqGet("CariHesap/IslemGecmisi/" + e.data.ID).subscribe(resIslem => {
-      this.info = resIslem;
+      this.datasource3 = resIslem;
     });
   }
 
   handleNewAction(e) {
+    this.info = false;
     this.selectedItem = undefined;
-    this.state = 1;
+    this.state = 2;
   }
 
   cancelForm() {
@@ -72,25 +68,30 @@ export class MusterilerComponent implements OnInit {
   }
 
   saveForm(form) {
-    if(!form.instance.validate()["isValid"]){
+    if (!form.instance.validate()["isValid"]) {
       this.main.notifier("Lütfen zorunlu alanları doldurun.", false);
       return false;
     }
     let reqData = {
-      CariHesap:this.selectedItem,
+      CariHesap: form.formData,
       Yetkili: this.dataSource2
     }
     this.main.reqPost("CariHesap/SaveCustomer", reqData).subscribe(res => {
       this.getList();
       this.selectedItem = undefined;
+      this.state = 0;
     });
   }
 
-  addRow(){
-    this.dataSource2.push({Adi:"",Eposta:"",Telefon:"",Notlar:""});
+  addRow() {
+    if (this.dataSource2.length > 4) {
+      this.main.notifier("En fazla 5 yetkili ekleyebilirsiniz.", false);
+    } else {
+      this.dataSource2.push({ Adi: "", Eposta: "", Telefon: "", Notlar: "" });
+    }
   }
 
-  syncDataSource(e){
+  syncDataSource(e) {
     let updatedDatas = this.detailGrid.instance.getVisibleRows();
     let tempData = [];
     updatedDatas.forEach(item => {
@@ -100,7 +101,24 @@ export class MusterilerComponent implements OnInit {
     this.dataSource2 = tempData;
   }
 
-  constructor(private main: MainService) { }
+  getKasaba() {
+    this.main.reqGet("Sehir/GetKasaba?SehirID=" + this.selectedItem.SehirID).subscribe(resKasaba => {
+      this.districts = resKasaba;
+    });
+  }
+
+  selectboxHandler() {
+    this.main.reqGet("Sehir/Get").subscribe(resSehir => {
+      this.cities = resSehir;
+    });
+    this.main.reqGet("Kategori/Get").subscribe(resKategori => {
+      this.categories = resKategori;
+    });
+  }
+
+  constructor(private main: MainService) {
+    this.getKasaba =this.getKasaba.bind(this);
+   }
 
   ngOnInit(): void {
     this.getList();

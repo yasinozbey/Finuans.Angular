@@ -33,8 +33,6 @@ export class TedarikcilerComponent implements OnInit {
   selectedItem;
   state = 0;
 
-  constructor(private main: MainService) { }
-
   getList() {
     this.main.reqGet("CariHesap/List").subscribe(res => {
       this.dataSource = res;
@@ -66,7 +64,7 @@ export class TedarikcilerComponent implements OnInit {
 
   handleNewAction() {
     this.selectedItem = undefined;
-    this.state = 1;
+    this.state = 2;
   }
 
   cancelForm() {
@@ -80,7 +78,7 @@ export class TedarikcilerComponent implements OnInit {
       return false;
     }
     let reqData = {
-      CariHesap:this.selectedItem,
+      CariHesap: form.formData,
       Yetkili: this.dataSource2
     }
     this.main.reqPost("CariHesap/SaveCustomer", reqData).subscribe(res => {
@@ -101,6 +99,16 @@ export class TedarikcilerComponent implements OnInit {
       tempData.push(item.data);
     });
     this.dataSource2 = tempData;
+  }
+
+  getKasaba() {
+    this.main.reqGet("Sehir/GetKasaba?SehirID=" + this.selectedItem.SehirID).subscribe(resKasaba => {
+      this.districts = resKasaba;
+    });
+  }
+
+  constructor(private main: MainService) { 
+    this.getKasaba =this.getKasaba.bind(this);
   }
 
   ngOnInit(): void {

@@ -11,6 +11,7 @@ export class HizmetVeUrunlerComponent implements OnInit {
 
   dataSource = [];
   dataSource2 = [];
+  dataSource3 = [];
   dataFields = [
     { dataField: 'ID', caption: 'ID', alignment: 'left'},
     { dataField: "Adi", caption: "Adı"},
@@ -27,11 +28,11 @@ export class HizmetVeUrunlerComponent implements OnInit {
     { Name: "8%", Value: 8 },
     { Name: "18%", Value: 18 },
   ]
-  info;
   categories;
   currencies;
   selectedItem;
   state = 0;
+  info = false;
 
   getList() {
     this.main.reqGet("StokHizmet/List").subscribe(res => {
@@ -41,24 +42,24 @@ export class HizmetVeUrunlerComponent implements OnInit {
   }
 
   handleGridAction(e) {
+    this.dataSource2 = [];
     this.main.reqGet("StokHizmet/GetbyId/" + e.data.ID).subscribe(res => {
       this.selectedItem = res;
-      this.main.reqGet("Kategori/Get").subscribe(resKategori => {
-        this.categories = resKategori;
-      });
-      this.main.reqGet("Doviz/Get").subscribe(resDoviz => {
-        this.currencies = resDoviz;
-      });
-      this.main.reqGet("StokHizmet/IslemGecmisi/" + e.data.ID).subscribe(resIslem => {
-        this.info = resIslem;
-      });
+      this.selectboxHandler();
       this.state = 1;
+      this.info = true;
+    });
+    this.main.reqGet("StokHizmet/IslemGecmisi/" + e.data.ID).subscribe(resIslem => {
+      this.dataSource3 = resIslem;
     });
   }
 
   handleNewAction(e) {
+    this.selectboxHandler();
     this.selectedItem = undefined;
-    this.state = 1;
+    this.state = 2;
+    this.info = false;
+    this.dataSource2 = [];
   }
 
   cancelForm() {
@@ -66,24 +67,37 @@ export class HizmetVeUrunlerComponent implements OnInit {
     this.selectedItem = undefined;
   }
 
-  saveForm() {
+  saveForm(form) {
     let url;
     if (this.state === 1) {
       url = "StokHizmet/Insert";
     } else {
       url = "StokHizmet/Update";
     }
-    this.main.reqPost(url, this.selectedItem).subscribe(res => {
+    this.main.reqPost(url, form.formData).subscribe(res => {
       this.getList();
     });
   }
 
   addRow() {
-    this.dataSource2.push({
-      Barkod: "",
-      Birim: "",
-      Miktar: 1,
-      Fiyat: 1
+    if(this.dataSource2.length > 4){
+      this.main.notifier("En fazla 5 adet barkod ekleyebilirsiniz.", false);
+    } else{
+      this.dataSource2.push({
+        Barkod: "",
+        Birim: "",
+        Miktar: 1,
+        Fiyat: 1
+      });
+    }
+  }
+
+  selectboxHandler(){
+    this.main.reqGet("Kategori/Get").subscribe(resKategori => {
+      this.categories = resKategori;
+    });
+    this.main.reqGet("Doviz/Get").subscribe(resDoviz => {
+      this.currencies = resDoviz;
     });
   }
 

@@ -12,7 +12,7 @@ export class TekliflerComponent implements OnInit {
   dataSource = [];
   dataSource2 = [];
   dataFields = [
-    { dataField: 'ID', caption: 'ID', alignment: 'left'},
+    { dataField: 'ID', caption: 'ID', alignment: 'left' },
     { dataField: "Aciklama", caption: "Açıklama" },
     { dataField: "HesapAdi", caption: "Hesap Adı" },
     { dataField: "Fatura", caption: "Fatura" },
@@ -44,19 +44,22 @@ export class TekliflerComponent implements OnInit {
   ]
   defaultDate = new Date();
 
-  getList() {
-    this.main.reqGet("Teklif/List").subscribe(res => {
-      this.dataSource = res;
-      this.state = 0;
-    });
+  selectboxHandler() {
     this.main.reqGet("CariHesap/List").subscribe(res => {
       this.customers = res;
-    })
+    });
     this.main.reqGet("Doviz/Get").subscribe(res => {
       this.currencies = res;
     });
     this.main.reqGet("StokHizmet/Get").subscribe(res => {
       this.products = res;
+    });
+  }
+
+  getList() {
+    this.main.reqGet("Teklif/List").subscribe(res => {
+      this.dataSource = res;
+      this.state = 0;
     });
   }
 
@@ -66,13 +69,31 @@ export class TekliflerComponent implements OnInit {
       this.main.reqGet("Teklif/GetDetail?teklifID=" + e.data.ID).subscribe(x => {
         this.dataSource2 = x;
         this.state = 1;
+        this.main.reqGet("CariHesap/List").subscribe(res => {
+          this.customers = res;
+        });
+        this.main.reqGet("Doviz/Get").subscribe(res => {
+          this.currencies = res;
+        });
+        this.main.reqGet("StokHizmet/Get").subscribe(res => {
+          this.products = res;
+        });
       })
     });
   }
 
   handleNewAction(e) {
     this.selectedItem = undefined;
-    this.state = 1;
+    this.state = 2;
+    this.main.reqGet("CariHesap/List").subscribe(res => {
+      this.customers = res;
+    });
+    this.main.reqGet("Doviz/Get").subscribe(res => {
+      this.currencies = res;
+    });
+    this.main.reqGet("StokHizmet/Get").subscribe(res => {
+      this.products = res;
+    });
   }
 
   cancelForm() {
@@ -81,11 +102,11 @@ export class TekliflerComponent implements OnInit {
   }
 
   saveForm(form) {
-    if(!form.instance.validate()["isValid"]){
+    if (!form.instance.validate()["isValid"]) {
       this.main.notifier("Lütfen zorunlu alanları doldurun.", false);
       return false;
     }
-    if(!this.selectedItem){
+    if (this.dataSource2.length < 1) {
       this.main.notifier("Lütfen bir Hizmet/Ürün ekleyin.", false);
       return false;
     }
@@ -97,20 +118,21 @@ export class TekliflerComponent implements OnInit {
       KDVToplam += ((item.BirimFiyat * item.Miktar) / 100) * item.VergiOran;
       GenelToplam += item.Tutar;
     });
-    this.selectedItem && (this.selectedItem["AraToplam"] = AraToplam);
-    this.selectedItem && (this.selectedItem["KdvToplam"] = KDVToplam);
-    this.selectedItem && (this.selectedItem["IndirimToplam"] = this.totalDiscount);
-    this.selectedItem && (this.selectedItem["OivTutari"] = this.totalOiv);
-    this.selectedItem && (this.selectedItem["OtvTutari"] = this.totalOtv);
-    this.selectedItem && (this.selectedItem["DovizCinsi"] = 1);
-    this.selectedItem && (this.selectedItem["DovizKuru"] = 1);
-    this.selectedItem && (this.selectedItem["GenelToplam"] = GenelToplam);
+    form.formData["AraToplam"] = AraToplam;
+    form.formData["KdvToplam"] = KDVToplam;
+    form.formData["IndirimToplam"] = this.totalDiscount;
+    form.formData["OivTutari"] = this.totalOiv;
+    form.formData["OtvTutari"] = this.totalOtv;
+    form.formData["DovizCinsi"] = 1;
+    form.formData["DovizKuru"] = 1;
+    form.formData["GenelToplam"] = GenelToplam;
 
     let reqData = {
-      Teklif: this.selectedItem,
+      Teklif: form.formData,
       Detay: this.dataSource2
     }
     this.main.reqPost("Teklif/SaveTeklif", reqData).subscribe(res => {
+      this.main.notifier("Teklif başarıyla kaydedildi", true)
       this.getList();
     });
   }
@@ -155,7 +177,7 @@ export class TekliflerComponent implements OnInit {
     this.dataSource2 = tempData;
   }
 
-  valueChange(e, value) {
+  productChange(e, value) {
     this.products.forEach(item => {
       if (item.ID == value) {
         this.dataSource2[this.selectedRow].StokID = value;
@@ -167,12 +189,30 @@ export class TekliflerComponent implements OnInit {
     this["calculateSum"]();
   }
 
+  miktarChange(e, value) {
+    this.dataSource2[this.selectedRow].Miktar = value;
+    this["calculateSum"]();
+  }
+
+  fiyatChange(e, value) {
+    this.dataSource2[this.selectedRow].BirimFiyat = value;
+    this["calculateSum"]();
+  }
+
+  vergiOranChange(e, value) {
+    this.dataSource2[this.selectedRow].VergiOran = value;
+    this["calculateSum"]();
+  }
+
   onClickCell(e) {
     this.selectedRow = e.rowIndex;
   }
 
   constructor(private main: MainService) {
-    this.valueChange = this.valueChange.bind(this);
+    this.productChange = this.productChange.bind(this);
+    this.miktarChange = this.miktarChange.bind(this);
+    this.fiyatChange = this.fiyatChange.bind(this);
+    this.vergiOranChange = this.vergiOranChange.bind(this);
     this.calculateSum = this.calculateSum.bind(this);
   }
 

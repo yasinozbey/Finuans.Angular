@@ -11,7 +11,7 @@ export class FnMainComponent implements OnInit {
   @Input("title") title = "";
   @Input("dataFields") dataFields = [];
   @Input("dataSource") dataSource = [];
-  @Input("actions") actions = [];
+  @Input("actions") actions;
 
   constructor() { }
 

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MainService } from '../../../../shared/main.service';
 
 @Component({
   selector: 'app-gelir-gider-raporu',
@@ -6,10 +7,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: [],
 })
 export class GelirGiderRaporuComponent implements OnInit {
+  dataSource;
+  state = 0;
 
-  constructor() { }
+  getList() {
+    this.main.reqGet("Rapor/GelirGiderRaporu?baslangicTarihi=2018-01-01&bitisTarihi=2018-12-31&KdvDahil=true").subscribe(res => {
+      this.dataSource = res;
+    });
+  }
+  
+  constructor(private main: MainService) { }
 
   ngOnInit() {
+    this.getList();
   }
-
 }

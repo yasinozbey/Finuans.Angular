@@ -4,10 +4,10 @@
       <app-fn-main title="Çalışanlar" [actions]="actions" [dataFields]="dataFields" [dataSource]="dataSource" (rowClick)="handleGridAction($event)"
         (actionClick)="handleNewAction($event)"></app-fn-main>
     </div>
-    <div class="col-lg-12 new-area" [hidden]="state !== 1">
-      <app-fn-form inheritTitle="Çalışanlar" newTitle="Yeni Çalışan" editTitle="Çalışan Düzenle" (onSave)="saveForm()" (onCancel)="cancelForm()">
+    <div class="col-lg-12 new-area"  *ngIf="state !== 0">
+      <app-fn-form inheritTitle="Çalışanlar" [state]="state" newTitle="Yeni Çalışan" editTitle="Çalışan Düzenle" (onSave)="saveForm(form)" (onCancel)="cancelForm()" [(selectedItem)]="selectedItem">
         <div class="col-lg-6">
-          <dx-form class="col-lg-12 form-element" [formData]="selectedItem" labelLocation="top" [colCount]="4">
+          <dx-form #form class="col-lg-12 form-element" [formData]="selectedItem" labelLocation="top" [colCount]="4">
             <dxi-item dataField="Adi" [colSpan]="2" [label]="{text: 'Adı'}">
               <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
             </dxi-item>
@@ -21,19 +21,8 @@
             <dxi-item dataField="KategoriID" [colSpan]="2" [label]="{text: 'Kategori'}" editorType="dxSelectBox" [editorOptions]="{ items: categories, displayExpr:'Adi', valueExpr:'ID' }"></dxi-item>
           </dx-form>
         </div>
-        <div class="fn-right-side col-lg-6">
-          <div class="fn-info col-lg-12 n-p">
-            <span>Son İşlemler</span>
-            <!-- <dx-data-grid class="fn-grid" [dataSource]="info" noDataText="Kayıt Bulunamadı">
-                <dxi-column dataField="Aciklama" caption="Açıklama"></dxi-column>
-                <dxi-column dataField="IslemTuru" caption="İşlem"></dxi-column>
-                <dxi-column dataField="Meblag" caption="Meblağ"></dxi-column>
-                <dxi-column dataField="Bakiye" caption="Bakiye"></dxi-column>
-                <dxo-summary>
-                  <dxi-total-item column="Bakiye" summaryType="sum" displayFormat="Toplam: {0}"></dxi-total-item>
-                </dxo-summary>
-              </dx-data-grid> -->
-          </div>
+        <div class="col-lg-6">
+          <app-fn-info [dataSource]="dataSource3" *ngIf="info"></app-fn-info>
         </div>
       </app-fn-form>
     </div>

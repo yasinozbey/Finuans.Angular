@@ -3,7 +3,7 @@
     <b> {{title}}</b>
   </span>
 </div>
-<div class="fn-button-holder">
+<div class="fn-button-holder" *ngIf="actions">
   <button class="fn-button">
     <i class="anticon anticon-bars"></i>
     <span>İşlemler</span>
@@ -19,6 +19,11 @@
     <dxo-paging [pageSize]="20"></dxo-paging>
     <dxi-column *ngFor="let item of dataFields" dataField="{{item.dataField}}" caption="{{item.caption}}" class="{{item.caption}}"
       [width]="item.caption == 'ID' ? '55px' : 'auto'" dataType="{{item.dataType ? item.dataType : ''}}" [format]="item.format ? item.format : ''"
-      [alignment]="item.alignment ? item.alignment : ''" [calculateCellValue]="item.calculateCellValue ? item.calculateCellValue : ''"></dxi-column>
+      [alignment]="item.alignment ? item.alignment : ''"></dxi-column>
+    <!-- <dxi-column *ngFor="let item of dataFields" dataField="{{item.dataField}}" caption="{{item.caption}}" class="{{item.caption}}"
+      [width]="item.caption == 'ID' ? '55px' : 'auto'" dataType="{{item.dataType ? item.dataType : ''}}" [format]="item.format ? item.format : ''"
+      [alignment]="item.alignment ? item.alignment : ''"
+      [calculateCellValue]="item.calculateCellValue ? item.calculateCellValue : ''"
+      ></dxi-column> -->
   </dx-data-grid>
 </div>

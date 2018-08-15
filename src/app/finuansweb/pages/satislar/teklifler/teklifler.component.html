@@ -4,21 +4,24 @@
       <app-fn-main title="Teklifler" [actions]="actions" [dataFields]="dataFields" [dataSource]="dataSource" (rowClick)="handleGridAction($event)"
         (actionClick)="handleNewAction($event)"></app-fn-main>
     </div>
-    <div class="col-lg-12 new-area" [hidden]="state !== 1">
-      <app-fn-form inheritTitle="Teklifler" newTitle="Yeni Teklif" editTitle="Teklif Düzenle" [(selectedItem)]="selectedItem" (onSave)="saveForm(form)"
-        (onCancel)="cancelForm()">
+    <div class="col-lg-12 new-area" *ngIf="state !== 0">
+      <app-fn-form inheritTitle="Teklifler" [state]="state" newTitle="Yeni Teklif" editTitle="Teklif Düzenle" [(selectedItem)]="selectedItem" (onSave)="saveForm(form)"
+        (onCancel)="cancelForm()" [(selectedItem)]="selectedItem">
         <div class="col-lg-6">
           <dx-form #form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="4">
             <dxi-item dataField="Aciklama" [colSpan]="4" [label]="{text: 'Teklif açıklaması'}">
               <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
             </dxi-item>
-            <dxi-item dataField="CariHesapID" [colSpan]="4" #itemHolder [label]="{text: 'Müşteri'}" editorType="dxSelectBox" [editorOptions]="{ dataSource: customers, displayExpr:'Unvan', valueExpr:'ID' }">
+            <dxi-item dataField="CariHesapID" [colSpan]="2" #itemHolder [label]="{text: 'Müşteri'}" editorType="dxSelectBox" [editorOptions]="{ dataSource: customers, displayExpr:'Unvan', valueExpr:'ID' }">
               <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
             </dxi-item>
-            <dxi-item dataField="BelgeTarihi" [colSpan]="2" [label]="{text: 'Düzenleme Tarihi'}" editorType="dxDateBox" [editorOptions]="{ width: '100%', value:defaultDate}">
+            <dxi-item dataField="BelgeNo" [colSpan]="2" #itemHolder [label]="{text: 'Belge No'}">
               <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
             </dxi-item>
-            <dxi-item dataField="VadeTarihi" [colSpan]="2" [label]="{text: 'Vade Tarihi'}" editorType="dxDateBox" [editorOptions]="{ width: '100%', value:defaultDate}">
+            <dxi-item dataField="BelgeTarihi" [colSpan]="2" [label]="{text: 'Düzenleme Tarihi'}" editorType="dxDateBox" [editorOptions]="{ width: '100%'}">
+              <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="VadeTarihi" [colSpan]="2" [label]="{text: 'Vade Tarihi'}" editorType="dxDateBox" [editorOptions]="{ width: '100%'}">
               <dxi-validation-rule type="required" message="Zorunlu Alan"></dxi-validation-rule>
             </dxi-item>
             <dxi-item dataField="TeklifKosullari" [colSpan]="4" [label]="{text: 'Teklif Koşulları'}" editorType="dxTextArea"></dxi-item>
@@ -29,13 +32,13 @@
             [masterDetail]="{ enabled: true, template: 'detail' }">
             <dxo-selection mode="single"></dxo-selection>
             <dxo-editing mode="cell" [allowUpdating]="true"> </dxo-editing>
-            <dxi-column dataField="StokID" caption="Hizmet/Ürün" [setCellValue]="valueChange">
+            <dxi-column dataField="StokID" caption="Hizmet/Ürün" [setCellValue]="productChange">
               <dxo-lookup [dataSource]="products" displayExpr="Adi" valueExpr="ID"> </dxo-lookup>
             </dxi-column>
             <dxi-column dataField="Birim" caption="Birim" [width]="'10%'"></dxi-column>
-            <dxi-column dataField="Miktar" caption="Miktar" [width]="'10%'"></dxi-column>
-            <dxi-column dataField="BirimFiyat" caption="Fiyat" [width]="'10%'"></dxi-column>
-            <dxi-column dataField="VergiOran" caption="KDV" [width]="'10%'">
+            <dxi-column dataField="Miktar" caption="Miktar" [width]="'10%'" [setCellValue]="miktarChange"></dxi-column>
+            <dxi-column dataField="BirimFiyat" caption="Fiyat" [width]="'10%'" [setCellValue]="fiyatChange"></dxi-column>
+            <dxi-column dataField="VergiOran" caption="KDV" [width]="'10%'" [setCellValue]="vergiOranChange">
               <dxo-lookup [dataSource]="taxes" displayExpr="Name" valueExpr="Value"> </dxo-lookup>
             </dxi-column>
             <dxi-column dataField="Tutar" caption="Toplam" [width]="'15%'" format="#,##0.##"></dxi-column>
