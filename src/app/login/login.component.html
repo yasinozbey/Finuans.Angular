@@ -1,5 +1,5 @@
 <div class="fn-login-holder">
-  <div class="fn-login-form">
+  <div class="fn-login-form" [ngClass]="{'in-progress': isLoggining, 'access-granted': accessGranted}">
     <div class="fn-login-logo">
       <img src="/assets/logo.png" alt="logo" width="50">
     </div>
@@ -14,6 +14,9 @@
       <button class="fn-login-button" (click)="login(username.value, password.value)">Giriş Yap
         <i class="anticon anticon-arrow-right"></i>
       </button>
+    </div>
+    <div class="fn-login-loading">
+      <img src="../../../../../assets/loading2.gif">
     </div>
   </div>
 </div>

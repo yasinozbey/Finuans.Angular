@@ -11,10 +11,10 @@ import {
   DxSelectBoxModule, DxTextAreaModule, DxDateBoxModule, DxFormModule, DxPopupModule,
   DxDataGridModule, DxBulletModule, DxTemplateModule, DxPieChartModule, DxTabPanelModule, DxTextBoxModule
 } from 'devextreme-angular';
-
 import 'devextreme-intl';
-import { AppComponent } from './app.component';
 import { locale } from 'devextreme/localization';
+
+import { AppComponent } from './app.component';
 import { FinuanswebComponent } from './finuansweb/finuansweb.component';
 import { FinuansposComponent } from './finuanspos/finuanspos.component';
 import { MenuComponent } from './finuansweb/menu/menu.component';
