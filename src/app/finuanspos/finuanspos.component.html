@@ -1,8 +1,8 @@
-<div class="main">
+<div class="main" (click)="myFocusTriggeringEventEmitter.emit(true);">
   <div id="invoice" class="col-lg-3">
     <div class="invoice-head">
       <input #barkodInput type="text" class="barcodeInput" placeholder="Barkod" [(value)]="barkodValue" autofocus (input)="syncing($event)"
-        (keydown.Enter)="onBarkodChange( $event )">
+        (keydown.Enter)="onBarkodChange( $event )" [focus]="myFocusTriggeringEventEmitter">
       <span>FİŞ</span>
     </div>
     <dx-data-grid #invoiceTable id="gridContainer" class="fn-grid" [dataSource]="dataSource" [rowAlternationEnabled]="true" noDataText="  ">
@@ -137,7 +137,7 @@
   </div>
 </div>
 
-<dx-popup class="popup" [width]="600" [height]="250" [dragEnabled]="false" [closeOnOutsideClick]="true" [(visible)]="popupVisible">
+<dx-popup class="popup" [width]="600" [height]="250" [dragEnabled]="false" [closeOnOutsideClick]="true" [(visible)]="popupVisible" (onHiding)="myFocusTriggeringEventEmitter.emit(true);">
   <div *dxTemplate="let data of 'content'">
     <p class="popupText">
       {{popupText}}
@@ -146,8 +146,7 @@
   </div>
 </dx-popup>
 
-<dx-popup class="fn-items-list-popup" [width]="900" [dragEnabled]="false" title="{{filterTitle}}" [closeOnOutsideClick]="true"
-  [(visible)]="itemsListPopup">
+<dx-popup class="fn-items-list-popup" [width]="900" [dragEnabled]="false" title="{{filterTitle}}" [closeOnOutsideClick]="true" [(visible)]="itemsListPopup" (onHiding)="myFocusTriggeringEventEmitter.emit(true);">
   <div *dxTemplate="let data of 'content'">
     <div style="position: relative; height:100%">
       <div class="fn-filter-holder">
@@ -229,7 +228,7 @@
   </div>
 </dx-popup>
 
-<dx-popup class="popup" [width]="900" [dragEnabled]="false" [closeOnOutsideClick]="true" [(visible)]="pendingItemsPopup">
+<dx-popup class="popup" [width]="900" [dragEnabled]="false" [closeOnOutsideClick]="true" [(visible)]="pendingItemsPopup" (onHiding)="myFocusTriggeringEventEmitter.emit(true);">
   <div *dxTemplate="let data of 'content'">
     <div #state *ngIf="pendingItems.length > 0">
       <div class="col-lg-6">
@@ -261,12 +260,12 @@
   </div>
 </dx-popup>
 
-<dx-popup *ngIf="tempTotal" class="popup" [width]="900" (onHiding)="selectedtedPendingItem = undefined" [dragEnabled]="false"
-  title="Ödeme Yöntemleri - Kalan: {{tempTotal.GenelToplam}}TL" [closeOnOutsideClick]="true" [(visible)]="subTotalPopup">
+<dx-popup *ngIf="tempTotal" class="popup" [width]="900" (onHiding)="onPaymentModalClose()" [dragEnabled]="false"
+  title="Ödeme Yöntemleri - Kalan: {{(tempTotal.GenelToplam - totalconfirmedpayments - paymentDiscount).toFixed(2)}}TL {{paymentDiscount ? '- İndirim: ' + paymentDiscount + 'TL' : ''}}" [closeOnOutsideClick]="true" [(visible)]="subTotalPopup">
   <div *dxTemplate="let data of 'content'">
     <div #state style="height: 100%;">
       <div class="col-lg-5">
-        <input id="paymentInput" type="text" [(value)]="paymentInputValue">
+        <input id="paymentInput" type="text" [(ngModel)]="paymentInputValue">
         <ul class="popupList mini">
           <li *ngFor="let item of paymentTypes; let i = index" [class.active]="selectedtedPendingItem == i" (click)="selectedtedPendingItem = i;">
             <span>{{item.Adi}}</span>
@@ -276,26 +275,24 @@
       </div>
       <div class="col-lg-7 paymentPopupRight">
         <ul class="popupList light" style="height: calc(100% - 355px);">
-          <li *ngFor="let item of payments">
-            <span style="float: left; margin-right:5px;">{{item.Barkodu}} </span>
-            <span class="fn-dots" style="max-width:100px"> {{" " + item.UrunAdi}}</span>
-            <span> - {{item.Miktar + " " + item.BirimAdi}}</span>
+          <li *ngFor="let item of payments; let ind = index"  (click)="removePayment(ind)" style="font-size:20px;">
+            <span> {{paymentTypes[item.OdemeTipIndex].Adi}}</span>
+            <span style="float: right; margin-right: 10px;"> {{(item.Tutar).toFixed(2)}}TL </span>
           </li>
         </ul>
         <div class="paymentPopupButtons">
           <button (click)="paymentInput('7')">7</button>
           <button (click)="paymentInput('8')">8</button>
           <button (click)="paymentInput('9')">9</button>
-          <button class="mini">Ödeme
-            <br>İptal</button>
+          <button (click)="removePaymentState = true" class="mini">Ödeme <br>İptal</button>
           <button (click)="paymentInput('4')">4</button>
           <button (click)="paymentInput('5')">5</button>
           <button (click)="paymentInput('6')">6</button>
-          <button class="mini">Vazgeç</button>
+          <button (click)="tempTotal = false" class="mini">Vazgeç</button>
           <button (click)="paymentInput('1')">1</button>
           <button (click)="paymentInput('2')">2</button>
           <button (click)="paymentInput('3')">3</button>
-          <button class="mini">İndirim</button>
+          <button (click)="addDiscount()" class="mini">İndirim</button>
           <button (click)="paymentInput('0')">0</button>
           <button (click)="paymentInput(',')">,</button>
           <button (click)="removeLastCharFromPayment()">

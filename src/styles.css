@@ -58,7 +58,7 @@ body {
     padding: 0 !important;
     overflow: hidden;
     border-radius: 0;
-    height:100vh;
+    height: 100vh;
 }
 
 .fn-container .form-element {
@@ -297,7 +297,6 @@ body {
     margin-top: 5px;
     padding-top: 0;
 }
-
 
 .fn-header {
     -webkit-user-select: none;
@@ -739,7 +738,7 @@ div.dx-searchbox .dx-icon-search {
     background: linear-gradient(to right, rgb(233, 30, 99), rgb(244, 67, 54));
 }
 
-.dx-toast-content{
+.dx-toast-content {
     position: fixed !important;
     top: 22px !important;
     right: 98px !important;
@@ -755,20 +754,20 @@ div.dx-searchbox .dx-icon-search {
     padding-right: 50px !important;
 }
 
-.dx-toast-success{
-    background: linear-gradient(to left, rgb(76, 175, 80),rgb(0, 150, 136));
+.dx-toast-success {
+    background: linear-gradient(to left, rgb(76, 175, 80), rgb(0, 150, 136));
 }
 
 .dx-toast-error {
     background: linear-gradient(to right, rgb(233, 30, 99), rgb(244, 67, 54));
 }
 
-@keyframes slide-menu{
-    0%{
+@keyframes slide-menu {
+    0% {
         margin-left: -215px;
         margin-right: 215px;
     }
-    100%{
+    100% {
         margin-left: 0;
         margin-right: 0;
     }
@@ -776,7 +775,7 @@ div.dx-searchbox .dx-icon-search {
 
 #menu {
     float: left;
-    width: 280px;
+    width: 230px;
     background: rgb(26, 33, 41);
     height: calc(100%);
     border-right: 1px solid rgba(0, 0, 0, 0.3);
@@ -839,7 +838,7 @@ div.dx-searchbox .dx-icon-search {
 
 #pages {
     float: left;
-    width: calc(100vw - 290px);
+    width: calc(100vw - 230px);
     height: 100%;
     padding: 0 20px;
 }
@@ -876,7 +875,7 @@ div.dx-searchbox .dx-icon-search {
 
 /* FinuansWeb css END */
 
-@media(max-width: 1601px) {
+@media(max-width: 1599px) {
     html {
         font-size: 13px !important;
     }
@@ -893,7 +892,7 @@ div.dx-searchbox .dx-icon-search {
         line-height: 35px;
     }
     #pages {
-        width: calc(100vw - 225px);
+        width: calc(100vw - 215px);
     }
     .finuans-pos {
         height: 40px;
@@ -905,16 +904,19 @@ div.dx-searchbox .dx-icon-search {
         font-size: 13px !important;
     }
     .fn-header {
-        margin-top: 40px;
+        margin-top: 8px;
     }
     .fn-button-holder {
-        top: 38px;
+        top: 5px;
     }
     .dx-datagrid-header-panel .dx-toolbar .dx-texteditor {
         margin-top: 0;
     }
     .dx-datagrid-header-panel div.dx-toolbar {
-        margin-bottom: 15px;
+        margin-bottom: 25px;
+    }
+    .dx-toolbar-center, .dx-toolbar-before, .dx-toolbar-after {
+        top: 22px !important;
     }
 }
 
@@ -922,10 +924,89 @@ div.dx-searchbox .dx-icon-search {
     html {
         font-size: 12px !important;
     }
-    #pages {
-        padding: 0 15px 0 0;
-    }
     .fn-header {
         padding-left: 30px;
+    }
+    #menu {
+        width: 180px;
+    }
+    #pages {
+        width: calc(100vw - 180px);
+        padding: 0;
+    }
+}
+
+@media(max-width: 769px) {
+    #menu {
+        position: fixed;
+        background: transparent;
+        border: none;
+        animation: none;
+    }
+    #menu #logo-area {
+        background: rgb(26, 33, 41);
+        margin: 0;
+        position: fixed;
+        width: 100vw;
+        animation: none;
+    }
+    #menu .except-logo {
+        position: fixed;
+        bottom: 0;
+        width: 100vw;
+        background: rgb(26, 33, 41);
+    }
+    #menu .except-logo #menu-area {
+        height: 36px;
+        margin: 0;
+    }
+    #menu .except-logo #menu-area li.head {
+        float: left;
+        width: 20%;
+    }
+    #menu .except-logo #menu-area ul.sub-menu.active {
+        position: fixed;
+        bottom: 40px;
+        background: rgba(26, 33, 41, 0.9);
+        z-index: 99;
+    }
+    #menu .except-logo #menu-area ul.sub-menu.active:nth-child(3) {
+        left: 20%;
+    }
+    #menu .except-logo #menu-area ul.sub-menu.active:nth-child(5) {
+        left: 40%;
+    }
+    #menu .except-logo #menu-area ul.sub-menu.active:nth-child(7) {
+        left: 60%;
+    }
+    #menu .except-logo #menu-area ul.sub-menu.active:nth-child(9) {
+        left: 80%;
+    }
+    #menu .except-logo #footer-area {
+        display: none;
+    }
+    .finuans-pos {
+        position: fixed;
+        left: 160px;
+        top: 14px;
+        transform: unset;
+        width: 125px;
+        height: 30px;
+    }
+    .finuans-pos span{
+        line-height: 30px;
+    }
+    #pages {
+        width: 100%;
+        padding: 0;
+    }
+    .fn-button-holder button:focus+.fn-dropdown, .fn-dropdown:hover {
+        top: 40px;
+    }
+    .fn-dropdown {
+        padding: 5px 25px 5px 15px;
+    }
+    .main-area {
+        margin-top: 65px;
     }
 }

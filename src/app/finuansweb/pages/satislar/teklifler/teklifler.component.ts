@@ -44,6 +44,13 @@ export class TekliflerComponent implements OnInit {
   ]
   defaultDate = new Date();
 
+  //FUTURE DEVELOPMENT
+  // selectboxHandler = this.main.selectboxHandler.bind({component:this, selectboxes: {
+  //   "carihesap": "customers",
+  //   "doviz": "currencies",
+  //   "stokhizmet": "products",
+  // }})
+
   selectboxHandler() {
     this.main.reqGet("CariHesap/List").subscribe(res => {
       this.customers = res;
