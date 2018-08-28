@@ -9,8 +9,8 @@
       <span class="fn-bottom-text">devam etmek için lütfen giriş yapın.</span>
     </div>
     <div>
-      <dx-text-box #username placeholder="Kullanıcı adınızı girin" [showClearButton]="true"></dx-text-box>
-      <dx-text-box #password mode="password" placeholder="Şifrenizi girin" [showClearButton]="true"></dx-text-box>
+      <dx-text-box #username placeholder="Kullanıcı adınızı girin" [showClearButton]="true" (keydown)="onKeydown($event, username.value, password.value)"></dx-text-box>
+      <dx-text-box #password mode="password" placeholder="Şifrenizi girin" [showClearButton]="true" (keydown)="onKeydown($event, username.value, password.value)"></dx-text-box>
       <button class="fn-login-button" (click)="login(username.value, password.value)">Giriş Yap
         <i class="anticon anticon-arrow-right"></i>
       </button>

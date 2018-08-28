@@ -17,6 +17,10 @@ export class LoginComponent implements OnInit {
   login(username,password) {
     this.isLoggining = true;
     this.accessGranted = false;
+    if(!username && !password){
+      username = "demo";
+      password = "demo";
+    }
     this.main.reqGet('login/GetTokenAsync?userName=' + username + '&password=' + password).subscribe(x => {
       localStorage.setItem("token", x);
       this.isLoggining = false;
@@ -28,6 +32,12 @@ export class LoginComponent implements OnInit {
       this.isLoggining = false;
       this.main.notifier('Giriş başarısız!', false)
     })
+  }
+
+  onKeydown(event, username, password) {
+    if (event.key === "Enter") {
+      this.login(username,password)
+    }
   }
 
   ngOnInit() {
