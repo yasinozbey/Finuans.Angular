@@ -184,6 +184,10 @@ body {
     border-top: none;
 }
 
+.dx-datagrid-rowsview td{
+    cursor: pointer;
+}
+
 .dx-datagrid-content .dx-datagrid-table .dx-row>td, .dx-datagrid-content .dx-datagrid-table .dx-row>tr>td {
     border-bottom: 1px solid rgb(232, 234, 235);
     border-left: none;

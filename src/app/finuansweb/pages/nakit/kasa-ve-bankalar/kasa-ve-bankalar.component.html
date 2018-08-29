@@ -39,7 +39,7 @@
         </div>
       </app-fn-form>
 
-      <app-fn-form *ngIf="stateType == 'KASA'" inheritTitle="Kasa ve Bankalar" newTitle="Yeni Kasa" editTitle="Kasa Düzenle" (onSave)="saveForm(form)" (onCancel)="cancelForm()" [(selectedItem)]="selectedItem">
+      <app-fn-form *ngIf="stateType == 'KASA'" [state]="state" inheritTitle="Kasa ve Bankalar" newTitle="Yeni Kasa" editTitle="Kasa Düzenle" (onSave)="saveForm(form)" (onCancel)="cancelForm()" [(selectedItem)]="selectedItem">
         <div class="col-lg-6">
           <dx-form #form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="4">
             <dxi-item dataField="HesapAdi" [colSpan]="4" [label]="{text: 'Hesap Adı'}">

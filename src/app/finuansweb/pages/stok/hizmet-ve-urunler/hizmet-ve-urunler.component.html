@@ -5,8 +5,8 @@
         (actionClick)="handleNewAction($event)"></app-fn-main>
     </div>
     <div class="col-lg-12 new-area" *ngIf="state !== 0">
-      <app-fn-form inheritTitle="Hizmet ve Ürünler" [state]="state" newTitle="Yeni Hizmet/Ürün" editTitle="Hizmet/Ürün Düzenle" [(selectedItem)]="selectedItem"
-        (onSave)="saveForm(form)" (onCancel)="cancelForm()">
+      <app-fn-form inheritTitle="Hizmet ve Ürünler" [state]="state" newTitle="Yeni Hizmet/Ürün" editTitle="Hizmet/Ürün Düzenle"
+        [(selectedItem)]="selectedItem" (onSave)="saveForm(form)" (onCancel)="cancelForm()">
         <div class="col-lg-6">
           <dx-form #form class="form-element" [formData]="selectedItem" labelLocation="top" [colCount]="4" [showColonAfterLabel]=false>
             <dxi-item dataField="Adi" [colSpan]="4" [label]="{text: 'Adı'}">
@@ -40,12 +40,14 @@
           </dx-form>
         </div>
         <div class="fn-grid-holder">
-          <dx-data-grid id="gridContainer" [dataSource]="dataSource2" noDataText="Kayıt Bulunamadı" [editing]="{texts: {confirmDeleteMessage:'Bu barkodu silmek istediğinize emin misiniz?', deleteRow: 'Sil'}}">
+          <dx-data-grid id="gridContainer" [dataSource]="dataSource2" noDataText="Kayıt Bulunamadı" [editing]="{texts: {confirmDeleteMessage:'Bu barkodu silmek istediğinize emin misiniz?', deleteRow: 'Sil'}}"  (onCellClick)="onClickCell($event)">
             <dxo-editing mode="cell" [allowUpdating]="true" [allowDeleting]="true"> </dxo-editing>
-            <dxi-column dataField="Barkod" caption="Barkod"></dxi-column>
-            <dxi-column dataField="Birim" caption="Birim"></dxi-column>
-            <dxi-column dataField="Miktar" caption="Miktar"></dxi-column>
-            <dxi-column dataField="Fiyat" caption="Fiyat"></dxi-column>
+            <dxi-column dataField="Barkodu" caption="Barkod"></dxi-column>
+            <dxi-column dataField="BirimNo" caption="Birim" [setCellValue]="birimChange">
+              <dxo-lookup [dataSource]="birimler" displayExpr="Name" valueExpr="Value"> </dxo-lookup>
+            </dxi-column>
+            <dxi-column dataField="Katsayi" caption="Miktar"></dxi-column>
+            <dxi-column dataField="Fiyat1" caption="Fiyat" format="#,##0.##"></dxi-column>
           </dx-data-grid>
           <div style="margin-top: 10px !important;">
             <div>
@@ -53,7 +55,7 @@
                 <i class="anticon anticon-plus-circle-o"></i>Bir Barkod Ekle</button>
             </div>
           </div>
-          <app-fn-info [dataSource]="dataSource3" *ngIf="info"></app-fn-info>
+          <app-fn-info [dataSource]="dataSource3" [columns]="columns" *ngIf="info"></app-fn-info>
         </div>
       </app-fn-form>
     </div>
