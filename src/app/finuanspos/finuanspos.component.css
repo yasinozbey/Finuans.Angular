@@ -547,7 +547,7 @@
     font-size: 19px;
 }
 
-@media(max-width: 1601px) {
+@media(max-width: 1599px) {
     /deep/ .dx-tabpanel {
         margin-top: 30px;
     }

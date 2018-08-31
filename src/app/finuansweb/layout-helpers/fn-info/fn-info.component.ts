@@ -7,6 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class FnInfoComponent implements OnInit {
   @Input("dataSource") dataSource;
+  @Input("columns") columns;
 
   constructor() { }
 

@@ -1,5 +1,5 @@
 <div class="fn-login-holder">
-  <div class="fn-login-form">
+  <div class="fn-login-form" [ngClass]="{'in-progress': isLoggining, 'access-granted': accessGranted}">
     <div class="fn-login-logo">
       <img src="/assets/logo.png" alt="logo" width="50">
     </div>
@@ -9,11 +9,14 @@
       <span class="fn-bottom-text">devam etmek için lütfen giriş yapın.</span>
     </div>
     <div>
-      <dx-text-box #username placeholder="Kullanıcı adınızı girin" [showClearButton]="true"></dx-text-box>
-      <dx-text-box #password mode="password" placeholder="Şifrenizi girin" [showClearButton]="true"></dx-text-box>
+      <dx-text-box #username placeholder="Kullanıcı adınızı girin" [showClearButton]="true" (keydown)="onKeydown($event, username.value, password.value)"></dx-text-box>
+      <dx-text-box #password mode="password" placeholder="Şifrenizi girin" [showClearButton]="true" (keydown)="onKeydown($event, username.value, password.value)"></dx-text-box>
       <button class="fn-login-button" (click)="login(username.value, password.value)">Giriş Yap
         <i class="anticon anticon-arrow-right"></i>
       </button>
+    </div>
+    <div class="fn-login-loading">
+      <img src="../../../../../assets/loading2.gif">
     </div>
   </div>
 </div>

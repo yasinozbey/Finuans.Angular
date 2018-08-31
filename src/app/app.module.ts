@@ -11,10 +11,10 @@ import {
   DxSelectBoxModule, DxTextAreaModule, DxDateBoxModule, DxFormModule, DxPopupModule,
   DxDataGridModule, DxBulletModule, DxTemplateModule, DxPieChartModule, DxTabPanelModule, DxTextBoxModule
 } from 'devextreme-angular';
-
 import 'devextreme-intl';
-import { AppComponent } from './app.component';
 import { locale } from 'devextreme/localization';
+
+import { AppComponent } from './app.component';
 import { FinuanswebComponent } from './finuansweb/finuansweb.component';
 import { FinuansposComponent } from './finuanspos/finuanspos.component';
 import { MenuComponent } from './finuansweb/menu/menu.component';
@@ -43,6 +43,7 @@ import { FnMainComponent } from './finuansweb/layout-helpers/fn-main/fn-main.com
 import { FnFormComponent } from './finuansweb/layout-helpers/fn-form/fn-form.component';
 import { LoginComponent } from './login/login.component';
 import { FnInfoComponent } from './finuansweb/layout-helpers/fn-info/fn-info.component';
+import { FocusDirective } from './finuanspos/focus.directive';
 
 const appRoutes: Routes = [
   { path: 'GuncelDurum', component: GuncelDurumComponent, canActivate: [AuthGuard]  },
@@ -102,7 +103,8 @@ registerLocaleData(localeTr, 'tr');
     FnMainComponent,
     FnFormComponent,
     LoginComponent,
-    FnInfoComponent
+    FnInfoComponent,
+    FocusDirective
   ],
   imports: [
     BrowserModule,

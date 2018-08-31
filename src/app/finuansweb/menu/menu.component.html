@@ -3,44 +3,46 @@
   <span>Finuans </span>
 </div>
 
-<div id="menu-area">
-  <ul>
-    <li class="head" [routerLink]="['/GuncelDurum']"><i class="anticon anticon-line-chart"></i>Güncel Durum</li>
-    <li class="head" (click)="satislar.classList.toggle('active')"><i class="anticon anticon-verticle-right"></i>Satışlar</li>
-    <ul #satislar class="sub-menu">
-      <li [routerLink]="['/Teklifler']">Teklifler</li>
-      <li [routerLink]="['/Faturalar']">Faturalar</li>
-      <li [routerLink]="['/Musteriler']">Müşteriler</li>
-      <li [routerLink]="['/SatislarRaporu']">Satış Raporu</li>
-      <li [routerLink]="['/TahsilatlarRaporu']">Tahsilat Raporu</li>
-      <li [routerLink]="['/GelirGiderRaporu']">Gelir Gider Raporu</li>
+<div class="except-logo">
+  <div id="menu-area">
+    <ul>
+      <li class="head" [routerLink]="['/GuncelDurum']"><i class="anticon anticon-line-chart"></i>Güncel Durum</li>
+      <li class="head" (click)="satislar.classList.toggle('active')"><i class="anticon anticon-verticle-right"></i>Satışlar</li>
+      <ul #satislar class="sub-menu">
+        <li [routerLink]="['/Teklifler']">Teklifler</li>
+        <li [routerLink]="['/Faturalar']">Faturalar</li>
+        <li [routerLink]="['/Musteriler']">Müşteriler</li>
+        <li [routerLink]="['/SatislarRaporu']">Satış Raporu</li>
+        <li [routerLink]="['/TahsilatlarRaporu']">Tahsilat Raporu</li>
+        <li [routerLink]="['/GelirGiderRaporu']">Gelir Gider Raporu</li>
+      </ul>
+      <li class="head" (click)="giderler.classList.toggle('active')"><i class="anticon anticon-verticle-left"></i>Giderler</li>
+      <ul #giderler class="sub-menu">
+        <li [routerLink]="['/GiderListesi']">Gider Listesi</li>
+        <li [routerLink]="['/Tedarikciler']">Tedarikçiler</li>
+        <li [routerLink]="['/Calisanlar']">Çalışanlar</li>
+        <li [routerLink]="['/GiderlerRaporu']">Giderler Raporu</li>
+        <li [routerLink]="['/OdemelerRaporu']">Ödemeler Raporu</li>
+        <li [routerLink]="['/KDVRaporu']">KDV Raporu</li>
+      </ul>
+      <li class="head" (click)="nakit.classList.toggle('active')"><i class="anticon anticon-wallet"></i>Nakit</li>
+      <ul #nakit class="sub-menu">
+        <li [routerLink]="['/KasaVeBankalar']">Kasa ve Bankalar</li>
+        <li [routerLink]="['/Cekler']">Çekler</li>
+        <li [routerLink]="['/KasaBankaRaporu']">Kasa / Banka Raporu</li>
+        <li [routerLink]="['/NakitAkisiRaporu']">Nakit Akışı Raporu</li>
+      </ul>
+      <li class="head" (click)="stok.classList.toggle('active')"><i class="anticon anticon-appstore-o"></i>Stok</li>
+      <ul #stok class="sub-menu">
+        <li [routerLink]="['/HizmetVeUrunler']">Hizmet ve Ürünler</li>
+        <li [routerLink]="['/StokGecmisi']">Stok Geçmişi</li>
+        <li [routerLink]="['/StoktakiUrunlerRaporu']">Stoktaki Ürünler Raporu</li>
+      </ul>
     </ul>
-    <li class="head" (click)="giderler.classList.toggle('active')"><i class="anticon anticon-verticle-left"></i>Giderler</li>
-    <ul #giderler class="sub-menu">
-      <li [routerLink]="['/GiderListesi']">Gider Listesi</li>
-      <li [routerLink]="['/Tedarikciler']">Tedarikçiler</li>
-      <li [routerLink]="['/Calisanlar']">Çalışanlar</li>
-      <li [routerLink]="['/GiderlerRaporu']">Giderler Raporu</li>
-      <li [routerLink]="['/OdemelerRaporu']">Ödemeler Raporu</li>
-      <li [routerLink]="['/KDVRaporu']">KDV Raporu</li>
-    </ul>
-    <li class="head" (click)="nakit.classList.toggle('active')"><i class="anticon anticon-wallet"></i>Nakit</li>
-    <ul #nakit class="sub-menu">
-      <li [routerLink]="['/KasaVeBankalar']">Kasa ve Bankalar</li>
-      <li [routerLink]="['/Cekler']">Çekler</li>
-      <li [routerLink]="['/KasaBankaRaporu']">Kasa / Banka Raporu</li>
-      <li [routerLink]="['/NakitAkisiRaporu']">Nakit Akışı Raporu</li>
-    </ul>
-    <li class="head" (click)="stok.classList.toggle('active')"><i class="anticon anticon-appstore-o"></i>Stok</li>
-    <ul #stok class="sub-menu">
-      <li [routerLink]="['/HizmetVeUrunler']">Hizmet ve Ürünler</li>
-      <li [routerLink]="['/StokGecmisi']">Stok Geçnişi</li>
-      <li [routerLink]="['/StoktakiUrunlerRaporu']">Stoktaki Ürünler Raporu</li>
-    </ul>
-  </ul>
-</div>
-<button class="finuans-pos" (click)="launchPOS()"><span>Finuans <b>POS</b></span></button>
+  </div>
+  <button class="finuans-pos" (click)="launchPOS()"><span>Finuans <b>POS</b></span></button>
 
-<div id="footer-area">
-  <span class="version">Version: 1.0.0</span>
+  <div id="footer-area">
+    <span class="version">Version: 1.0.0</span>
+  </div>
 </div>

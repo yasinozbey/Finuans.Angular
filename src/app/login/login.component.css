@@ -9,7 +9,7 @@
 }
 
 .fn-login-holder:after {
-    content:"";
+    content: "";
     background: url("/assets/pattern-white.svg") top left/auto repeat;
     position: relative;
     z-index: -1;
@@ -45,6 +45,49 @@
     box-shadow: 6px 5px 20px 3px rgba(0, 0, 0, 0.38);
     animation: pinchIn cubic-bezier(.62, .28, .23, .99) 0.5s;
     animation-iteration-count: 1;
+    transition: all cubic-bezier(.62, .28, .23, .99) 0.1s;
+}
+
+.fn-login-form>div {
+    transition: all cubic-bezier(.62, .28, .23, .99) 0.5s;
+}
+
+.fn-login-loading {
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.fn-login-loading img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 350px;
+}
+
+.fn-login-form.in-progress>div:not(.fn-login-loading) {
+    opacity: 0.2;
+}
+
+.fn-login-form.in-progress .fn-login-loading {
+    display: inline-block;
+}
+
+.fn-login-form.access-granted > div{
+    display: none;
+}
+
+.fn-login-form.access-granted{
+    left:0;
+    top:0;
+    width:100vw;
+    height: 100vh;
+    transform: unset;
+    border-radius: 0;
 }
 
 .fn-login-form .fn-login-logo {
@@ -85,16 +128,15 @@ dx-text-box {
     transform: translate(-50%);
 }
 
-@media (max-width:420px){
-    .fn-login-form{
+@media (max-width:420px) {
+    .fn-login-form {
         width: 90%;
         height: 90vh;
     }
-    .fn-login-button{
-        width:100%;
+    .fn-login-button {
+        width: 100%;
     }
-
-    .fn-login-form .fn-welcome-text .fn-bottom-text{
-        font-size:18px;
+    .fn-login-form .fn-welcome-text .fn-bottom-text {
+        font-size: 18px;
     }
 }

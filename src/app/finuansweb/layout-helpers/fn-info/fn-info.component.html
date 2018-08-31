@@ -1,12 +1,11 @@
 <div class="fn-info col-lg-12 n-p">
   <span>Son İşlemler</span>
   <dx-data-grid class="fn-grid" [dataSource]="dataSource" noDataText="Kayıt Bulunamadı">
-    <dxi-column dataField="Aciklama" caption="Açıklama"></dxi-column>
-    <dxi-column dataField="IslemTuru" caption="İşlem"></dxi-column>
-    <dxi-column dataField="Meblag" caption="Meblağ"></dxi-column>
-    <dxi-column dataField="Bakiye" caption="Bakiye"></dxi-column>
+    <div *ngFor="let item of columns">
+        <dxi-column [dataField]="item.dataField" [caption]="item.caption"></dxi-column>
+    </div>
     <dxo-summary>
-      <dxi-total-item column="Bakiye" summaryType="sum" displayFormat="Toplam: {0}"></dxi-total-item>
+      <dxi-total-item column="columns[columns.length - 1]" summaryType="sum" displayFormat="Toplam: {0}"></dxi-total-item>
     </dxo-summary>
   </dx-data-grid>
 </div>

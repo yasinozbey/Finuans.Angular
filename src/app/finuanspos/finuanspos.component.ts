@@ -1,6 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, EventEmitter } from '@angular/core';
 import { POSService } from "./pos.service";
-import { $ } from 'protractor';
 
 @Component({
   selector: 'app-finuanspos',
@@ -48,6 +47,10 @@ export class FinuansposComponent implements OnInit {
   sellers;
   selectedSeller;
   selectedtedPendingItem;
+  public myFocusTriggeringEventEmitter = new EventEmitter<boolean>();
+  totalconfirmedpayments = 0;
+  removePaymentState = false;
+  paymentDiscount = 0;
 
   getTabs() {
     this.service.reqGet("Pos/KategoriListesi").subscribe(x => {
@@ -84,6 +87,7 @@ export class FinuansposComponent implements OnInit {
         this.barkodValue = e;
       }
     }
+    this.myFocusTriggeringEventEmitter.emit(true);
   }
 
   calculateAll() {
@@ -183,7 +187,7 @@ export class FinuansposComponent implements OnInit {
             this.popupText = "";
             this.popupButton = true;
           }, 2000)
-        }, );
+        });
     }
   }
 
@@ -477,10 +481,11 @@ export class FinuansposComponent implements OnInit {
   }
 
   acceptPayment(e) {
-    if(!this.paymentInputValue) {
+    if (!this.totalconfirmedpayments && !this.paymentInputValue) {
       this.payments.push({
         Tutar: this.tempTotal.GenelToplam,
-        OdemeTipID: e.ID
+        OdemeTipID: e.ID,
+        OdemeTipIndex: e.Tip
       });
       let lines = [];
       this.dataSource.forEach(x => {
@@ -489,8 +494,8 @@ export class FinuansposComponent implements OnInit {
         let KdvTutari = ((x.Tutar - IndirimTL) * x.KDV) / (100 + x.KDV);
         let tempLine = {
           "Barkodu": x.Barkod,
-          "Miktar":x.Miktar,
-          "Fiyat":x.Fiyat,
+          "Miktar": x.Miktar,
+          "Fiyat": x.Fiyat,
           "BirimAdi": x.Birim,
           "IndirimOran": indirimOran,
           "IndirimTL": IndirimTL,
@@ -514,8 +519,83 @@ export class FinuansposComponent implements OnInit {
       this.service.reqPost("Pos/FisEkle", reqData).subscribe(x => {
         this.clearAll();
         this.subTotalPopup = false;
+        this.totalconfirmedpayments = 0;
       })
+      this.selectedtedPendingItem = undefined;
+    } else if (this.paymentInputValue) {
+      this.payments.push({
+        Tutar: parseFloat(this.paymentInputValue.replace(',', '.')),
+        OdemeTipID: e.ID,
+        OdemeTipIndex: e.Tip
+      });
+      this.totalconfirmedpayments += parseFloat(this.paymentInputValue.replace(',', '.'))
+
+      if (this.totalconfirmedpayments == this.tempTotal.GenelToplam) {
+        let lines = [];
+        this.dataSource.forEach(x => {
+          let indirimOran = (this.currentCustomer ? this.currentCustomer.IndirimOrani : 0);
+          let IndirimTL = (x.Tutar / 100) * indirimOran;
+          let KdvTutari = ((x.Tutar - IndirimTL) * x.KDV) / (100 + x.KDV);
+          let tempLine = {
+            "Barkodu": x.Barkod,
+            "Miktar": x.Miktar,
+            "Fiyat": x.Fiyat,
+            "BirimAdi": x.Birim,
+            "IndirimOran": indirimOran,
+            "IndirimTL": IndirimTL,
+            "KdvOrani": x.KDV,
+            "KdvTutari": KdvTutari,
+            "AraToplam": x.Tutar - IndirimTL - KdvTutari,
+            "GenelToplam": x.Tutar - IndirimTL
+          };
+          lines.push(tempLine);
+        })
+
+        let reqData = {
+          FirmaID: 1,
+          KullaniciID: 1,
+          SaticiID: this.selectedSeller ? this.selectedSeller.ID : 0,
+          CariID: this.currentCustomer ? this.currentCustomer.ID : 0,
+          Paraustu: 0,
+          Odemeler: this.payments,
+          IndirimTL: this.paymentDiscount,
+          Lines: lines
+        }
+        this.service.reqPost("Pos/FisEkle", reqData).subscribe(x => {
+          this.clearAll();
+          this.subTotalPopup = false;
+          this.totalconfirmedpayments = 0;
+        })
+      } else {
+        this.paymentInputValue = "";
+      }
+      this.selectedtedPendingItem = undefined;
+    } else {
+      // this.popupVisible = true;
+      // this.popupButton = false;
+      // this.popupText = "Belgeyi iptal etmek istediğinizden emin misiniz?";
     }
+  }
+
+  removePayment(index){
+    if(this.removePaymentState){
+      this.totalconfirmedpayments -= this.payments[index].Tutar;
+      this.payments.splice(index,1);
+      this.removePaymentState = false;
+    }
+  }
+
+  addDiscount() {
+    if(this.paymentInputValue) {
+      this.paymentDiscount = parseFloat(this.paymentInputValue.replace(',', '.'));
+    }
+  }
+
+  onPaymentModalClose() {
+    this.selectedtedPendingItem = undefined;
+    this.paymentDiscount = 0;
+    this.totalconfirmedpayments = 0;
+    this.paymentInputValue = "";
   }
 
   constructor(private service: POSService) { }

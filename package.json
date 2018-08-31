@@ -1,6 +1,6 @@
 {
   "name": "finuans",
-  "version": "0.0.27",
+  "version": "0.0.36",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -27,6 +27,7 @@
     "devextreme-intl": "^18.1.5",
     "ng-zorro-antd": "^1.1.0",
     "rxjs": "^6.0.0",
+    "rxjs-compat": "^6.2.2",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
